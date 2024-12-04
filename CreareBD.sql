@@ -105,3 +105,5 @@ ALTER TABLE
     `shift` ADD CONSTRAINT `shift_id_etaj_foreign` FOREIGN KEY(`id_etaj`) REFERENCES `etaj`(`id_etaj`);
 ALTER TABLE
     `Gardian` ADD CONSTRAINT `gardian_id_shift_foreign` FOREIGN KEY(`id_shift`) REFERENCES `shift`(`id_shift`);
+
+ALTER TABLE sentinta ADD start_time DATETIME;
