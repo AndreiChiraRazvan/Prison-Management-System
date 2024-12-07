@@ -1,2 +1,0 @@
-# PrisonBreak
-Sistem Gestiune Penitenciar
