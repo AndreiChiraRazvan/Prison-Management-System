@@ -2,22 +2,37 @@ package com.example.penitenciarv1;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 public class HelloApplication extends Application {
     @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
-        stage.show();
+    public void start(Stage primaryStage) {
+        try {
+            // Use an absolute path to load the FXML file
+//            String fxmlPath = "./hello-view.fxml";
+//            File fxmlFile = new File(fxmlPath);
+//            URL fxmlUrl = fxmlFile.toURI().toURL();
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+            Parent root = fxmlLoader.load();
+
+            primaryStage.setTitle("Login");
+            Scene scene = new Scene(root);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error loading FXML file. Ensure the file path is correct and the file exists.");
+        }
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 }
