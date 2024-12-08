@@ -9,7 +9,11 @@ module com.example.penitenciarv1 {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
+    requires java.sql;
+    requires mysql.connector.java;
 
     opens com.example.penitenciarv1 to javafx.fxml;
     exports com.example.penitenciarv1;
+    exports com.example.penitenciarv1.Entities;
+    opens com.example.penitenciarv1.Entities to javafx.fxml;
 }
