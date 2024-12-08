@@ -29,7 +29,7 @@ public class HelloController {
         if(username.equals(username1) && password.equals(secretPw1)) {
             System.out.println("Succesful login");
             Stage stage = (Stage) usr_txt.getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("MainGUI.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("interfatagardian.fxml"));
             stage.setScene(new Scene(root));
             stage.centerOnScreen();
             stage.setTitle("Sapply - Administrator");
