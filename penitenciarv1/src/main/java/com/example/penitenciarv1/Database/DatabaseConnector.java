@@ -8,7 +8,7 @@ public class DatabaseConnector {
 
     private String user = "root";
     private String url = "jdbc:mysql://127.0.0.1:3306/penitenciar";
-    private String password = "KKNbwxw9PqY2";
+    private String password = "Baze_De_Date-2224";
     public Connection conn = null;
     public DatabaseConnector() {
 
