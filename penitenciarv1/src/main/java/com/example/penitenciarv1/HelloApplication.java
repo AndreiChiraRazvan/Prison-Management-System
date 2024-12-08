@@ -1,5 +1,6 @@
 package com.example.penitenciarv1;
 
+import com.example.penitenciarv1.Database.DatabaseConnector;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,6 +19,8 @@ public class HelloApplication extends Application {
 //            String fxmlPath = "./hello-view.fxml";
 //            File fxmlFile = new File(fxmlPath);
 //            URL fxmlUrl = fxmlFile.toURI().toURL();
+            DatabaseConnector databaseConnector = new DatabaseConnector();
+            databaseConnector.callRandomProcedure();
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
             Parent root = fxmlLoader.load();
 
