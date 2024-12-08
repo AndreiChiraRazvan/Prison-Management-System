@@ -37,4 +37,13 @@ public class HelloController {
             System.out.println("Wrong username or password");
         }
     }
+    @FXML
+    public void onEnter(ActionEvent ae){
+        try {
+            login_btn_onClick(ae);
+        }catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Problem when introducing your data!");
+        }
+    }
 }
