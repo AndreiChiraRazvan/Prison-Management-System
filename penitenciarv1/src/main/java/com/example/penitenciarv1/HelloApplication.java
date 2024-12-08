@@ -14,11 +14,7 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            // Use an absolute path to load the FXML file
-//            String fxmlPath = "./hello-view.fxml";
-//            File fxmlFile = new File(fxmlPath);
-//            URL fxmlUrl = fxmlFile.toURI().toURL();
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("interfatagardian.fxml"));
             Parent root = fxmlLoader.load();
 
             primaryStage.setTitle("Login");
