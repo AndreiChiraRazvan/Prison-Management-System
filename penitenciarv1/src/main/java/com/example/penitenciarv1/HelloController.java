@@ -34,9 +34,23 @@ public class HelloController {
             stage.centerOnScreen();
             stage.setTitle("Sapply - Administrator");
         }else {
+            Stage failedLogin = (Stage) usr_txt.getScene().getWindow();
+            Parent root = FXMLLoader.load(getClass().getResource("failed_login.fxml"));
+            failedLogin.setScene(new Scene(root));
+            failedLogin.setTitle("Failed_Login");
+            failedLogin.centerOnScreen();
             System.out.println("Wrong username or password");
         }
     }
+
+    @FXML
+    public void failed_login_btn_onClick(ActionEvent e) throws IOException {
+        Stage returnToLogin = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource(("hello-view.fxml")));
+        returnToLogin.setScene(new Scene(root));
+        returnToLogin.show();
+    }
+
     @FXML
     public void onEnter(ActionEvent ae){
         try {
