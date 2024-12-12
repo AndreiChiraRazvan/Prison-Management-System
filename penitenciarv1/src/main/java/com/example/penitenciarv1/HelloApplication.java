@@ -1,11 +1,11 @@
 package com.example.penitenciarv1;
 
+import com.example.penitenciarv1.Database.DatabaseConnector;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
+
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -20,9 +20,10 @@ public class HelloApplication extends Application {
 
 
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+
             Parent root = fxmlLoader.load();
 
-            primaryStage.setTitle("Gardian-Meniu principal");
+            primaryStage.setTitle("LogIn");
 //            Scene scene = new Scene(root);
 //            primaryStage.setScene(scene);
 //            primaryStage.show();
@@ -31,8 +32,10 @@ public class HelloApplication extends Application {
             Scene scene2 = new Scene(root, 600, 450);
             scene2.getStylesheets().addAll(this.getClass().getResource("demo.css").toExternalForm());
 
+
             /// /////////////aici se face un if sau case in functie de shift apelam pentru alta imagine
             changeBackground(scene2, "blue");
+
 
             primaryStage.setScene(scene2);
             //pentru setare minim si maxim

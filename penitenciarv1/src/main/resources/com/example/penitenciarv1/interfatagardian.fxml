@@ -46,13 +46,11 @@
          <children>
             <AnchorPane>
                <children>
-                  <MenuBar prefHeight="28.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-1500.0" AnchorPane.topAnchor="0.0" >
+
+                  <MenuBar prefHeight="28.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-150.0" AnchorPane.topAnchor="0.0">
                      <menus>
-                        <Menu mnemonicParsing="false" text="Detalii deținuți în funcție de tură">
-                           <items>
-                              <MenuItem mnemonicParsing="false" text="Delete" />
-                           </items>
-                        </Menu>
+                        <Menu mnemonicParsing="false" text="Detalii deținuți în funcție de tură" />
+
                         <Menu mnemonicParsing="false" text="Colegi">
                            <items>
                               <MenuItem mnemonicParsing="false" text="About" />
@@ -80,11 +78,13 @@
       </VBox>
       <AnchorPane layoutX="-1.0" layoutY="28.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="1604.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.0">
          <children>
+
             <TextField alignment="CENTER_RIGHT" text="Detalii gardian -numele username"
 
                        AnchorPane.rightAnchor="10.0"
                        AnchorPane.topAnchor="10.0"
                        AnchorPane.bottomAnchor="10.0">
+
                <cursor>
                   <Cursor fx:constant="MOVE" />
                </cursor>
