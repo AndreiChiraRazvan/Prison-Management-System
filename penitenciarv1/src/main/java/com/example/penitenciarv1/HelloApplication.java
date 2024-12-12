@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -14,12 +15,24 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
+
+
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("interfatagardian.fxml"));
             Parent root = fxmlLoader.load();
 
-            primaryStage.setTitle("Login");
-            Scene scene = new Scene(root);
-            primaryStage.setScene(scene);
+            primaryStage.setTitle("Gardian-Meniu principal");
+//            Scene scene = new Scene(root);
+//            primaryStage.setScene(scene);
+//            primaryStage.show();
+//          StackPane root2 = new StackPane();
+            root.setId("pane");
+            Scene scene2 = new Scene(root, 600, 450);
+            scene2.getStylesheets().addAll(this.getClass().getResource("demo.css").toExternalForm());
+            primaryStage.setScene(scene2);
+            //pentru setare minim si maxim
+            primaryStage.setMinWidth(500);
+            primaryStage.setMinHeight(500);
+
             primaryStage.show();
 
         } catch (Exception e) {
