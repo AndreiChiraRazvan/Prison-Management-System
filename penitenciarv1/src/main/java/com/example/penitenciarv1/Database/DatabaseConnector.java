@@ -67,12 +67,14 @@ public class DatabaseConnector {
             }
 
             User newUser = new User();
-            callableStatement.getResultSet().next();
-            newUser.setId(callableStatement.getResultSet().getInt(1));
-            System.out.println(newUser.getId());
-            newUser.setAccessRights(callableStatement.getResultSet().getInt(4));
-            newUser.printUser();
-            return newUser;
+            if (callableStatement.getResultSet().next()) {
+                newUser.setId(callableStatement.getResultSet().getInt(1));
+                System.out.println(newUser.getId());
+                newUser.setAccessRights(callableStatement.getResultSet().getInt(4));
+                newUser.printUser();
+                return newUser;
+            }
+            return null;
 
         } catch (Exception e) {
             e.printStackTrace();
