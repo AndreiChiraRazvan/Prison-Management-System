@@ -13,13 +13,13 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-public class HelloApplication extends Application {
+public class Interfatagardian extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
 
 
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("interfatagardian.fxml"));
             Parent root = fxmlLoader.load();
 
             primaryStage.setTitle("Gardian-Meniu principal");
@@ -32,7 +32,7 @@ public class HelloApplication extends Application {
             scene2.getStylesheets().addAll(this.getClass().getResource("demo.css").toExternalForm());
 
             /// /////////////aici se face un if sau case in functie de shift apelam pentru alta imagine
-            changeBackground(scene2, "blue");
+            changeBackground(scene2, "cazulcorpD");
 
             primaryStage.setScene(scene2);
             //pentru setare minim si maxim
@@ -46,12 +46,13 @@ public class HelloApplication extends Application {
             System.err.println("Error loading FXML file. Ensure the file path is correct and the file exists.");
         }
     }
-    private void changeBackground(Scene scene, String color) {
+    private void changeBackground(Scene scene, String imageName) {
+        String imagePath = HelloApplication.class.getResource("images/" + imageName + ".png").toExternalForm();
         scene.getRoot().setStyle(String.format(
-                "-fx-background-color: %s;" +
+                "-fx-background-image: url('%s'); " +
                         "-fx-background-position: center; " +
                         "-fx-background-repeat: no-repeat;",
-                color
+                imagePath
         ));
     }
 

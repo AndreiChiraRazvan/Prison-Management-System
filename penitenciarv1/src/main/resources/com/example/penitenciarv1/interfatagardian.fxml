@@ -46,7 +46,7 @@
          <children>
             <AnchorPane>
                <children>
-                  <MenuBar prefHeight="28.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-150.0" AnchorPane.topAnchor="0.0" >
+                  <MenuBar prefHeight="28.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-1500.0" AnchorPane.topAnchor="0.0" >
                      <menus>
                         <Menu mnemonicParsing="false" text="Detalii deținuți în funcție de tură">
                            <items>
