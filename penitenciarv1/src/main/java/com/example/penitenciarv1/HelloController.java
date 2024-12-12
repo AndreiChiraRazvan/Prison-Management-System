@@ -16,8 +16,7 @@ import javafx.stage.Stage;
 
 public class HelloController {
 
-    private String secretPw1 = "sUp3RsTroNGp4ssW0rd";
-    private String username1 = "user";
+
     private DatabaseConnector databaseConnector = new DatabaseConnector();
     @FXML
     private TextField usr_txt;
