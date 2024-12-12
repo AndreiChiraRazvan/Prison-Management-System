@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class ShowInmatesInShift {
     @FXML
-    public void showDetailsInmates(ActionEvent e) throws IOException{
+    public void showDetailsInmates(ActionEvent ae) throws IOException{
         System.out.println("Inmates in Shift");
     }
 }

@@ -29,22 +29,24 @@ public class HelloController {
         String password = pw_txt.getText();
         System.out.println(username + password);
         User newUser = databaseConnector.checkAndReturnUser(username, password);
-        if(newUser != null) {
+        if (newUser != null) {
             System.out.println("Succesful login");
             Stage stage = (Stage) usr_txt.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("interfatagardian.fxml"));
             stage.setScene(new Scene(root));
             stage.centerOnScreen();
             stage.setTitle("Sapply - Administrator");
-        }else {
+            stage.setTitle("Sapply - Administrator");
+        } else {
             System.out.println("Wrong username or password");
         }
     }
+
     @FXML
-    public void onEnter(ActionEvent ae){
+    public void onEnter(ActionEvent ae) {
         try {
             login_btn_onClick(ae);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Problem when introducing your data!");
         }
