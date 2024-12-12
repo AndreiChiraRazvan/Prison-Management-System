@@ -21,6 +21,7 @@ public class HelloApplication extends Application {
 //            URL fxmlUrl = fxmlFile.toURI().toURL();
             DatabaseConnector databaseConnector = new DatabaseConnector();
             databaseConnector.callRandomProcedure();
+
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
             Parent root = fxmlLoader.load();
 
