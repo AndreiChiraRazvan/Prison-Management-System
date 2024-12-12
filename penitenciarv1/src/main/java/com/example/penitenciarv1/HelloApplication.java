@@ -24,25 +24,12 @@ public class HelloApplication extends Application {
             Parent root = fxmlLoader.load();
 
             primaryStage.setTitle("LogIn");
-//            Scene scene = new Scene(root);
-//            primaryStage.setScene(scene);
-//            primaryStage.show();
-//          StackPane root2 = new StackPane();
-            root.setId("pane");
-            Scene scene2 = new Scene(root, 600, 450);
-            scene2.getStylesheets().addAll(this.getClass().getResource("demo.css").toExternalForm());
-
-
-            /// /////////////aici se face un if sau case in functie de shift apelam pentru alta imagine
-            changeBackground(scene2, "blue");
-
-
-            primaryStage.setScene(scene2);
-            //pentru setare minim si maxim
-            primaryStage.setMinWidth(500);
-            primaryStage.setMinHeight(500);
-
+            Scene scene = new Scene(root);
+            primaryStage.setScene(scene);
             primaryStage.show();
+            StackPane root2 = new StackPane();
+            root.setId("pane");
+
 
         } catch (Exception e) {
             e.printStackTrace();
