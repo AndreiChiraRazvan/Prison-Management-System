@@ -1,5 +1,6 @@
 package com.example.penitenciarv1;
 
+import com.example.penitenciarv1.Database.DatabaseConnector;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,7 +18,14 @@ public class HelloApplication extends Application {
         try {
 
 
+
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("interfatagardian.fxml"));
+
+            // Use an absolute path to load the FXML file
+//            String fxmlPath = "./hello-view.fxml";
+//            File fxmlFile = new File(fxmlPath);
+//            URL fxmlUrl = fxmlFile.toURI().toURL();
+          
             Parent root = fxmlLoader.load();
 
             primaryStage.setTitle("Gardian-Meniu principal");
