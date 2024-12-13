@@ -46,6 +46,7 @@ public class HelloController {
 
 
             //scene2.getStylesheets().addAll(this.getClass().getResource("demo.css").toExternalForm());
+
             Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
             stage.close();
 
@@ -65,14 +66,17 @@ public class HelloController {
 
            // newStage.show();
         } else {
+
             Stage failedLogin = (Stage) usr_txt.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("failed_login.fxml"));
             failedLogin.setScene(new Scene(root));
             failedLogin.setTitle("Failed_Login");
             failedLogin.centerOnScreen();
+
             System.out.println("Wrong username or password");
         }
     }
+
 
 
     @FXML

@@ -31,7 +31,9 @@ public class Interfatadetinut extends Application {
             Scene scene2 = new Scene(root, 600, 450);
             scene2.getStylesheets().addAll(this.getClass().getResource("demo.css").toExternalForm());
 
+
             changeBackground(scene2, "pozadetinut");
+
 
             primaryStage.setScene(scene2);
             //pentru setare minim si maxim
