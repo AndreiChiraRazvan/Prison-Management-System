@@ -49,10 +49,12 @@ public class Interfatagardian extends Application {
     static public void changeBackground(Scene scene, String imageName) {
         String imagePath = HelloApplication.class.getResource("images/" + imageName + ".png").toExternalForm();
         scene.getRoot().setStyle(String.format(
-                "-fx-background-image: url('%s'); " +
+
+                        "-fx-background-image: url('%s'); " +
                         "-fx-background-position: center; " +
                         "-fx-background-repeat: no-repeat;",
-                imagePath
+                        imagePath
+
         ));
     }
 
