@@ -1,6 +1,7 @@
 target/
 !**/src/main/**/target/
 !**/src/test/**/target/
+!**/src/main/**/module-info.java
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

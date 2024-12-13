@@ -5,6 +5,8 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -15,27 +17,36 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            // Use an absolute path to load the FXML file
-//            String fxmlPath = "./hello-view.fxml";
-//            File fxmlFile = new File(fxmlPath);
-//            URL fxmlUrl = fxmlFile.toURI().toURL();
-            DatabaseConnector databaseConnector = new DatabaseConnector();
-            databaseConnector.callRandomProcedure();
+
+
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+
             Parent root = fxmlLoader.load();
 
-            primaryStage.setTitle("Login");
+            primaryStage.setTitle("LogIn");
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
             primaryStage.show();
+            StackPane root2 = new StackPane();
+            root.setId("pane");
+
 
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error loading FXML file. Ensure the file path is correct and the file exists.");
         }
     }
+    private void changeBackground(Scene scene, String color) {
+        scene.getRoot().setStyle(String.format(
+                "-fx-background-color: %s;" +
+                        "-fx-background-position: center; " +
+                        "-fx-background-repeat: no-repeat;",
+                color
+        ));
+    }
 
     public static void main(String[] args) {
         launch(args);
     }
+
 }

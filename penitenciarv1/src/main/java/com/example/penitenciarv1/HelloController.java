@@ -2,6 +2,9 @@ package com.example.penitenciarv1;
 
 
 import java.io.IOException;
+
+import com.example.penitenciarv1.Database.DatabaseConnector;
+import com.example.penitenciarv1.Entities.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,11 +15,12 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import static com.example.penitenciarv1.Interfatagardian.changeBackground;
+
 public class HelloController {
 
-    private String secretPw1 = "sUp3RsTroNGp4ssW0rd";
-    private String username1 = "user";
 
+    private DatabaseConnector databaseConnector = new DatabaseConnector();
     @FXML
     private TextField usr_txt;
     @FXML
@@ -27,14 +31,40 @@ public class HelloController {
         String username = usr_txt.getText();
         String password = pw_txt.getText();
         System.out.println(username + password);
-        if(username.equals(username1) && password.equals(secretPw1)) {
-            System.out.println("Succesful login");
-            Stage stage = (Stage) usr_txt.getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("interfatagardian.fxml"));
-            stage.setScene(new Scene(root));
-            stage.centerOnScreen();
-            stage.setTitle("Sapply - Administrator");
-        }else {
+
+        User newUser = databaseConnector.checkAndReturnUser(username, password);
+        if (newUser != null) {
+//            System.out.println("Succesful login");
+//            Stage stage = (Stage) usr_txt.getScene().getWindow();
+//            Parent root = FXMLLoader.load(getClass().getResource("interfatagardian.fxml"));
+//            stage.setScene(new Scene(root));
+//            stage.centerOnScreen();
+//            stage.setTitle("Sapply - Administrator");
+            //Parent root = FXMLLoader.load(getClass().getResource("interfatagardian.fxml"));
+//
+            // Scene scene2 = new Scene(root, 600, 450);
+
+
+            //scene2.getStylesheets().addAll(this.getClass().getResource("demo.css").toExternalForm());
+            Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
+            stage.close();
+
+            Stage newStage = new Stage();
+            Interfatagardian newInterfatagardian = new Interfatagardian();
+            newInterfatagardian.start(newStage);
+//
+//            /// /////////////aici se face un if sau case in functie de shift apelam pentru alta imagine
+            //Interfatagardian.changeBackground(scene2, "blue");
+
+//            System.out.println("inainte");
+//            Stage newStage = new Stage();
+           // newStage.setScene(scene2);
+            //pentru setare minim si maxim
+//            primaryStage.setMinWidth(500);
+//            primaryStage.setMinHeight(500);
+
+           // newStage.show();
+        } else {
             Stage failedLogin = (Stage) usr_txt.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("failed_login.fxml"));
             failedLogin.setScene(new Scene(root));
@@ -43,6 +73,7 @@ public class HelloController {
             System.out.println("Wrong username or password");
         }
     }
+
 
     @FXML
     public void failed_login_btn_onClick(ActionEvent e) throws IOException {
@@ -54,11 +85,12 @@ public class HelloController {
         stage.close();
     }
 
+
     @FXML
-    public void onEnter(ActionEvent ae){
+    public void onEnter(ActionEvent ae) {
         try {
             login_btn_onClick(ae);
-        }catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Problem when introducing your data!");
         }
