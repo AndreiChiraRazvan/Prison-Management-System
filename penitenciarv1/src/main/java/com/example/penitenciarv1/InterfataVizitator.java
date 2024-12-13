@@ -13,16 +13,16 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-public class Interfatadetinut extends Application {
+public class InterfataVizitator extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
 
 
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("interfatadetinut.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("interfatavizitator.fxml"));
             Parent root = fxmlLoader.load();
 
-            primaryStage.setTitle("Detinut-Meniu");
+            primaryStage.setTitle("Vizitator -Meniu");
 //            Scene scene = new Scene(root);
 //            primaryStage.setScene(scene);
 //            primaryStage.show();
@@ -31,7 +31,7 @@ public class Interfatadetinut extends Application {
             Scene scene2 = new Scene(root, 600, 450);
             scene2.getStylesheets().addAll(this.getClass().getResource("demo.css").toExternalForm());
 
-            changeBackground(scene2, "pozadetinut");
+            changeBackground(scene2, "pozavizitator");
 
             primaryStage.setScene(scene2);
             //pentru setare minim si maxim
