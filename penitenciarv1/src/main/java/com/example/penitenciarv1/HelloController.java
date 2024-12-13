@@ -8,6 +8,7 @@ import com.example.penitenciarv1.Entities.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
@@ -44,6 +45,9 @@ public class HelloController {
 
 
             //scene2.getStylesheets().addAll(this.getClass().getResource("demo.css").toExternalForm());
+            Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
+            stage.close();
+
             Stage newStage = new Stage();
             Interfatagardian newInterfatagardian = new Interfatagardian();
             newInterfatagardian.start(newStage);
