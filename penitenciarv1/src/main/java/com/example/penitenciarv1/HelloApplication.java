@@ -24,11 +24,13 @@ public class HelloApplication extends Application {
             Parent root = fxmlLoader.load();
 
             primaryStage.setTitle("LogIn");
+
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
             primaryStage.show();
             StackPane root2 = new StackPane();
             root.setId("pane");
+
 
 
         } catch (Exception e) {
