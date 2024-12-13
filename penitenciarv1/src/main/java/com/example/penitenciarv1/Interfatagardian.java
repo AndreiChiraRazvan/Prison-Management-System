@@ -46,13 +46,16 @@ public class Interfatagardian extends Application {
             System.err.println("Error loading FXML file. Ensure the file path is correct and the file exists.");
         }
     }
-    private void changeBackground(Scene scene, String imageName) {
+
+    static public void changeBackground(Scene scene, String imageName) {
         String imagePath = HelloApplication.class.getResource("images/" + imageName + ".png").toExternalForm();
         scene.getRoot().setStyle(String.format(
-                "-fx-background-image: url('%s'); " +
+
+                        "-fx-background-image: url('%s'); " +
                         "-fx-background-position: center; " +
                         "-fx-background-repeat: no-repeat;",
-                imagePath
+                        imagePath
+
         ));
     }
 
