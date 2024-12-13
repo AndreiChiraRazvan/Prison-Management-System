@@ -31,6 +31,7 @@ public class HelloController {
         String username = usr_txt.getText();
         String password = pw_txt.getText();
         System.out.println(username + password);
+
         User newUser = databaseConnector.checkAndReturnUser(username, password);
         if (newUser != null) {
 //            System.out.println("Succesful login");
@@ -64,9 +65,26 @@ public class HelloController {
 
            // newStage.show();
         } else {
+            Stage failedLogin = (Stage) usr_txt.getScene().getWindow();
+            Parent root = FXMLLoader.load(getClass().getResource("failed_login.fxml"));
+            failedLogin.setScene(new Scene(root));
+            failedLogin.setTitle("Failed_Login");
+            failedLogin.centerOnScreen();
             System.out.println("Wrong username or password");
         }
     }
+
+
+    @FXML
+    public void failed_login_btn_onClick(ActionEvent e) throws IOException {
+        Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
+        Stage returnToLogin = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource(("hello-view.fxml")));
+        returnToLogin.setScene(new Scene(root));
+        returnToLogin.show();
+        stage.close();
+    }
+
 
     @FXML
     public void onEnter(ActionEvent ae) {
