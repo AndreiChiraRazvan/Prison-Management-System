@@ -41,8 +41,7 @@ public class HelloApplication extends Application {
                 "-fx-background-color: %s;" +
                         "-fx-background-position: center; " +
                         "-fx-background-repeat: no-repeat;",
-                color
-        ));
+                color));
     }
 
     public static void main(String[] args) {
