@@ -22,7 +22,8 @@ public class InterfataVizitator extends Application {
 //          StackPane root2 = new StackPane();
             root.setId("pane");
             Scene scene2 = new Scene(root, 600, 450);
-            scene2.getStylesheets().addAll(this.getClass().getResource("demo.css").toExternalForm());
+            //HelloApplication.class.getResource("demo.css");
+            scene2.getStylesheets().addAll(HelloApplication.class.getResource("demo.css").toExternalForm());
 
             changeBackground(scene2, "pozavizitator");
 
