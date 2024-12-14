@@ -49,10 +49,23 @@ public class HelloController {
 
             Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
             stage.close();
-
             Stage newStage = new Stage();
-            Interfatagardian newInterfatagardian = new Interfatagardian();
-            newInterfatagardian.start(newStage);
+            if (newUser.getAccessRights() == 1)
+            {
+
+                Interfatagardian newInterfatagardian = new Interfatagardian();
+                newInterfatagardian.start(newStage);
+            }
+            if (newUser.getAccessRights() == 2)
+            {
+                Interfatadetinut newInterfatadetinut = new Interfatadetinut();
+                newInterfatadetinut.start(newStage);
+            };
+            if (newUser.getAccessRights() == 3){
+                InterfataVizitator newInterfataVizitator = new InterfataVizitator();
+                newInterfataVizitator.start(newStage);
+            }
+
 //
 //            /// /////////////aici se face un if sau case in functie de shift apelam pentru alta imagine
             //Interfatagardian.changeBackground(scene2, "blue");
