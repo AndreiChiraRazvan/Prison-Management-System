@@ -15,8 +15,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import static com.example.penitenciarv1.Interfatagardian.changeBackground;
-
 public class HelloController {
 
 
@@ -53,13 +51,13 @@ public class HelloController {
             if (newUser.getAccessRights() == 1)
             {
 
-                Interfatagardian newInterfatagardian = new Interfatagardian();
-                newInterfatagardian.start(newStage);
+                InterfataGardian newInterfataGardian = new InterfataGardian();
+                newInterfataGardian.start(newStage);
             }
             if (newUser.getAccessRights() == 2)
             {
-                Interfatadetinut newInterfatadetinut = new Interfatadetinut();
-                newInterfatadetinut.start(newStage);
+                InterfataDetinut newInterfataDetinut = new InterfataDetinut();
+                newInterfataDetinut.start(newStage);
             };
             if (newUser.getAccessRights() == 3){
                 InterfataVizitator newInterfataVizitator = new InterfataVizitator();

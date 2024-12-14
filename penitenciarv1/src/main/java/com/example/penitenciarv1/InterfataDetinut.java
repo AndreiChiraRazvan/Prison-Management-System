@@ -6,16 +6,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Interfatagardian extends Application {
+public class InterfataDetinut extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
 
 
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("interfatagardian.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("interfatadetinut.fxml"));
             Parent root = fxmlLoader.load();
 
-            primaryStage.setTitle("Gardian-Meniu principal");
+            primaryStage.setTitle("Detinut-Meniu");
 //            Scene scene = new Scene(root);
 //            primaryStage.setScene(scene);
 //            primaryStage.show();
@@ -24,8 +24,9 @@ public class Interfatagardian extends Application {
             Scene scene2 = new Scene(root, 600, 450);
             scene2.getStylesheets().addAll(this.getClass().getResource("demo.css").toExternalForm());
 
-            /// /////////////aici se face un if sau case in functie de shift apelam pentru alta imagine
-            changeBackground(scene2, "cazulcorpD");
+
+            changeBackground(scene2, "pozadetinut");
+
 
             primaryStage.setScene(scene2);
             //pentru setare minim si maxim
@@ -39,16 +40,13 @@ public class Interfatagardian extends Application {
             System.err.println("Error loading FXML file. Ensure the file path is correct and the file exists.");
         }
     }
-
-    static public void changeBackground(Scene scene, String imageName) {
+    private void changeBackground(Scene scene, String imageName) {
         String imagePath = HelloApplication.class.getResource("images/" + imageName + ".png").toExternalForm();
         scene.getRoot().setStyle(String.format(
-
-                        "-fx-background-image: url('%s'); " +
+                "-fx-background-image: url('%s'); " +
                         "-fx-background-position: center; " +
                         "-fx-background-repeat: no-repeat;",
-                        imagePath
-
+                imagePath
         ));
     }
 
