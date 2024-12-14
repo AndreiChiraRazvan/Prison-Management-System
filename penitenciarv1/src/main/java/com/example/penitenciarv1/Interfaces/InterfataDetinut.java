@@ -1,21 +1,22 @@
-package com.example.penitenciarv1;
+package com.example.penitenciarv1.Interfaces;
 
+import com.example.penitenciarv1.HelloApplication;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class InterfataGardian extends Application {
+public class InterfataDetinut extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("Interfete/interfatagardian.fxml"));
+            fxmlLoader.setLocation(getClass().getResource("interfatadetinut.fxml"));
 
             Parent root = fxmlLoader.load();
 
-            primaryStage.setTitle("Gardian-Meniu principal");
+            primaryStage.setTitle("Detinut - Meniu principal");
 //            Scene scene = new Scene(root);
 //            primaryStage.setScene(scene);
 //            primaryStage.show();
@@ -25,7 +26,7 @@ public class InterfataGardian extends Application {
             scene2.getStylesheets().addAll(this.getClass().getResource("demo.css").toExternalForm());
 
             /// /////////////aici se face un if sau case in functie de shift apelam pentru alta imagine
-            changeBackground(scene2, "cazulcorpD");
+            changeBackground(scene2, "pozadetinut");
 
             primaryStage.setScene(scene2);
             //pentru setare minim si maxim
@@ -44,10 +45,10 @@ public class InterfataGardian extends Application {
         String imagePath = HelloApplication.class.getResource("images/" + imageName + ".png").toExternalForm();
         scene.getRoot().setStyle(String.format(
 
-                        "-fx-background-image: url('%s'); " +
+                "-fx-background-image: url('%s'); " +
                         "-fx-background-position: center; " +
                         "-fx-background-repeat: no-repeat;",
-                        imagePath
+                imagePath
 
         ));
     }

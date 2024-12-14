@@ -1,6 +1,5 @@
 package com.example.penitenciarv1;
 
-import com.example.penitenciarv1.Database.DatabaseConnector;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,10 +7,6 @@ import javafx.scene.Scene;
 
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 
 public class HelloApplication extends Application {
     @Override

@@ -1,5 +1,6 @@
-package com.example.penitenciarv1;
+package com.example.penitenciarv1.Interfaces;
 
+import com.example.penitenciarv1.HelloApplication;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,8 +12,8 @@ public class InterfataVizitator extends Application {
     public void start(Stage primaryStage) {
         try {
 
-
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Interfete/interfatavizitator.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("interfatavizitator.fxml"));
             Parent root = fxmlLoader.load();
 
             primaryStage.setTitle("Vizitator -Meniu");
@@ -23,8 +24,7 @@ public class InterfataVizitator extends Application {
             root.setId("pane");
             Scene scene2 = new Scene(root, 600, 450);
             //HelloApplication.class.getResource("demo.css");
-            scene2.getStylesheets().addAll(HelloApplication.class.getResource("demo.css").toExternalForm());
-
+            scene2.getStylesheets().addAll(this.getClass().getResource("demo.css").toExternalForm());
             changeBackground(scene2, "pozavizitator");
 
             primaryStage.setScene(scene2);

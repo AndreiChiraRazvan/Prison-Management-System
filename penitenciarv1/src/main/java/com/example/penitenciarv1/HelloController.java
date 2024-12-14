@@ -5,6 +5,9 @@ import java.io.IOException;
 
 import com.example.penitenciarv1.Database.DatabaseConnector;
 import com.example.penitenciarv1.Entities.User;
+import com.example.penitenciarv1.Interfaces.InterfataDetinut;
+import com.example.penitenciarv1.Interfaces.InterfataGardian;
+import com.example.penitenciarv1.Interfaces.InterfataVizitator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

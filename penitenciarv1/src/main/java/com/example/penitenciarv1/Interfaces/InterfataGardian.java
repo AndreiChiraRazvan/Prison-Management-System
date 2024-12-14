@@ -1,21 +1,22 @@
-package com.example.penitenciarv1;
+package com.example.penitenciarv1.Interfaces;
 
+import com.example.penitenciarv1.HelloApplication;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class InterfataDetinut extends Application {
+public class InterfataGardian extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("interfatagardian.fxml"));
 
-
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Interfete/interfatadetinut.fxml"));
             Parent root = fxmlLoader.load();
 
-            primaryStage.setTitle("Detinut-Meniu");
+            primaryStage.setTitle("Gardian-Meniu principal");
 //            Scene scene = new Scene(root);
 //            primaryStage.setScene(scene);
 //            primaryStage.show();
@@ -24,9 +25,8 @@ public class InterfataDetinut extends Application {
             Scene scene2 = new Scene(root, 600, 450);
             scene2.getStylesheets().addAll(this.getClass().getResource("demo.css").toExternalForm());
 
-
-            changeBackground(scene2, "pozadetinut");
-
+            /// /////////////aici se face un if sau case in functie de shift apelam pentru alta imagine
+            changeBackground(scene2, "cazulcorpD");
 
             primaryStage.setScene(scene2);
             //pentru setare minim si maxim
@@ -40,13 +40,16 @@ public class InterfataDetinut extends Application {
             System.err.println("Error loading FXML file. Ensure the file path is correct and the file exists.");
         }
     }
-    private void changeBackground(Scene scene, String imageName) {
+
+    static public void changeBackground(Scene scene, String imageName) {
         String imagePath = HelloApplication.class.getResource("images/" + imageName + ".png").toExternalForm();
         scene.getRoot().setStyle(String.format(
-                "-fx-background-image: url('%s'); " +
+
+                        "-fx-background-image: url('%s'); " +
                         "-fx-background-position: center; " +
                         "-fx-background-repeat: no-repeat;",
-                imagePath
+                        imagePath
+
         ));
     }
 
