@@ -48,6 +48,9 @@ public class HelloController {
             Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
             stage.close();
             Stage newStage = new Stage();
+            if(newUser.getAccessRights() == 0){
+                ;
+            }
             if (newUser.getAccessRights() == 1)
             {
 

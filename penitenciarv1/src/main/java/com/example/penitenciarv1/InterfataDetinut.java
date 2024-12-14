@@ -12,7 +12,7 @@ public class InterfataDetinut extends Application {
         try {
 
 
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("interfatadetinut.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Interfete/interfatadetinut.fxml"));
             Parent root = fxmlLoader.load();
 
             primaryStage.setTitle("Detinut-Meniu");

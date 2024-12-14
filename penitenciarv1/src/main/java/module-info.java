@@ -16,5 +16,7 @@ module com.example.penitenciarv1 {
     exports com.example.penitenciarv1;
     exports com.example.penitenciarv1.Entities;
     opens com.example.penitenciarv1.Entities to javafx.fxml;
+    exports com.example.penitenciarv1.Interfaces;
+    opens com.example.penitenciarv1.Interfaces to javafx.fxml;
 
 }

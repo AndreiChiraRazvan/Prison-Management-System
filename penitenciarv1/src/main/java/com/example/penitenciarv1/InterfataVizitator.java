@@ -12,7 +12,7 @@ public class InterfataVizitator extends Application {
         try {
 
 
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("interfatavizitator.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Interfete/interfatavizitator.fxml"));
             Parent root = fxmlLoader.load();
 
             primaryStage.setTitle("Vizitator -Meniu");

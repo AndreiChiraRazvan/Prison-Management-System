@@ -10,9 +10,9 @@ public class InterfataGardian extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("Interfete/interfatagardian.fxml"));
 
-
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("interfatagardian.fxml"));
             Parent root = fxmlLoader.load();
 
             primaryStage.setTitle("Gardian-Meniu principal");
