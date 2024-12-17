@@ -1,10 +1,10 @@
 package com.example.penitenciarv1.Database;
 
+import com.example.penitenciarv1.DynamicScalingAppIntGardianDetinut;
 import com.example.penitenciarv1.Entities.User;
+import javafx.scene.control.TreeItem;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.*;
 
 public class DatabaseConnector {
 
@@ -83,4 +83,5 @@ public class DatabaseConnector {
         }
 
     }
+
 }
