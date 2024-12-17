@@ -31,6 +31,7 @@ public class HelloApplication extends Application {
             System.err.println("Error loading FXML file. Ensure the file path is correct and the file exists.");
         }
     }
+
     private void changeBackground(Scene scene, String color) {
         scene.getRoot().setStyle(String.format(
                 "-fx-background-color: %s;" +

@@ -51,11 +51,25 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
             this.profesie = new SimpleStringProperty(profession);
         }
 
-        public StringProperty idProperty() { return id; }
-        public StringProperty nameProperty() { return nume; }
-        public StringProperty sentenceProperty() { return sentinta; }
-        public StringProperty cellProperty() { return celula; }
-        public StringProperty professionProperty() { return profesie; }
+        public StringProperty idProperty() {
+            return id;
+        }
+
+        public StringProperty nameProperty() {
+            return nume;
+        }
+
+        public StringProperty sentenceProperty() {
+            return sentinta;
+        }
+
+        public StringProperty cellProperty() {
+            return celula;
+        }
+
+        public StringProperty professionProperty() {
+            return profesie;
+        }
     }
 
     @Override
@@ -91,14 +105,14 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
         // Încărcare date din baza de date
         DatabaseConnector dbConnector = new DatabaseConnector();
         try (Statement statement = dbConnector.conn.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT id_detinut, nume, id_celula FROM Detinut");
+            ResultSet resultSet = statement.executeQuery("SELECT id_detinut, nume, fK_id_celula,profesie FROM Detinut");
 
             while (resultSet.next()) {
                 String id = resultSet.getString("id_detinut");
                 String name = resultSet.getString("nume");
                 String sentence = "Necunoscut";  // Valoare implicită
-                String cell = resultSet.getString("id_celula");
-                String profession = "Necunoscut"; // Valoare implicită
+                String cell = resultSet.getString("fk_id_celula");
+                String profession = resultSet.getString("profesie");; // Valoare implicită
 
                 TreeItem<Person> item = new TreeItem<>(new Person(id, name, sentence, cell, profession));
                 rootItem.getChildren().add(item);
