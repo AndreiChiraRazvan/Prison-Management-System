@@ -27,7 +27,7 @@ public class InterfataGardian extends Application {
             scene2.getStylesheets().addAll(this.getClass().getResource("demo.css").toExternalForm());
 
             /// /////////////aici se face un if sau case in functie de shift apelam pentru alta imagine
-            changeBackground(scene2, "cazulcorpD");
+            changeBackground(scene2, "cazulcorpB");
 
             primaryStage.setScene(scene2);
             //pentru setare minim si maxim
