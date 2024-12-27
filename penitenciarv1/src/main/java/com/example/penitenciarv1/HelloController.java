@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import com.example.penitenciarv1.Database.DatabaseConnector;
 import com.example.penitenciarv1.Entities.User;
+import com.example.penitenciarv1.Interfaces.GuardianInterface;
 import com.example.penitenciarv1.Interfaces.InterfataDetinut;
 import com.example.penitenciarv1.Interfaces.InterfataGardian;
 import com.example.penitenciarv1.Interfaces.InterfataVizitator;
@@ -35,18 +36,6 @@ public class HelloController {
 
         User newUser = databaseConnector.checkAndReturnUser(username, password);
         if (newUser != null) {
-//            System.out.println("Succesful login");
-//            Stage stage = (Stage) usr_txt.getScene().getWindow();
-//            Parent root = FXMLLoader.load(getClass().getResource("interfatagardian.fxml"));
-//            stage.setScene(new Scene(root));
-//            stage.centerOnScreen();
-//            stage.setTitle("Sapply - Administrator");
-            //Parent root = FXMLLoader.load(getClass().getResource("interfatagardian.fxml"));
-//
-            // Scene scene2 = new Scene(root, 600, 450);
-
-
-            //scene2.getStylesheets().addAll(this.getClass().getResource("demo.css").toExternalForm());
 
             Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
             stage.close();
@@ -56,8 +45,7 @@ public class HelloController {
             }
             if (newUser.getAccessRights() == 1)
             {
-
-                InterfataGardian newInterfataGardian = new InterfataGardian();
+                GuardianInterface newInterfataGardian = new GuardianInterface();
                 newInterfataGardian.start(newStage);
             }
             if (newUser.getAccessRights() == 2)
