@@ -1,5 +1,6 @@
 package com.example.penitenciarv1.Interfaces;
 
+import com.example.penitenciarv1.Database.DatabaseConnector;
 import com.example.penitenciarv1.HelloApplication;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -8,8 +9,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class InterfataVizitator extends Application {
-    @Override
-    public void start(Stage primaryStage) {
+
+    public void start(Stage primaryStage, DatabaseConnector databaseConnector) {
         try {
 
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -51,5 +52,10 @@ public class InterfataVizitator extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
     }
 }

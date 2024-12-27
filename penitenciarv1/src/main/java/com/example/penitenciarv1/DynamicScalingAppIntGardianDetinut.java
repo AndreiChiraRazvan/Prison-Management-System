@@ -1,5 +1,6 @@
 package com.example.penitenciarv1;
 
+import com.example.penitenciarv1.Database.DatabaseConnector;
 import com.example.penitenciarv1.Interfaces.GuardianInterface;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
@@ -19,23 +20,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.function.Function;
 
-class DatabaseConnector {
-    private String user = "root";
-    private String url = "jdbc:mysql://127.0.0.1:3306/penitenciar";
-    private String password = "Baze_De_Date-2224";
-    public Connection conn;
-
-    public DatabaseConnector() {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = java.sql.DriverManager.getConnection(url, user, password);
-            System.out.println("Connected to database");
-        } catch (Exception e) {
-            System.out.println("Database connection error");
-            e.printStackTrace();
-        }
-    }
-}
 
 public class DynamicScalingAppIntGardianDetinut extends Application {
 
@@ -162,7 +146,8 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
             while (resultSet.next()) {
                 String id = resultSet.getString("id_detinut");
                 String name = resultSet.getString("nume");
-                String sentence = "Necunoscut";  // Valoare implicită
+                // aici apeleaz un query care imi zice suma ramasa in datetime a sentintei
+                String sentence = String.valueOf(dbConnector.getRemainingSentence(Integer.valueOf(id)));  // Valoare implicită
                 String cell = resultSet.getString("fk_id_celula");
                 String profession = resultSet.getString("profesie");; // Valoare implicită
 
@@ -173,6 +158,7 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
             System.out.println("Numarul de elemente incarcare: " + rootItem.getChildren().size());
         } catch (Exception e) {
             System.out.println("Error");
+            System.out.println("Adauga Procedura din getRemainingSentence");
             e.printStackTrace();
         }
 

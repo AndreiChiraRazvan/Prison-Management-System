@@ -1,10 +1,13 @@
 package com.example.penitenciarv1.Database;
 
+import com.example.penitenciarv1.Entities.Inmates;
 import com.example.penitenciarv1.DynamicScalingAppIntGardianDetinut;
 import com.example.penitenciarv1.Entities.User;
+import eu.hansolo.toolbox.time.DateTimes;
 import javafx.scene.control.TreeItem;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DatabaseConnector {
 
@@ -83,5 +86,70 @@ public class DatabaseConnector {
         }
 
     }
+
+    public ArrayList<Inmates> getInmatesFromDatabase(){
+        ArrayList<Inmates> inmates = new ArrayList<>();
+        try{
+            String theQuery = "SELECT * FROM penitenciar.detinut ";
+
+            CallableStatement callableStatement = conn.prepareCall(theQuery);
+            callableStatement.execute();
+            System.out.println(callableStatement);
+            if (callableStatement.getResultSet() == null) {
+                System.out.println("No results found");
+                return null;
+            }
+            if (callableStatement.getResultSet().next()) {
+                Inmates newInmate = new Inmates();
+                newInmate.setid(callableStatement.getResultSet().getInt(1));
+                newInmate.setName(callableStatement.getResultSet().getString(2));
+                newInmate.setIdCelula(callableStatement.getResultSet().getString(3));
+                newInmate.setProfession(callableStatement.getResultSet().getString(5));
+                String remainedSentence = getRemainingSentence(newInmate.getid());
+                newInmate.setSentenceRemained(remainedSentence);
+            }
+            return inmates;
+
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+    public String getRemainingSentence(int idPrizioner) {
+        try{
+            String perioadaRamasa = "";
+            CallableStatement cs = conn.prepareCall("{call penitenciar.remaining_time_based_on_id_inmate( ?, ?)}");
+            // we calculated the total time
+            cs.setInt(1, idPrizioner);
+            cs.registerOutParameter(2, Types.VARCHAR);
+            cs.execute();
+            if(cs.getString(2) != null)
+            {
+                perioadaRamasa = cs.getString(2);
+                return perioadaRamasa;
+            }
+            System.out.println(perioadaRamasa);
+
+            return "Necunoscut";
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private ArrayList<DateTimes> getAllSentencesOfOneInmate() {
+        try{
+            ///  caut sentintele fiecariu detinut
+            ArrayList<DateTimes> sentences = new ArrayList<>();
+
+
+
+            return sentences;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }

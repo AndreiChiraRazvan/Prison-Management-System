@@ -1,5 +1,6 @@
 package com.example.penitenciarv1.Interfaces;
 
+import com.example.penitenciarv1.Database.DatabaseConnector;
 import com.example.penitenciarv1.HelloApplication;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -8,14 +9,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class InterfataGardian extends Application {
-    @Override
-    public void start(Stage primaryStage) {
+
+    public void start(Stage primaryStage, DatabaseConnector databaseConnector) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("interfatagardian.fxml"));
 
             Parent root = fxmlLoader.load();
-
+            databaseConnector.getInmatesFromDatabase();
             primaryStage.setTitle("Gardian-Meniu principal");
 //            Scene scene = new Scene(root);
 //            primaryStage.setScene(scene);
@@ -55,5 +56,10 @@ public class InterfataGardian extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
     }
 }

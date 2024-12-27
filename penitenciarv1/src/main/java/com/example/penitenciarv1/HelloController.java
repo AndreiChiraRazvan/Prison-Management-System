@@ -51,11 +51,11 @@ public class HelloController {
             if (newUser.getAccessRights() == 2)
             {
                 InterfataDetinut newInterfataDetinut = new InterfataDetinut();
-                newInterfataDetinut.start(newStage);
+                newInterfataDetinut.start(newStage, databaseConnector);
             };
             if (newUser.getAccessRights() == 3){
                 InterfataVizitator newInterfataVizitator = new InterfataVizitator();
-                newInterfataVizitator.start(newStage);
+                newInterfataVizitator.start(newStage, databaseConnector);
             }
 
 //
