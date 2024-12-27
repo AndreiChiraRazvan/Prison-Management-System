@@ -1,14 +1,17 @@
 package com.example.penitenciarv1;
 
+import com.example.penitenciarv1.Interfaces.GuardianInterface;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
@@ -74,6 +77,7 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        VBox mainBox = new VBox();
         AnchorPane root = new AnchorPane();
 
         // Configurare TreeTableView
@@ -83,24 +87,72 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
         treeTableView.setRoot(rootItem);
         treeTableView.setShowRoot(false);
 
+        Person dummyPerson = new Person("", "Dummy", "", "", "");
         // Coloane
         TreeTableColumn<Person, String> col1 = createColumn("ID", person -> person.idProperty());
         TreeTableColumn<Person, String> col2 = createColumn("Nume și Prenume", person -> person.nameProperty());
         TreeTableColumn<Person, String> col3 = createColumn("Sentința", person -> person.sentenceProperty());
         TreeTableColumn<Person, String> col4 = createColumn("Celula", person -> person.cellProperty());
         TreeTableColumn<Person, String> col5 = createColumn("Profesia", person -> person.professionProperty());
+        TreeTableColumn<Person, String> col6 = new TreeTableColumn<>("Actions");
+        col6.setCellFactory(param -> new TreeTableCell<Person, String>() {
+            final Button addToSolitude = new Button("Add to Solitude");
+            final Button cancelVisit = new Button("Cancel Visit");
+            final Button addTask = new Button("Add Task");
+            final Button moveToAnotherCell = new Button("Move To Another Cell");
 
-        treeTableView.getColumns().addAll(col1, col2, col3, col4, col5);
+            // HBox ca sa tina mai multe butoane
+            final HBox buttonContainer = new HBox(10);  // Horizontal box with 10px spacing
+            {
+                buttonContainer.getChildren().addAll(addToSolitude, cancelVisit, addTask, moveToAnotherCell);
+                buttonContainer.setSpacing(5);  // Optional spacing between buttons
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                    setText(null);
+                } else {
+                    addToSolitude.setOnAction(event -> {
+                        Person person = getTreeTableRow().getItem();
+                        if (person != null) {
+                            System.out.println("Action for: " + person.nameProperty().get());
+                        }
+                    });
+                    setGraphic(addToSolitude);
+                    setText(null);
+
+                    cancelVisit.setOnAction(event -> {
+                        Person person = getTreeTableRow().getItem();
+                        if (person != null) {
+                            System.out.println("Action for: " + person.nameProperty().get());
+                        }
+                    });
+                    setGraphic(buttonContainer);
+                    setText(null);
+                }
+            }
+        });
+
+        treeTableView.getColumns().addAll(col1, col2, col3, col4, col5, col6);
 
         // Autosize: Listener pentru ajustarea automată a lățimii coloanelor
         treeTableView.widthProperty().addListener((obs, oldWidth, newWidth) -> {
             double totalWidth = newWidth.doubleValue();
             col1.setPrefWidth(totalWidth * 0.10);
-            col2.setPrefWidth(totalWidth * 0.30);
+            col2.setPrefWidth(totalWidth * 0.15);
             col3.setPrefWidth(totalWidth * 0.20);
-            col4.setPrefWidth(totalWidth * 0.20);
-            col5.setPrefWidth(totalWidth * 0.20);
+            col4.setPrefWidth(totalWidth * 0.10);
+            col5.setPrefWidth(totalWidth * 0.15);
+            col6.setPrefWidth(totalWidth * 0.30);
         });
+
+//        treeTableView.heightProperty().addListener((obs, oldHeight, newHeight) -> {
+//            double totalHeight = newHeight.doubleValue();
+//            treeTableView.setPrefHeight(totalHeight * 0.10);
+//        });
 
         // Încărcare date din baza de date
         DatabaseConnector dbConnector = new DatabaseConnector();
@@ -125,14 +177,25 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
         }
 
         // Layout
-        AnchorPane.setTopAnchor(treeTableView, 10.0);
-        AnchorPane.setLeftAnchor(treeTableView, 10.0);
-        AnchorPane.setRightAnchor(treeTableView, 10.0);
+        AnchorPane.setTopAnchor(treeTableView, 25.5);
+        AnchorPane.setLeftAnchor(treeTableView, 5.0);
+        AnchorPane.setRightAnchor(treeTableView, 5.0);
         AnchorPane.setBottomAnchor(treeTableView, 10.0);
-        root.getChildren().add(treeTableView);
+
+        Button goBack = new Button("Go Back");
+        goBack.setOnAction(event -> {
+            GuardianInterface gi = new GuardianInterface();
+            Stage newStage = new Stage();
+            primaryStage.close();
+            gi.start(newStage);
+        });
+        goBack.setAlignment(Pos.TOP_LEFT);
+        goBack.setPrefHeight(20);
+
+        root.getChildren().addAll(treeTableView, goBack);
 
         // Scenă
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 1400, 600);
         primaryStage.setTitle("Tabel cu Deținuți (Autosize)");
         primaryStage.setScene(scene);
         primaryStage.show();
