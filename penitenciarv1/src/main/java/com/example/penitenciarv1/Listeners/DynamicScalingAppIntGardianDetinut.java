@@ -1,4 +1,4 @@
-package com.example.penitenciarv1;
+package com.example.penitenciarv1.Listeners;
 
 import com.example.penitenciarv1.Database.DatabaseConnector;
 import com.example.penitenciarv1.Interfaces.GuardianInterface;
@@ -11,17 +11,23 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.function.Function;
 
 
 public class DynamicScalingAppIntGardianDetinut extends Application {
+
+    private int idUserGardian;
+
+    public DynamicScalingAppIntGardianDetinut() {
+
+    }
+    public DynamicScalingAppIntGardianDetinut(int idUserGardian) {
+        this.idUserGardian = idUserGardian;
+    }
 
     public static class Person {
         private final StringProperty id;
@@ -61,7 +67,6 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        VBox mainBox = new VBox();
         AnchorPane root = new AnchorPane();
 
         // Configurare TreeTableView
@@ -71,7 +76,6 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
         treeTableView.setRoot(rootItem);
         treeTableView.setShowRoot(false);
 
-        Person dummyPerson = new Person("", "Dummy", "", "", "");
         // Coloane
         TreeTableColumn<Person, String> col1 = createColumn("ID", person -> person.idProperty());
         TreeTableColumn<Person, String> col2 = createColumn("Nume și Prenume", person -> person.nameProperty());
@@ -133,10 +137,6 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
             col6.setPrefWidth(totalWidth * 0.30);
         });
 
-//        treeTableView.heightProperty().addListener((obs, oldHeight, newHeight) -> {
-//            double totalHeight = newHeight.doubleValue();
-//            treeTableView.setPrefHeight(totalHeight * 0.10);
-//        });
 
         // Încărcare date din baza de date
         DatabaseConnector dbConnector = new DatabaseConnector();
@@ -164,13 +164,13 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
 
         // Layout
         AnchorPane.setTopAnchor(treeTableView, 25.5);
-        AnchorPane.setLeftAnchor(treeTableView, 5.0);
-        AnchorPane.setRightAnchor(treeTableView, 5.0);
+        AnchorPane.setLeftAnchor(treeTableView, 10.0);
+        AnchorPane.setRightAnchor(treeTableView, 10.0);
         AnchorPane.setBottomAnchor(treeTableView, 10.0);
 
         Button goBack = new Button("Go Back");
         goBack.setOnAction(event -> {
-            GuardianInterface gi = new GuardianInterface();
+            GuardianInterface gi = new GuardianInterface(idUserGardian);
             Stage newStage = new Stage();
             primaryStage.close();
             gi.start(newStage);

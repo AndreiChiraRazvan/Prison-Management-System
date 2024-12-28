@@ -45,7 +45,7 @@ public class HelloController {
             }
             if (newUser.getAccessRights() == 1)
             {
-                GuardianInterface newInterfataGardian = new GuardianInterface();
+                GuardianInterface newInterfataGardian = new GuardianInterface(newUser.getId());
                 newInterfataGardian.start(newStage);
             }
             if (newUser.getAccessRights() == 2)

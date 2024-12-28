@@ -1,10 +1,10 @@
 package com.example.penitenciarv1.Database;
 
+import com.example.penitenciarv1.Entities.Guardian;
 import com.example.penitenciarv1.Entities.Inmates;
-import com.example.penitenciarv1.DynamicScalingAppIntGardianDetinut;
 import com.example.penitenciarv1.Entities.User;
 import eu.hansolo.toolbox.time.DateTimes;
-import javafx.scene.control.TreeItem;
+import javafx.beans.property.SimpleStringProperty;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -138,6 +138,54 @@ public class DatabaseConnector {
             throw new RuntimeException(e);
         }
     }
+
+    public ArrayList<Guardian> getGuardianColleagues(int idGuardian) {
+        ArrayList<Guardian> guardian = new ArrayList<>();
+        try{
+            CallableStatement cs = conn.prepareCall("{call penitenciar.GetColegiiGardianului(?)}");
+            cs.setInt(1, idGuardian);
+            boolean hasResults = cs.execute();
+            if(hasResults) {
+                //System.out.println("AASAS");
+                ResultSet rs = cs.getResultSet();
+
+                while (rs.next()) {
+                    System.out.println(1);
+                    Guardian newGuardian = new Guardian();
+                    newGuardian.setId(new SimpleStringProperty(cs.getResultSet().getString(1)));
+                    System.out.println(newGuardian.getId());
+                    newGuardian.setUsername(new SimpleStringProperty(cs.getResultSet().getString(2)));
+                    newGuardian.setFloor(new SimpleStringProperty(cs.getResultSet().getString(3)));
+                    newGuardian.setDetentionBlock(new SimpleStringProperty(cs.getResultSet().getString(4)));
+                    guardian.add(newGuardian);
+                }
+                rs.close();
+            }else
+                System.out.printf("No results found");
+
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        return guardian;
+    }
+
+    public int getGuardianId(int idGuardian) {
+        try{
+            System.out.println("calling a query that gives the guardian id based on the user id");
+            CallableStatement cs = conn.prepareCall("SELECT id FROM penitenciar.gardian WHERE fk_id_utilizator = ?");
+            cs.setInt(1, idGuardian);
+            cs.executeQuery();
+            if(cs.getResultSet().next()) {
+                return cs.getResultSet().getInt(1);
+            }else{
+                System.out.println("No results found in getGuardian");
+                return -1;
+            }
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
     private ArrayList<DateTimes> getAllSentencesOfOneInmate() {
         try{
             ///  caut sentintele fiecariu detinut

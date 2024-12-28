@@ -1,24 +1,27 @@
 package com.example.penitenciarv1.Interfaces;
 
-import com.example.penitenciarv1.DynamicScalingAppIntGardianDetinut;
+import com.example.penitenciarv1.Listeners.DynamicScalingAppIntGardianDetinut;
+import com.example.penitenciarv1.Listeners.DynamicScalingAppIntGardianColegiBloc;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class GuardianInterface extends Application {
+
+    private int idUserGardian;
+
+    public GuardianInterface() {
+
+    }
+    public GuardianInterface(int idGardian) {
+        this.idUserGardian = idGardian;
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -42,10 +45,8 @@ public class GuardianInterface extends Application {
         MenuItem substituteColeagues = new MenuItem("Substitute Coleagues");
         coleagues.getItems().add(substituteColeagues);
         Menu inmates = new Menu("Inmates");
-        MenuItem prisonersOnShift = new MenuItem("Prisoners on shift");
+        MenuItem prisonersOnShift = new MenuItem("Manage inmates");
         inmates.getItems().add(prisonersOnShift);
-        MenuItem addSolitaryRoom = new MenuItem("Add Prisoner to SolitaryRoom");
-        inmates.getItems().add(addSolitaryRoom);
 
         Menu account = new Menu("Account");
         menuBar.getMenus().addAll(coleagues, inmates, account);
@@ -55,25 +56,20 @@ public class GuardianInterface extends Application {
         AnchorPane.setRightAnchor(menuBar, 0.0);
         anchorPaneVbox1.getChildren().add(menuBar);
 
-
-        VBox pane1 = new VBox(20);
-        stackPane.getChildren().add(pane1);
-
-        VBox pane2 = new VBox(20);
-        Button switchToPane1 = new Button("Back to Pane 1");
-        switchToPane1.setAlignment(Pos.CENTER);
-        pane2.getChildren().add(switchToPane1);
-        stackPane.getChildren().add(pane2);
-
-        pane2.setVisible(false);
-
-
         //Go to prisoners list
         prisonersOnShift.setOnAction(e -> {
-            DynamicScalingAppIntGardianDetinut newInterfataPrisoners = new DynamicScalingAppIntGardianDetinut();
+            DynamicScalingAppIntGardianDetinut newInterfataPrisoners = new DynamicScalingAppIntGardianDetinut(idUserGardian);
             Stage newStage = new Stage();
             primaryStage.close();
             newInterfataPrisoners.start(newStage);
+        });
+
+        sameDetentionBlock.setOnAction(e -> {
+            DynamicScalingAppIntGardianColegiBloc newInterfataColegi =  new DynamicScalingAppIntGardianColegiBloc(idUserGardian);
+            System.out.println("guardian interfata" + idUserGardian);
+            Stage newStage = new Stage();
+            primaryStage.close();
+            newInterfataColegi.start(newStage);
         });
 
         root.getChildren().addAll(anchorPaneVbox1, stackPane);
