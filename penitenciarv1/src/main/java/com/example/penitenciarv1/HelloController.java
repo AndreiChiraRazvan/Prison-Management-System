@@ -5,10 +5,7 @@ import java.io.IOException;
 
 import com.example.penitenciarv1.Database.DatabaseConnector;
 import com.example.penitenciarv1.Entities.User;
-import com.example.penitenciarv1.Interfaces.GuardianInterface;
-import com.example.penitenciarv1.Interfaces.InterfataDetinut;
-import com.example.penitenciarv1.Interfaces.InterfataGardian;
-import com.example.penitenciarv1.Interfaces.InterfataVizitator;
+import com.example.penitenciarv1.Interfaces.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,6 +34,9 @@ public class HelloController {
         User newUser = databaseConnector.checkAndReturnUser(username, password);
         if (newUser != null) {
 
+            // set username ul în sesiune
+            Session.setCurrentUsername(username);
+
             Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
             stage.close();
             Stage newStage = new Stage();
@@ -50,8 +50,8 @@ public class HelloController {
             }
             if (newUser.getAccessRights() == 2)
             {
-                InterfataDetinut newInterfataDetinut = new InterfataDetinut();
-                newInterfataDetinut.start(newStage, databaseConnector);
+                PrisonerInterface newPrisonerInterface = new PrisonerInterface(newUser.getId());
+                newPrisonerInterface.start(newStage);
             };
             if (newUser.getAccessRights() == 3){
                 InterfataVizitator newInterfataVizitator = new InterfataVizitator();
