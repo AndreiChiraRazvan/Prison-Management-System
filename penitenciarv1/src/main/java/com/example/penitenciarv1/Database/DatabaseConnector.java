@@ -3,7 +3,7 @@ package com.example.penitenciarv1.Database;
 import com.example.penitenciarv1.Entities.Guardian;
 import com.example.penitenciarv1.Entities.Inmates;
 import com.example.penitenciarv1.Entities.User;
-import com.example.penitenciarv1.Listeners.DynamicScallingAppIntPrisoner;
+import com.example.penitenciarv1.Listeners.DynamicScallingAppIntPrisonerFutureTasks;
 import eu.hansolo.toolbox.time.DateTimes;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -187,8 +187,8 @@ public class DatabaseConnector {
             throw new RuntimeException(e);
         }
     }
-    public List<DynamicScallingAppIntPrisoner.Task> getFutureTasks(String detinutUsername) {
-        List<DynamicScallingAppIntPrisoner.Task> tasks = new ArrayList<>();
+    public List<DynamicScallingAppIntPrisonerFutureTasks.Task> getFutureTasks(String detinutUsername) {
+        List<DynamicScallingAppIntPrisonerFutureTasks.Task> tasks = new ArrayList<>();
         try {
             CallableStatement cs = conn.prepareCall("{CALL GetTaskuriViitoare(?)}");
             cs.setString(1, detinutUsername); // Setăm parametru de intrare
@@ -201,7 +201,7 @@ public class DatabaseConnector {
                 String startTime = rs.getString("Inceput");
                 String endTime = rs.getString("Sfarsit");
 
-                tasks.add(new DynamicScallingAppIntPrisoner.Task(idTask, description, difficulty, startTime, endTime));
+                tasks.add(new DynamicScallingAppIntPrisonerFutureTasks.Task(idTask, description, difficulty, startTime, endTime));
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error executing GetTaskuriViitoare procedure", e);

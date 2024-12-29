@@ -1,7 +1,8 @@
 package com.example.penitenciarv1.Interfaces;
 
 import com.example.penitenciarv1.HelloApplication;
-import com.example.penitenciarv1.Listeners.DynamicScallingAppIntPrisoner;
+import com.example.penitenciarv1.Listeners.DynamicScallingAppIntPrisonerFutureTasks;
+import com.example.penitenciarv1.Listeners.DynamicScallingAppIntPrisonerPastTask;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -127,13 +128,27 @@ public class PrisonerInterface extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Detinut Interface");
         primaryStage.show();
-        profile.setOnAction(e -> openProfileWindow(primaryStage,"Profile"));
-        sentenceRemaining.setOnAction(e -> openProfileWindow(primaryStage, "Sentence Remaining"));
-        currentTasks.setOnAction(e -> openProfileWindow(primaryStage, "Current"));
-        completedTasks.setOnAction(e -> openProfileWindow(primaryStage, "Completed"));
-        dailySchedule.setOnAction(e -> openProfileWindow(primaryStage, "Daily Schedule"));
-        visitSchedule.setOnAction(e -> openProfileWindow(primaryStage, "Visit Schedule"));
-        laundrySchedule.setOnAction(e -> openProfileWindow(primaryStage, "Laundry"));
+        profile.setOnAction(e -> {
+            primaryStage.close();
+            openProfileWindow(primaryStage,"Profile");});
+        sentenceRemaining.setOnAction(e -> {
+            primaryStage.close();
+            openProfileWindow(primaryStage, "Sentence Remaining");});
+        currentTasks.setOnAction(e ->  {
+            primaryStage.close();
+            openProfileWindow(primaryStage, "Current");});
+        completedTasks.setOnAction(e -> {
+            primaryStage.close();
+            openProfileWindow(primaryStage, "Completed");});
+        dailySchedule.setOnAction(e ->  {
+            primaryStage.close();
+            openProfileWindow(primaryStage, "Daily Schedule");});
+        visitSchedule.setOnAction(e -> {
+            primaryStage.close();
+            openProfileWindow(primaryStage, "Visit Schedule");});
+        laundrySchedule.setOnAction(e -> {
+            primaryStage.close();
+            openProfileWindow(primaryStage, "Laundry");});
 
         //Pentru logout
         logout.setOnAction(e -> {
@@ -369,7 +384,7 @@ public class PrisonerInterface extends Application {
             // Obține username-ul curent din sesiune
             String currentUsername = Session.getCurrentUsername();
 
-            DynamicScallingAppIntPrisoner prisonerInterface = new DynamicScallingAppIntPrisoner(currentUsername); // Inițializează clasa cu username-ul utilizatorului
+            DynamicScallingAppIntPrisonerFutureTasks prisonerInterface = new DynamicScallingAppIntPrisonerFutureTasks(currentUsername); // Inițializează clasa cu username-ul utilizatorului
             System.out.println("Opening DynamicScallingAppIntPrisoner for Guardian username: " + currentUsername);
 
             Stage newStage = new Stage();
@@ -382,6 +397,17 @@ public class PrisonerInterface extends Application {
 
 
         else if ("Completed".equalsIgnoreCase(taskType)) {
+            String currentUsername = Session.getCurrentUsername();
+
+            DynamicScallingAppIntPrisonerPastTask prisonerInterface = new DynamicScallingAppIntPrisonerPastTask(currentUsername); // Inițializează clasa cu username-ul utilizatorului
+            System.out.println("Opening DynamicScallingAppIntPrisoner for Guardian username: " + currentUsername);
+
+            Stage newStage = new Stage();
+            try {
+                prisonerInterface.start(newStage); // Pornește noua interfață
+            } catch (Exception ex) {
+                ex.printStackTrace(); // Gestionare erori
+            }
 
         } else if ("Daily Schedule".equalsIgnoreCase(taskType)) {
 

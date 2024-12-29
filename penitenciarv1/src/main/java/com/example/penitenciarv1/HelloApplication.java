@@ -13,7 +13,6 @@ public class HelloApplication extends Application {
     public void start(Stage primaryStage) {
         try {
 
-
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
 
             Parent root = fxmlLoader.load();

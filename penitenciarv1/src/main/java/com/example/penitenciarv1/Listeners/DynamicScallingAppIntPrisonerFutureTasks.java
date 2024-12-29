@@ -155,15 +155,15 @@ import javafx.stage.StageStyle;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class DynamicScallingAppIntPrisoner extends Application {
+public class DynamicScallingAppIntPrisonerFutureTasks extends Application {
 
     private String detinutUsername; // Example username
 
 
-    public DynamicScallingAppIntPrisoner() {
+    public DynamicScallingAppIntPrisonerFutureTasks() {
 
     }
-    public DynamicScallingAppIntPrisoner(String detinutUsername) {
+    public DynamicScallingAppIntPrisonerFutureTasks(String detinutUsername) {
         this.detinutUsername = detinutUsername;
     }
 
@@ -239,7 +239,7 @@ public class DynamicScallingAppIntPrisoner extends Application {
         taskTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         // Load tasks from database
-        loadTasks(taskTable);
+        loadfutureTasks(taskTable);
 
         // Row double-click to show details
         taskTable.setRowFactory(tv -> {
@@ -282,7 +282,7 @@ public class DynamicScallingAppIntPrisoner extends Application {
         primaryStage.show();
     }
 
-    private void loadTasks(TableView<Task> taskTable) {
+    private void loadfutureTasks(TableView<Task> taskTable) {
         DatabaseConnector dbConnector = new DatabaseConnector();
         try (Statement statement = dbConnector.conn.createStatement()) {
             String query = "CALL GetTaskuriViitoare('" + detinutUsername + "')";
