@@ -211,6 +211,7 @@ public class DynamicScallingAppIntPrisonerPastTask extends Application {
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-padding: 20; -fx-background-color: linear-gradient(to bottom, #e3f2fd, #bbdefb);");
 
+
         // Title Label
         Label titleLabel = new Label("Sarcinile Trecute");
         titleLabel.setFont(Font.font("Arial", 24));
