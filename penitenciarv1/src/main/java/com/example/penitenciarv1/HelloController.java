@@ -68,7 +68,7 @@ public class HelloController {
             };
             if (newUser.getAccessRights() == 3){
                 InterfataVizitator newInterfataVizitator = new InterfataVizitator();
-                newInterfataVizitator.start(newStage, databaseConnector);
+                newInterfataVizitator.start(newStage, databaseConnector, newUser);
             }
 
 //

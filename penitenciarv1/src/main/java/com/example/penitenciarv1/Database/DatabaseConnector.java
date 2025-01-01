@@ -3,6 +3,7 @@ package com.example.penitenciarv1.Database;
 import com.example.penitenciarv1.Entities.Guardian;
 import com.example.penitenciarv1.Entities.Inmates;
 import com.example.penitenciarv1.Entities.User;
+import com.example.penitenciarv1.Entities.Visit;
 import com.example.penitenciarv1.Listeners.DynamicScallingAppIntPrisonerFutureTasks;
 import eu.hansolo.toolbox.time.DateTimes;
 import javafx.beans.property.SimpleStringProperty;
@@ -222,5 +223,44 @@ public class DatabaseConnector {
         }
     }
 
+    public ArrayList<Visit> getVisits(int idVisitor){
+        try{
+            CallableStatement cs = conn.prepareCall("{CALL GetProgramariByVizitator(?)}");
+            cs.setInt(1, idVisitor);
+            ResultSet rs = cs.executeQuery();
+            ArrayList<Visit> visits = new ArrayList<>();
+            while (rs.next()) {
 
+                String startTime = (rs.getString("startTime"));
+                String endTime = (rs.getString("endTime"));
+                String nume = (rs.getString("nume"));
+                System.out.println(nume);
+                Visit visit = new Visit(startTime, endTime, nume);
+                visits.add(visit);
+            }
+            return visits;
+        }
+        catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int getIdVizitatorPentruUtilizator(int id) {
+        try{
+            CallableStatement cs = conn.prepareCall("select * from vizitator where vizitator.fk_id_utilizator = ? limit 1");
+            cs.setInt(1, id);
+            ResultSet rs = cs.executeQuery();
+            if(rs.next()) {
+                return rs.getInt(1);
+            }
+            System.out.println("This user is not a visitor");
+            return -1;
+        }
+        catch (Exception e){
+            System.out.println("Vizitatorul cu acest id de utilizator nu exista");
+            throw new RuntimeException(e);
+        }
+
+
+    }
 }
