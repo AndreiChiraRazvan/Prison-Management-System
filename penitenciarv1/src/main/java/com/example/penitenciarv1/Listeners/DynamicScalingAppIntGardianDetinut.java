@@ -11,6 +11,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.sql.ResultSet;
@@ -67,7 +70,15 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        AnchorPane root = new AnchorPane();
+        VBox root = new VBox();
+        root.setSpacing(20);
+        root.setAlignment(Pos.CENTER);
+        root.setStyle("-fx-padding: 20; -fx-background-color: linear-gradient(to bottom, #e3f2fd, #bbdefb);");
+
+        Label titleLabel = new Label("Prisoners on Shift");
+        titleLabel.setFont(Font.font("Arial", 24));
+        titleLabel.setTextFill(Color.DARKBLUE);
+
 
         // Configurare TreeTableView
         TreeTableView<Person> treeTableView = new TreeTableView<>();
@@ -162,13 +173,14 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
             e.printStackTrace();
         }
 
-        // Layout
-        AnchorPane.setTopAnchor(treeTableView, 25.5);
-        AnchorPane.setLeftAnchor(treeTableView, 10.0);
-        AnchorPane.setRightAnchor(treeTableView, 10.0);
-        AnchorPane.setBottomAnchor(treeTableView, 10.0);
-
         Button goBack = new Button("Go Back");
+        goBack.setStyle("-fx-background-color: linear-gradient(to right, #42a5f5, #1e88e5);"
+                + "-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-background-radius: 20;");
+        goBack.setOnMouseEntered(e -> goBack.setStyle("-fx-background-color: linear-gradient(to right, #1e88e5, #42a5f5);"
+                + "-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-background-radius: 20;"));
+        goBack.setOnMouseExited(e -> goBack.setStyle("-fx-background-color: linear-gradient(to right, #42a5f5, #1e88e5);"
+                + "-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-background-radius: 20;"));
+
         goBack.setOnAction(event -> {
             GuardianInterface gi = new GuardianInterface(idUserGardian);
             Stage newStage = new Stage();
@@ -178,11 +190,11 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
         goBack.setAlignment(Pos.TOP_LEFT);
         goBack.setPrefHeight(20);
 
-        root.getChildren().addAll(treeTableView, goBack);
+        root.getChildren().addAll(titleLabel,treeTableView, goBack);
 
         // Scenă
         Scene scene = new Scene(root, 1400, 600);
-        primaryStage.setTitle("Tabel cu Deținuți (Autosize)");
+        primaryStage.setTitle("Tabel cu Deținuți");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

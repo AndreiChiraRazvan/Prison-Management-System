@@ -142,21 +142,18 @@ public class DatabaseConnector {
         }
     }
 
-    public ArrayList<Guardian> getGuardianColleagues(int idGuardian) {
+    public ArrayList<Guardian> getGuardianColleaguesSameBlock(int idGuardian) {
         ArrayList<Guardian> guardian = new ArrayList<>();
         try{
             CallableStatement cs = conn.prepareCall("{call penitenciar.GetColegiiGardianului(?)}");
             cs.setInt(1, idGuardian);
             boolean hasResults = cs.execute();
             if(hasResults) {
-                //System.out.println("AASAS");
                 ResultSet rs = cs.getResultSet();
 
                 while (rs.next()) {
-                    System.out.println(1);
                     Guardian newGuardian = new Guardian();
                     newGuardian.setId(new SimpleStringProperty(cs.getResultSet().getString(1)));
-                    System.out.println(newGuardian.getId());
                     newGuardian.setUsername(new SimpleStringProperty(cs.getResultSet().getString(2)));
                     newGuardian.setFloor(new SimpleStringProperty(cs.getResultSet().getString(3)));
                     newGuardian.setDetentionBlock(new SimpleStringProperty(cs.getResultSet().getString(4)));
@@ -165,6 +162,32 @@ public class DatabaseConnector {
                 rs.close();
             }else
                 System.out.printf("No results found");
+
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        return guardian;
+    }
+
+    public ArrayList<Guardian> getGuardianColleaguesWholePrison(int idGuardian) {
+        ArrayList<Guardian> guardian = new ArrayList<>();
+        try{
+            CallableStatement cs = conn.prepareCall("{call penitenciar.GetTotiColegiiGardianului(?)}");
+            cs.setInt(1, idGuardian);
+            boolean hasResult = cs.execute();
+            if(hasResult) {
+                ResultSet rs = cs.getResultSet();
+                while (rs.next()) {
+                    Guardian newGuardian = new Guardian();
+                    newGuardian.setId(new SimpleStringProperty(cs.getResultSet().getString(1)));
+                    newGuardian.setUsername(new SimpleStringProperty(cs.getResultSet().getString(2)));
+                    newGuardian.setFloor(new SimpleStringProperty(cs.getResultSet().getString(3)));
+                    newGuardian.setDetentionBlock(new SimpleStringProperty(cs.getResultSet().getString(4)));
+                    guardian.add(newGuardian);
+                }
+            }else
+                System.out.printf("No results found");
+
 
         }catch (Exception e){
             throw new RuntimeException(e);

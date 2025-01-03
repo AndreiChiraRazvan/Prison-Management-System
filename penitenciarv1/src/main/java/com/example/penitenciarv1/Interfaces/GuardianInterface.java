@@ -1,5 +1,6 @@
 package com.example.penitenciarv1.Interfaces;
 
+import com.example.penitenciarv1.Listeners.DynamicScalingAppIntGardianColegiPenitenciar;
 import com.example.penitenciarv1.Listeners.DynamicScalingAppIntGardianDetinut;
 import com.example.penitenciarv1.Listeners.DynamicScalingAppIntGardianColegiBloc;
 import javafx.application.Application;
@@ -42,8 +43,6 @@ public class GuardianInterface extends Application {
         coleagues.getItems().add(sameDetentionBlock);
         MenuItem wholePrison = new MenuItem("In the whole prison");
         coleagues.getItems().add(wholePrison);
-        MenuItem substituteColeagues = new MenuItem("Substitute Coleagues");
-        coleagues.getItems().add(substituteColeagues);
         Menu inmates = new Menu("Inmates");
         MenuItem prisonersOnShift = new MenuItem("Manage inmates");
         inmates.getItems().add(prisonersOnShift);
@@ -70,6 +69,17 @@ public class GuardianInterface extends Application {
             Stage newStage = new Stage();
             primaryStage.close();
             newInterfataColegi.start(newStage);
+        });
+
+        wholePrison.setOnAction(e -> {
+            DynamicScalingAppIntGardianColegiPenitenciar newInterfataTotiColegii = new DynamicScalingAppIntGardianColegiPenitenciar(idUserGardian);
+            Stage newStage = new Stage();
+            primaryStage.close();
+            try {
+                newInterfataTotiColegii.start(newStage);
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
         });
 
         root.getChildren().addAll(anchorPaneVbox1, stackPane);

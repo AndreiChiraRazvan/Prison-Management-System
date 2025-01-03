@@ -8,11 +8,11 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.sql.Statement;
@@ -32,7 +32,15 @@ public class DynamicScalingAppIntGardianColegiBloc extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        AnchorPane root = new AnchorPane();
+        VBox root = new VBox();
+        root.setSpacing(20);
+        root.setAlignment(Pos.CENTER);
+        root.setStyle("-fx-padding: 20; -fx-background-color: linear-gradient(to bottom, #e3f2fd, #bbdefb);");
+
+
+        Label titleLabel = new Label("Coleagues from same Block");
+        titleLabel.setFont(Font.font("Arial", 24));
+        titleLabel.setTextFill(Color.DARKBLUE);
 
         TreeTableView<Guardian>treeTableView = new TreeTableView<>();
         TreeItem<Guardian> rootItem = new TreeItem<>(new Guardian("", "", "", ""));
@@ -60,7 +68,7 @@ public class DynamicScalingAppIntGardianColegiBloc extends Application {
         try(Statement statement = dbConnector.conn.createStatement()){
             int idGuardian = dbConnector.getGuardianId(idUserGardian);
             System.out.printf("idGuardian = %d\n", idGuardian);
-            ArrayList<Guardian> guardians = dbConnector.getGuardianColleagues(idGuardian);
+            ArrayList<Guardian> guardians = dbConnector.getGuardianColleaguesSameBlock(idGuardian);
             if(guardians.size() == 0){
                 System.out.println("No guardians found");
             }
@@ -80,12 +88,14 @@ public class DynamicScalingAppIntGardianColegiBloc extends Application {
             e.printStackTrace();
         }
 
-        AnchorPane.setTopAnchor(treeTableView, 25.5);
-        AnchorPane.setLeftAnchor(treeTableView, 10.0);
-        AnchorPane.setRightAnchor(treeTableView, 10.0);
-        AnchorPane.setBottomAnchor(treeTableView, 10.0);
-
         Button goBackButton = new Button("Go Back");
+        goBackButton.setStyle("-fx-background-color: linear-gradient(to right, #42a5f5, #1e88e5);"
+                + "-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-background-radius: 20;");
+        goBackButton.setOnMouseEntered(e -> goBackButton.setStyle("-fx-background-color: linear-gradient(to right, #1e88e5, #42a5f5);"
+                + "-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-background-radius: 20;"));
+        goBackButton.setOnMouseExited(e -> goBackButton.setStyle("-fx-background-color: linear-gradient(to right, #42a5f5, #1e88e5);"
+                + "-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-background-radius: 20;"));
+
         goBackButton.setOnAction(event -> {
             GuardianInterface gin = new GuardianInterface(idUserGardian);
             Stage stage = new Stage();
@@ -95,9 +105,10 @@ public class DynamicScalingAppIntGardianColegiBloc extends Application {
         goBackButton.setAlignment(Pos.TOP_LEFT);
         goBackButton.setPrefHeight(20);
 
-        root.getChildren().addAll(treeTableView, goBackButton);
+        root.getChildren().addAll(titleLabel, treeTableView ,goBackButton);
 
         Scene scene = new Scene(root, 1400, 600);
+        primaryStage.setTitle("Coleagues from same Block");
         primaryStage.setScene(scene);
         primaryStage.show();
 
