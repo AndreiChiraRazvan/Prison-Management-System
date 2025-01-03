@@ -2,6 +2,7 @@ package com.example.penitenciarv1.Listeners;
 
 import com.example.penitenciarv1.Database.DatabaseConnector;
 import com.example.penitenciarv1.Interfaces.GuardianInterface;
+import com.example.penitenciarv1.Interfaces.popUps.AddToNewCellPopUp;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -131,6 +132,21 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
                     });
                     setGraphic(buttonContainer);
                     setText(null);
+
+                    moveToAnotherCell.setOnAction(event -> {
+                       Person person = getTreeTableRow().getItem();
+                       if (person != null) {
+                           System.out.println("ASASDS" + person.idProperty().get());
+                           AddToNewCellPopUp popUp = new AddToNewCellPopUp(person.idProperty().get(), idUserGardian);
+                           Stage stage = new Stage();
+                           try {
+                               popUp.start(stage);
+                           }catch (Exception e) {
+                               e.printStackTrace();
+                           }
+                           primaryStage.close();
+                       }
+                    });
                 }
             }
         });

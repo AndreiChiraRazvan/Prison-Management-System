@@ -153,10 +153,10 @@ public class DatabaseConnector {
 
                 while (rs.next()) {
                     Guardian newGuardian = new Guardian();
-                    newGuardian.setId(new SimpleStringProperty(cs.getResultSet().getString(1)));
-                    newGuardian.setUsername(new SimpleStringProperty(cs.getResultSet().getString(2)));
-                    newGuardian.setFloor(new SimpleStringProperty(cs.getResultSet().getString(3)));
-                    newGuardian.setDetentionBlock(new SimpleStringProperty(cs.getResultSet().getString(4)));
+                    newGuardian.setId(new SimpleStringProperty(rs.getString(1)));
+                    newGuardian.setUsername(new SimpleStringProperty(rs.getString(2)));
+                    newGuardian.setFloor(new SimpleStringProperty(rs.getString(3)));
+                    newGuardian.setDetentionBlock(new SimpleStringProperty(rs.getString(4)));
                     guardian.add(newGuardian);
                 }
                 rs.close();
@@ -167,6 +167,39 @@ public class DatabaseConnector {
             throw new RuntimeException(e);
         }
         return guardian;
+    }
+
+    public ArrayList<String> getEmptyCells(){
+        ArrayList<String> emptyCells = new ArrayList<>();
+        try{
+            String theQuery = " SELECT id_celula FROM celula WHERE locuri_ramase != 0 ";
+            CallableStatement callableStatement = conn.prepareCall(theQuery);
+            callableStatement.execute();
+            ResultSet rs = callableStatement.getResultSet();
+            if(rs == null){
+                System.out.println("No results found");
+            }else {
+                while (rs.next()) {
+                    emptyCells.add(rs.getString(1));
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return emptyCells;
+    }
+
+    public void updateInmateCell(int idInmate, int newCell) {
+        try {
+            String theQuery = "UPDATE penitenciar.detinut SET fk_id_celula = ? WHERE id_detinut = ?";
+            CallableStatement callableStatement = conn.prepareCall(theQuery);
+            callableStatement.setInt(1, newCell);
+            callableStatement.setInt(2, idInmate);
+            callableStatement.execute();
+        }catch (Exception e){
+            System.out.println("Update error");
+            e.printStackTrace();
+        }
     }
 
     public ArrayList<Guardian> getGuardianColleaguesWholePrison(int idGuardian) {
