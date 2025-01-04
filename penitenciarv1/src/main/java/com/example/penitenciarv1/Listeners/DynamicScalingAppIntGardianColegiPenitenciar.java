@@ -95,8 +95,9 @@ public class DynamicScalingAppIntGardianColegiPenitenciar extends Application {
 
     private void loadColeaguesWholePrison(TableView<Guardian> table) {
         DatabaseConnector dbConnector = new DatabaseConnector();
+        int idGuardian = dbConnector.getGuardianId(idGardian);
         try(Statement statement = dbConnector.conn.createStatement()){
-            ArrayList<Guardian> guardians = dbConnector.getGuardianColleaguesWholePrison(idGardian);
+            ArrayList<Guardian> guardians = dbConnector.getGuardianColleaguesWholePrison(idGuardian);
             if(guardians == null){
                 System.out.println("Error: Guardians is null");
             }else {

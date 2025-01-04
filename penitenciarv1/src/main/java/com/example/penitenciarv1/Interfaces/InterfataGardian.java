@@ -16,7 +16,7 @@ public class InterfataGardian extends Application {
             fxmlLoader.setLocation(getClass().getResource("interfatagardian.fxml"));
 
             Parent root = fxmlLoader.load();
-            databaseConnector.getInmatesFromDatabase();
+            //databaseConnector.getInmatesFromDatabase();
             primaryStage.setTitle("Gardian-Meniu principal");
 //            Scene scene = new Scene(root);
 //            primaryStage.setScene(scene);

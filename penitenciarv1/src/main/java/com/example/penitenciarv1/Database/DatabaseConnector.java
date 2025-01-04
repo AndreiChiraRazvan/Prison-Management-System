@@ -90,36 +90,34 @@ public class DatabaseConnector {
 
     }
 
-    public ArrayList<Inmates> getInmatesFromDatabase(){
-        ArrayList<Inmates> inmates = new ArrayList<>();
-        try{
-            String theQuery = "SELECT * FROM penitenciar.detinut ";
-
-            CallableStatement callableStatement = conn.prepareCall(theQuery);
-            callableStatement.execute();
-            System.out.println(callableStatement);
-            if (callableStatement.getResultSet() == null) {
-                System.out.println("No results found");
-                return null;
-            }
-            if (callableStatement.getResultSet().next()) {
-                Inmates newInmate = new Inmates();
-                newInmate.setid(callableStatement.getResultSet().getInt(1));
-                newInmate.setName(callableStatement.getResultSet().getString(2));
-                newInmate.setIdCelula(callableStatement.getResultSet().getString(3));
-                newInmate.setProfession(callableStatement.getResultSet().getString(5));
-                String remainedSentence = getRemainingSentence(newInmate.getid());
-                newInmate.setSentenceRemained(remainedSentence);
-            }
-            return inmates;
-
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-
-    }
+//    public ArrayList<Inmates> getInmatesFromDatabase(){
+//        ArrayList<Inmates> inmates = new ArrayList<>();
+//        try{
+//            String theQuery = "SELECT * FROM penitenciar.detinut ";
+//
+//            CallableStatement callableStatement = conn.prepareCall(theQuery);
+//            callableStatement.execute();
+//            System.out.println(callableStatement);
+//            if (callableStatement.getResultSet() == null) {
+//                System.out.println("No results found");
+//                return null;
+//            }
+//            if (callableStatement.getResultSet().next()) {
+//                Inmates newInmate = new Inmates();
+//                newInmate.setid(callableStatement.getResultSet().getString(1));
+//                newInmate.setName(callableStatement.getResultSet().getString(2));
+//                newInmate.setIdCelula(callableStatement.getResultSet().getString(3));
+//                newInmate.setProfession(callableStatement.getResultSet().getString(5));
+//                String remainedSentence = getRemainingSentence(newInmate.getid());
+//                newInmate.setSentenceRemained(remainedSentence);
+//            }
+//            return inmates;
+//
+//
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     public String getRemainingSentence(int idPrizioner) {
         try{
@@ -167,6 +165,34 @@ public class DatabaseConnector {
             throw new RuntimeException(e);
         }
         return guardian;
+    }
+
+    public ArrayList<Inmates> getInmatesOnShift(int idGardian) {
+        ArrayList<Inmates> inmates = new ArrayList<>();
+        try{
+            CallableStatement cs = conn.prepareCall("{call penitenciar.GetInmatesOnShift(?)}");
+            cs.setInt(1, idGardian);
+            boolean hasResults = cs.execute();
+            if(hasResults) {
+                ResultSet rs = cs.getResultSet();
+                while (rs.next()) {
+                    Inmates newInmate = new Inmates();
+                    newInmate.setid(new SimpleStringProperty(rs.getString(1)));
+                    newInmate.setName(new SimpleStringProperty(rs.getString(2)));
+                    newInmate.setIdCelula(new SimpleStringProperty(rs.getString(3)));
+                    newInmate.setProfession(new SimpleStringProperty(rs.getString(4)));
+                    String remainedSentence = getRemainingSentence(Integer.parseInt(newInmate.getid().getValue()));
+                    newInmate.setSentenceRemained(new SimpleStringProperty(remainedSentence));
+                    inmates.add(newInmate);
+                }
+                rs.close();
+            }else{
+                System.out.println("No results found");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return inmates;
     }
 
     public ArrayList<String> getEmptyCells(){

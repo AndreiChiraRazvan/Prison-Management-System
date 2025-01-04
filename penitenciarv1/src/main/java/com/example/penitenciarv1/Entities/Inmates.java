@@ -1,65 +1,66 @@
 package com.example.penitenciarv1.Entities;
 
-import eu.hansolo.toolbox.time.DateTimes;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class Inmates {
-    private String name;
-    private int id;
-    private String sentenceRemained;
-    private String profession;
-    private String idCelula;
+    private StringProperty name;
+    private StringProperty id;
+    private StringProperty sentenceRemained;
+    private StringProperty profession;
+    private StringProperty idCelula;
 
-    public Inmates(String name, int id, String sentenceRemained, String profession) {
+    public Inmates(String name, String id, String sentenceRemained, String profession) {
 
-        this.name = name;
-        this.id = id;
+        this.name = new SimpleStringProperty(name);
+        this.id = new SimpleStringProperty(id);
 
     }
 
     public Inmates() {
-        this.name = "";
-        this.id = 0;
-        this.sentenceRemained = null;
-        this.profession = "Unknown";
+        this.name = new SimpleStringProperty("");
+        this.id = new SimpleStringProperty("");
+        this.sentenceRemained = new SimpleStringProperty("");
+        this.profession = new SimpleStringProperty("");
     }
 
-    public int getid() {
+    public StringProperty getid() {
         return id;
     }
 
-    public void setid(int id) {
+    public void setid(StringProperty id) {
         this.id = id;
     }
 
-    public String getName() {
+    public StringProperty getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(StringProperty name) {
         this.name = name;
     }
 
-    public String getSentenceRemained() {
+    public StringProperty getSentenceRemained() {
         return sentenceRemained;
     }
 
-    public void setSentenceRemained(String sentenceRemained) {
+    public void setSentenceRemained(StringProperty sentenceRemained) {
         this.sentenceRemained = sentenceRemained;
     }
 
-    public String getProfession() {
+    public StringProperty getProfession() {
         return profession;
     }
 
-    public void setProfession(String profession) {
+    public void setProfession(StringProperty profession) {
         this.profession = profession;
     }
 
-    public void setIdCelula(String idCelula) {
+    public void setIdCelula(StringProperty idCelula) {
         this.idCelula = idCelula;
     }
 
-    public String getIdCelula() {
+    public StringProperty getIdCelula() {
         return idCelula;
     }
 }

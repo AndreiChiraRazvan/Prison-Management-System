@@ -1,6 +1,7 @@
 package com.example.penitenciarv1.Listeners;
 
 import com.example.penitenciarv1.Database.DatabaseConnector;
+import com.example.penitenciarv1.Entities.Inmates;
 import com.example.penitenciarv1.Interfaces.GuardianInterface;
 import com.example.penitenciarv1.Interfaces.popUps.AddToNewCellPopUp;
 import javafx.application.Application;
@@ -19,6 +20,7 @@ import javafx.stage.Stage;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.function.Function;
 
 
@@ -33,42 +35,6 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
         this.idUserGardian = idUserGardian;
     }
 
-    public static class Person {
-        private final StringProperty id;
-        private final StringProperty nume;
-        private final StringProperty sentinta;
-        private final StringProperty celula;
-        private final StringProperty profesie;
-
-        public Person(String id, String name, String sentence, String cell, String profession) {
-            this.id = new SimpleStringProperty(id);
-            this.nume = new SimpleStringProperty(name);
-            this.sentinta = new SimpleStringProperty(sentence);
-            this.celula = new SimpleStringProperty(cell);
-            this.profesie = new SimpleStringProperty(profession);
-        }
-
-        public StringProperty idProperty() {
-            return id;
-        }
-
-        public StringProperty nameProperty() {
-            return nume;
-        }
-
-        public StringProperty sentenceProperty() {
-            return sentinta;
-        }
-
-        public StringProperty cellProperty() {
-            return celula;
-        }
-
-        public StringProperty professionProperty() {
-            return profesie;
-        }
-    }
-
     @Override
     public void start(Stage primaryStage) {
         VBox root = new VBox();
@@ -76,26 +42,34 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
         root.setAlignment(Pos.CENTER);
         root.setStyle("-fx-padding: 20; -fx-background-color: linear-gradient(to bottom, #e3f2fd, #bbdefb);");
 
+        //Titlu
         Label titleLabel = new Label("Prisoners on Shift");
         titleLabel.setFont(Font.font("Arial", 24));
         titleLabel.setTextFill(Color.DARKBLUE);
 
 
-        // Configurare TreeTableView
-        TreeTableView<Person> treeTableView = new TreeTableView<>();
-        TreeItem<Person> rootItem = new TreeItem<>(new Person("", "", "", "", ""));
-        rootItem.setExpanded(true);
-        treeTableView.setRoot(rootItem);
-        treeTableView.setShowRoot(false);
+        // Configurare Tabel
+        TableView<Inmates> tableView = new TableView<>();
 
         // Coloane
-        TreeTableColumn<Person, String> col1 = createColumn("ID", person -> person.idProperty());
-        TreeTableColumn<Person, String> col2 = createColumn("Nume și Prenume", person -> person.nameProperty());
-        TreeTableColumn<Person, String> col3 = createColumn("Sentința", person -> person.sentenceProperty());
-        TreeTableColumn<Person, String> col4 = createColumn("Celula", person -> person.cellProperty());
-        TreeTableColumn<Person, String> col5 = createColumn("Profesia", person -> person.professionProperty());
-        TreeTableColumn<Person, String> col6 = new TreeTableColumn<>("Actions");
-        col6.setCellFactory(param -> new TreeTableCell<Person, String>() {
+        TableColumn<Inmates, String> idColumn = new TableColumn<>("ID");
+        idColumn.setCellValueFactory(inmate -> inmate.getValue().getid());
+
+        TableColumn<Inmates, String> nameColumn = new TableColumn<>("Name");
+        nameColumn.setCellValueFactory(inmate -> inmate.getValue().getName());
+
+        TableColumn<Inmates, String> cellColumn = new TableColumn<>("Cell");
+        cellColumn.setCellValueFactory(inmate -> inmate.getValue().getIdCelula());
+
+        TableColumn<Inmates, String> sentenceColumn = new TableColumn<>("Sentence");
+        sentenceColumn.setCellValueFactory(inmate -> inmate.getValue().getSentenceRemained());
+
+        TableColumn<Inmates, String> professionColumn = new TableColumn<>("Profession");
+        professionColumn.setCellValueFactory(inmate -> inmate.getValue().getProfession());
+
+
+        TableColumn<Inmates, String> col6 = new TableColumn<>("Actions");
+        col6.setCellFactory(param -> new TableCell<Inmates, String>() {
             final Button addToSolitude = new Button("Add to Solitude");
             final Button cancelVisit = new Button("Cancel Visit");
             final Button addTask = new Button("Add Task");
@@ -116,28 +90,28 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
                     setText(null);
                 } else {
                     addToSolitude.setOnAction(event -> {
-                        Person person = getTreeTableRow().getItem();
-                        if (person != null) {
-                            System.out.println("Action for: " + person.nameProperty().get());
+                        Inmates inmate = getTableRow().getItem();
+                        if (inmate != null) {
+                            System.out.println("Action for: " + inmate.getName().get());
                         }
                     });
                     setGraphic(addToSolitude);
                     setText(null);
 
                     cancelVisit.setOnAction(event -> {
-                        Person person = getTreeTableRow().getItem();
-                        if (person != null) {
-                            System.out.println("Action for: " + person.nameProperty().get());
+                        Inmates inmate = getTableRow().getItem();
+                        if (inmate != null) {
+                            System.out.println("Action for: " + inmate.getName().get());
                         }
                     });
                     setGraphic(buttonContainer);
                     setText(null);
 
                     moveToAnotherCell.setOnAction(event -> {
-                       Person person = getTreeTableRow().getItem();
-                       if (person != null) {
-                           System.out.println("ASASDS" + person.idProperty().get());
-                           AddToNewCellPopUp popUp = new AddToNewCellPopUp(person.idProperty().get(), idUserGardian);
+                       Inmates inmate = getTableRow().getItem();
+                       if (inmate != null) {
+                           System.out.println("ASASDS" + inmate.getid().get());
+                           AddToNewCellPopUp popUp = new AddToNewCellPopUp(inmate.getid().get(), idUserGardian);
                            Stage stage = new Stage();
                            try {
                                popUp.start(stage);
@@ -151,43 +125,26 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
             }
         });
 
-        treeTableView.getColumns().addAll(col1, col2, col3, col4, col5, col6);
+        tableView.getColumns().addAll(idColumn, nameColumn, cellColumn, sentenceColumn, professionColumn, col6);
+
+
+        // Încărcare date din baza de date
+        loadInmatesOnShift(tableView);
+
 
         // Autosize: Listener pentru ajustarea automată a lățimii coloanelor
-        treeTableView.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+        tableView.widthProperty().addListener((obs, oldWidth, newWidth) -> {
             double totalWidth = newWidth.doubleValue();
-            col1.setPrefWidth(totalWidth * 0.10);
-            col2.setPrefWidth(totalWidth * 0.15);
-            col3.setPrefWidth(totalWidth * 0.20);
-            col4.setPrefWidth(totalWidth * 0.10);
-            col5.setPrefWidth(totalWidth * 0.15);
+            idColumn.setPrefWidth(totalWidth * 0.10);
+            nameColumn.setPrefWidth(totalWidth * 0.15);
+            cellColumn.setPrefWidth(totalWidth * 0.20);
+            sentenceColumn.setPrefWidth(totalWidth * 0.10);
+            professionColumn.setPrefWidth(totalWidth * 0.15);
             col6.setPrefWidth(totalWidth * 0.30);
         });
 
 
-        // Încărcare date din baza de date
-        DatabaseConnector dbConnector = new DatabaseConnector();
-        try (Statement statement = dbConnector.conn.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT id_detinut, nume, fK_id_celula,profesie FROM Detinut");
 
-            while (resultSet.next()) {
-                String id = resultSet.getString("id_detinut");
-                String name = resultSet.getString("nume");
-                // aici apeleaz un query care imi zice suma ramasa in datetime a sentintei
-                String sentence = String.valueOf(dbConnector.getRemainingSentence(Integer.valueOf(id)));  // Valoare implicită
-                String cell = resultSet.getString("fk_id_celula");
-                String profession = resultSet.getString("profesie");; // Valoare implicită
-
-                TreeItem<Person> item = new TreeItem<>(new Person(id, name, sentence, cell, profession));
-                rootItem.getChildren().add(item);
-            }
-
-            System.out.println("Numarul de elemente incarcare: " + rootItem.getChildren().size());
-        } catch (Exception e) {
-            System.out.println("Error");
-            System.out.println("Adauga Procedura din getRemainingSentence");
-            e.printStackTrace();
-        }
 
         Button goBack = new Button("Go Back");
         goBack.setStyle("-fx-background-color: linear-gradient(to right, #42a5f5, #1e88e5);"
@@ -206,7 +163,7 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
         goBack.setAlignment(Pos.TOP_LEFT);
         goBack.setPrefHeight(20);
 
-        root.getChildren().addAll(titleLabel,treeTableView, goBack);
+        root.getChildren().addAll(titleLabel, tableView, goBack);
 
         // Scenă
         Scene scene = new Scene(root, 1400, 600);
@@ -215,10 +172,21 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
         primaryStage.show();
     }
 
-    private TreeTableColumn<Person, String> createColumn(String title, Function<Person, ObservableValue<String>> mapper) {
-        TreeTableColumn<Person, String> column = new TreeTableColumn<>(title);
-        column.setCellValueFactory(cellData -> mapper.apply(cellData.getValue().getValue()));
-        return column;
+    private void loadInmatesOnShift(TableView<Inmates> tableView) {
+        DatabaseConnector dbConnector = new DatabaseConnector();
+        int idGardian = dbConnector.getGuardianId(idUserGardian);
+        try(Statement statement = dbConnector.conn.createStatement()){
+            ArrayList<Inmates> inmates = dbConnector.getInmatesOnShift(idGardian);
+            if(inmates.isEmpty()){
+                System.out.println("No inmates found");
+            }else {
+                for(Inmates inmate : inmates){
+                    tableView.getItems().add(inmate);
+                }
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
