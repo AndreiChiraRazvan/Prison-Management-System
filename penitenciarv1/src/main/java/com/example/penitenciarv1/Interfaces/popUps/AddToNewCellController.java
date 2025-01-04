@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -51,20 +52,31 @@ public class AddToNewCellController implements Initializable {
 
             databaseConnector.updateInmateCell(Integer.parseInt(inmateId), selectedCellId);
             Stage newStage = new Stage();
-            DynamicScalingAppIntGardianDetinut newIntGardian = new DynamicScalingAppIntGardianDetinut(guardianId);
-            Stage stage = (Stage) button.getScene().getWindow();
-            stage.close();
-            newIntGardian.start(newStage);
+            openMainScene(newStage);
         } else {
-            System.out.println("No cell selected!");
+            NoActionPopUp noActionPopUp = new NoActionPopUp();
+            Stage newStageErr = new Stage();
+            Stage newStage = new Stage();
+            openMainScene(newStage);
+            try {
+                noActionPopUp.start(newStageErr);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
+
+    }
+
+    private void openMainScene(Stage newStage) {
+        DynamicScalingAppIntGardianDetinut newIntGardian = new DynamicScalingAppIntGardianDetinut(guardianId);
+        Stage stage = (Stage) button.getScene().getWindow();
+        stage.close();
+        newIntGardian.start(newStage);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println(inmateId + " controller");
-
-
         ArrayList<String> emptyCells = databaseConnector.getEmptyCells();
         comboBox.getItems().addAll(emptyCells);
     }

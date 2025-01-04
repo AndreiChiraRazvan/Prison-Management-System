@@ -37,3 +37,11 @@
     -fx-font-size: 18px;
     -fx-text-fill: darkblue;
 }
+
+.text-area {
+    -fx-background-color: linear-gradient(to bottom, #ff7e5f, #feb47b);
+    -fx-text-fill: darkblue;
+}
+
+
+
