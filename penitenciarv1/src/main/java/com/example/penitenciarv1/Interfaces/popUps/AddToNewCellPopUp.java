@@ -30,6 +30,8 @@ public class AddToNewCellPopUp extends Application {
         controller.setInmateId(inmateId);
         controller.setGuardianId(guardianId);
 
+        controller.customInitialize();
+
         Scene scene = new Scene(root, 600, 500);
         stage.setScene(scene);
         stage.setTitle("Add to New Cell");

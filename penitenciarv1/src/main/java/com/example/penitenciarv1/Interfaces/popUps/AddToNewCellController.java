@@ -20,6 +20,8 @@ public class AddToNewCellController implements Initializable {
     private String inmateId;
     private int guardianId;
 
+    DatabaseConnector databaseConnector = new DatabaseConnector();
+
     public AddToNewCellController() {
 
     }
@@ -41,7 +43,6 @@ public class AddToNewCellController implements Initializable {
     @FXML
     private Pane mainPane;
 
-    DatabaseConnector databaseConnector = new DatabaseConnector();
 
     @FXML
     void updateAndExit(ActionEvent event) {
@@ -74,10 +75,14 @@ public class AddToNewCellController implements Initializable {
         newIntGardian.start(newStage);
     }
 
+    public void customInitialize() {
+        System.out.println("Custom initialize with guardianId: " + guardianId);
+        ArrayList<String> emptyCells = databaseConnector.getEmptyCells(databaseConnector.getGuardianId(guardianId));
+        comboBox.getItems().addAll(emptyCells);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println(inmateId + " controller");
-        ArrayList<String> emptyCells = databaseConnector.getEmptyCells();
-        comboBox.getItems().addAll(emptyCells);
+
     }
 }

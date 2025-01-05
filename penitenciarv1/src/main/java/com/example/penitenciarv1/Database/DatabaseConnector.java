@@ -48,17 +48,6 @@ public class DatabaseConnector {
         }
     }
 
-    public void callQueryFromString(String query) {
-        ///  we execute the query that is sent
-        try {
-            conn.prepareCall(query);
-            callRandomProcedure();
-        } catch (Exception e) {
-            System.out.println("Query gresit");
-            throw new RuntimeException(e);
-        }
-    }
-
     public User checkAndReturnUser(String username, String password) {
 
         try {
@@ -89,35 +78,6 @@ public class DatabaseConnector {
         }
 
     }
-
-//    public ArrayList<Inmates> getInmatesFromDatabase(){
-//        ArrayList<Inmates> inmates = new ArrayList<>();
-//        try{
-//            String theQuery = "SELECT * FROM penitenciar.detinut ";
-//
-//            CallableStatement callableStatement = conn.prepareCall(theQuery);
-//            callableStatement.execute();
-//            System.out.println(callableStatement);
-//            if (callableStatement.getResultSet() == null) {
-//                System.out.println("No results found");
-//                return null;
-//            }
-//            if (callableStatement.getResultSet().next()) {
-//                Inmates newInmate = new Inmates();
-//                newInmate.setid(callableStatement.getResultSet().getString(1));
-//                newInmate.setName(callableStatement.getResultSet().getString(2));
-//                newInmate.setIdCelula(callableStatement.getResultSet().getString(3));
-//                newInmate.setProfession(callableStatement.getResultSet().getString(5));
-//                String remainedSentence = getRemainingSentence(newInmate.getid());
-//                newInmate.setSentenceRemained(remainedSentence);
-//            }
-//            return inmates;
-//
-//
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 
     public String getRemainingSentence(int idPrizioner) {
         try{
@@ -195,11 +155,12 @@ public class DatabaseConnector {
         return inmates;
     }
 
-    public ArrayList<String> getEmptyCells(){
+    public ArrayList<String> getEmptyCells(int idGardian) {
         ArrayList<String> emptyCells = new ArrayList<>();
         try{
-            String theQuery = " SELECT id_celula FROM celula WHERE locuri_ramase != 0 ";
-            CallableStatement callableStatement = conn.prepareCall(theQuery);
+            CallableStatement callableStatement = conn.prepareCall("{call penitenciar.GetCellsOnShift(?)}");
+            System.out.println(idGardian);
+            callableStatement.setInt(1, idGardian);
             callableStatement.execute();
             ResultSet rs = callableStatement.getResultSet();
             if(rs == null){
@@ -215,8 +176,52 @@ public class DatabaseConnector {
         return emptyCells;
     }
 
+    public void updateCellSize(int idCell, int modifyValue){
+        try {
+            String updateInitialCell = "UPDATE penitenciar.celula SET locuri_ramase = locuri_ramase + ? WHERE id_celula = ?";
+            CallableStatement csUpdateCell = conn.prepareCall(updateInitialCell);
+            csUpdateCell.setInt(1, modifyValue);
+            csUpdateCell.setInt(2, idCell);
+            csUpdateCell.execute();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     public void updateInmateCell(int idInmate, int newCell) {
         try {
+            //get the fk_id_cell from detinut table
+            String getFK_ID_Cell = "SELECT detinut.fk_id_celula FROM penitenciar.detinut WHERE detinut.id_detinut = ?";
+            CallableStatement csFKCell = conn.prepareCall(getFK_ID_Cell);
+            csFKCell.setInt(1, idInmate);
+            csFKCell.executeQuery();
+            ResultSet rsFKCell = csFKCell.getResultSet();
+            int fk_id;
+            if(rsFKCell.next())
+                fk_id = rsFKCell.getInt(1);
+            else {
+                fk_id = -1;
+                System.out.println("No results found");
+            }
+
+            //get id of the initial cell the inmate was in
+            String getInitialCell = "SELECT celula.id_celula FROM penitenciar.celula WHERE celula.id_celula = ?";
+            CallableStatement csInitialCell = conn.prepareCall(getInitialCell);
+            csInitialCell.setInt(1, fk_id);
+            csInitialCell.executeQuery();
+            ResultSet rsInitialCell = csInitialCell.getResultSet();
+            int initialCell;
+            if(rsInitialCell.next())
+                initialCell = rsInitialCell.getInt(1);
+            else {
+                initialCell = -1;
+                System.out.println("No results found");
+            }
+
+            //update the size of each cell
+            updateCellSize(initialCell, -1);
+            updateCellSize(newCell, 1);
+
             String theQuery = "UPDATE penitenciar.detinut SET fk_id_celula = ? WHERE id_detinut = ?";
             CallableStatement callableStatement = conn.prepareCall(theQuery);
             callableStatement.setInt(1, newCell);
