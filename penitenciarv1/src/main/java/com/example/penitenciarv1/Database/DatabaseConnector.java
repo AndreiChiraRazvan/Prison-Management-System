@@ -297,6 +297,22 @@ public class DatabaseConnector {
         return tasks;
     }
 
+    public int[] getCarceraIdAndOcupationStatus(int idInmate) {
+        int [] carceraInfo = new int[2];
+        try{
+            CallableStatement cs = conn.prepareCall("{CALL penitenciar.GetCarceraPrizonier(?)}");
+            cs.setInt(1, idInmate);
+            ResultSet rs = cs.executeQuery();
+            if(rs.next()) {
+                carceraInfo[0] = rs.getInt(2);
+                carceraInfo[1] = rs.getInt(3);
+            }
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        return carceraInfo;
+    }
+
     private ArrayList<DateTimes> getAllSentencesOfOneInmate() {
         try{
             ///  caut sentintele fiecariu detinut

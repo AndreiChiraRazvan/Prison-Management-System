@@ -21,7 +21,7 @@ public class NoActionPopUp extends Application {
 
         Label label = new Label("No action was performed");
         label.setFont(Font.font("Arial", 24));
-        label.setTextFill(Color.DARKBLUE);
+        label.setTextFill(Color.WHITE);
 
         Button button = new Button("OK");
         button.setFont(Font.font("Arial", 18));
@@ -30,7 +30,7 @@ public class NoActionPopUp extends Application {
         button.setStyle(
                 "-fx-font-size: 16px; " +
                         "-fx-font-weight: bold; " +
-                        "-fx-text-fill: darkblue; " +
+                        "-fx-text-fill: white; " +
                         "-fx-background-color: linear-gradient(to right, #ff416c, #ff4b2b); " +
                         "-fx-background-radius: 15; " +
                         "-fx-border-radius: 15; " +
@@ -39,7 +39,7 @@ public class NoActionPopUp extends Application {
         button.setOnMouseEntered(el -> button.setStyle(
                 "-fx-font-size: 16px; " +
                         "-fx-font-weight: bold; " +
-                        "-fx-text-fill: darkblue; " +
+                        "-fx-text-fill: white; " +
                         "-fx-background-color: linear-gradient(to right, #ff4b2b, #ff416c); " +
                         "-fx-background-radius: 15; " +
                         "-fx-border-radius: 15; " +
@@ -48,7 +48,7 @@ public class NoActionPopUp extends Application {
         button.setOnMouseExited(el -> button.setStyle(
                 "-fx-font-size: 16px; " +
                         "-fx-font-weight: bold; " +
-                        "-fx-text-fill: darkblue; " +
+                        "-fx-text-fill: white; " +
                         "-fx-background-color: linear-gradient(to right, #ff416c, #ff4b2b); " +
                         "-fx-background-radius: 15; " +
                         "-fx-border-radius: 15; " +
@@ -62,7 +62,7 @@ public class NoActionPopUp extends Application {
         root.getChildren().addAll(label, button);
 
 
-        Scene scene = new Scene(root, 300, 200);
+        Scene scene = new Scene(root, 400, 200);
         stage.setScene(scene);
         stage.show();
     }

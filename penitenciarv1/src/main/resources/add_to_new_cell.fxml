@@ -8,8 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox alignment="CENTER" prefHeight="444.0" prefWidth="637.0" styleClass="vbox" stylesheets="@background.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.penitenciarv1.Interfaces.popUps.AddToNewCellController">
+<VBox alignment="CENTER" minHeight="420.0" minWidth="315.0" prefHeight="482.0" prefWidth="629.0" styleClass="vbox" stylesheets="@background.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.penitenciarv1.Interfaces.popUps.newCell.AddToNewCellController">
    <children>
       <Label styleClass="label-title" stylesheets="@background.css" text="Move to another Cell">
          <font>
@@ -18,6 +17,9 @@
          <padding>
             <Insets bottom="50.0" />
          </padding>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
       </Label>
       <Label styleClass="label-text" stylesheets="@background.css" text="Select from available cells:">
          <font>
@@ -49,6 +51,9 @@
          <font>
             <Font size="14.0" />
          </font>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
       </Button>
    </children>
 </VBox>

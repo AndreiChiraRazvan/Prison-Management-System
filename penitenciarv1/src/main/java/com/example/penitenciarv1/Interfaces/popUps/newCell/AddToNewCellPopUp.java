@@ -1,4 +1,4 @@
-package com.example.penitenciarv1.Interfaces.popUps;
+package com.example.penitenciarv1.Interfaces.popUps.newCell;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +12,7 @@ public class AddToNewCellPopUp extends Application {
     private int guardianId;
 
     public AddToNewCellPopUp() {
-        // Default constructor
+
     }
 
     public AddToNewCellPopUp(String inmateId, int guardianId) {

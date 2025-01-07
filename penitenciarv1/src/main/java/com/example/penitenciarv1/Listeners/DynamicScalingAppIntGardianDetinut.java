@@ -3,25 +3,20 @@ package com.example.penitenciarv1.Listeners;
 import com.example.penitenciarv1.Database.DatabaseConnector;
 import com.example.penitenciarv1.Entities.Inmates;
 import com.example.penitenciarv1.Interfaces.GuardianInterface;
-import com.example.penitenciarv1.Interfaces.popUps.AddToNewCellPopUp;
+import com.example.penitenciarv1.Interfaces.popUps.newCell.AddToNewCellPopUp;
+import com.example.penitenciarv1.Interfaces.popUps.solitudeRoom.AddToSolitudePopUp;
 import javafx.application.Application;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.function.Function;
 
 
 public class DynamicScalingAppIntGardianDetinut extends Application {
@@ -92,7 +87,14 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
                     addToSolitude.setOnAction(event -> {
                         Inmates inmate = getTableRow().getItem();
                         if (inmate != null) {
-                            System.out.println("Action for: " + inmate.getName().get());
+                            AddToSolitudePopUp newPopUp = new AddToSolitudePopUp(inmate.getid().get(), idUserGardian);
+                            Stage stage = new Stage();
+                            try {
+                                newPopUp.start(stage);
+                            }catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            primaryStage.close();
                         }
                     });
                     setGraphic(addToSolitude);
@@ -110,7 +112,6 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
                     moveToAnotherCell.setOnAction(event -> {
                        Inmates inmate = getTableRow().getItem();
                        if (inmate != null) {
-                           System.out.println("ASASDS" + inmate.getid().get());
                            AddToNewCellPopUp popUp = new AddToNewCellPopUp(inmate.getid().get(), idUserGardian);
                            Stage stage = new Stage();
                            try {

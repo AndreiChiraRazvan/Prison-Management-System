@@ -1,13 +1,13 @@
-package com.example.penitenciarv1.Interfaces.popUps;
+package com.example.penitenciarv1.Interfaces.popUps.newCell;
 
 import com.example.penitenciarv1.Database.DatabaseConnector;
+import com.example.penitenciarv1.Interfaces.popUps.NoActionPopUp;
 import com.example.penitenciarv1.Listeners.DynamicScalingAppIntGardianDetinut;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -76,9 +76,9 @@ public class AddToNewCellController implements Initializable {
     }
 
     public void customInitialize() {
-        System.out.println("Custom initialize with guardianId: " + guardianId);
-        ArrayList<String> emptyCells = databaseConnector.getEmptyCells(databaseConnector.getGuardianId(guardianId));
-        comboBox.getItems().addAll(emptyCells);
+
+
+        
     }
 
     @Override

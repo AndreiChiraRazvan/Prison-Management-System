@@ -10,8 +10,14 @@
     -fx-background-color: linear-gradient(to bottom, #ff7e5f, #feb47b);
 }
 
-.combo-box-base {
+.combo-box .list-cell{
     -fx-background-color: linear-gradient(to bottom, #ff7e5f, #feb47b);
+    -fx-text-fill: white;
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: linear-gradient(to bottom, #feb47b, #ff7e5f); /* Lighter or contrasting gradient */
+    -fx-text-fill: black; /* Change text color for better visibility */
 }
 
 .button {
@@ -39,6 +45,11 @@
 }
 
 .text-area {
+    -fx-background-color: linear-gradient(to bottom, #ff7e5f, #feb47b);
+    -fx-text-fill: darkblue;
+}
+
+.text-field {
     -fx-background-color: linear-gradient(to bottom, #ff7e5f, #feb47b);
     -fx-text-fill: darkblue;
 }
