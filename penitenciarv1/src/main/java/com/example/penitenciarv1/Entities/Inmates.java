@@ -10,11 +10,12 @@ public class Inmates {
     private StringProperty profession;
     private StringProperty idCelula;
 
-    public Inmates(String name, String id, String sentenceRemained, String profession) {
+    public Inmates(String name, String id, String sentenceRemained) {
 
         this.name = new SimpleStringProperty(name);
         this.id = new SimpleStringProperty(id);
-
+        this.sentenceRemained = new SimpleStringProperty(sentenceRemained);
+        this.profession = new SimpleStringProperty("");
     }
 
     public Inmates() {

@@ -1,7 +1,9 @@
 package com.example.penitenciarv1.Interfaces;
 
+import com.example.penitenciarv1.Controllers.ListItem;
 import com.example.penitenciarv1.Database.DatabaseConnector;
 
+import com.example.penitenciarv1.Entities.Inmates;
 import com.example.penitenciarv1.Entities.User;
 import com.example.penitenciarv1.Entities.Visit;
 import com.example.penitenciarv1.HelloApplication;
@@ -9,17 +11,22 @@ import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.function.Function;
+
+import static java.lang.Double.max;
+import static java.lang.Double.min;
 
 public class InterfataVizitator extends Application {
     @FXML
@@ -31,6 +38,10 @@ public class InterfataVizitator extends Application {
     TabPane tabPane;
     @FXML
     private Tab backButton;
+    @FXML
+    private ListView<Inmates>listViewDetinut;
+    @FXML
+    private AnchorPane parentOfListView;
     public void start(Stage primaryStage, DatabaseConnector databaseConnector, User newUser) {
         try {
 
@@ -61,14 +72,20 @@ public class InterfataVizitator extends Application {
             programareTab = (AnchorPane) scene2.lookup("#programareTab");
             tabPane = (TabPane) scene2.lookup("#mainContainer");
             backButton = new Tab("Back");
+            listViewDetinut = (ListView<Inmates>) scene2.lookup("#listViewDetinut");
+            parentOfListView = (AnchorPane) scene2.lookup("#parentOfListView");
+
             tabPane.getTabs().add(backButton);
             // we just added/recognized all the needed object
 
             TreeTableView<Visit> treeTableView = new TreeTableView<>();
             String css = getClass().getResource("tableViewVizitatori.css").toExternalForm();
             treeTableView.getStylesheets().add(css);
-            resizeWindowWidth(tabPane, treeTableView, programareTab, mainVbox, 650);
-            resizeWindowHeight(tabPane, treeTableView, programareTab, mainVbox, 500);
+
+
+
+            resizeWindowWidth(tabPane, treeTableView, programareTab, mainVbox, scene2.getWidth());
+            resizeWindowHeight(tabPane, treeTableView, programareTab, mainVbox, scene2.getHeight());
             resizeTable(treeTableView, 650);
             // we initialized the table
 
@@ -82,7 +99,7 @@ public class InterfataVizitator extends Application {
             // on going back
 
             primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
-                // Do whatever you want
+                // Do whatever you wantr
                 resizeWindowWidth(tabPane, treeTableView, programareTab, mainVbox, newVal);
             });
 
@@ -90,34 +107,15 @@ public class InterfataVizitator extends Application {
                 // Do whatever you want
                 resizeWindowHeight(tabPane, treeTableView, programareTab, mainVbox, newVal);
             });
-            treeTableView.widthProperty().addListener((obs, oldVal, newVal) -> {
-                resizeTable(treeTableView, newVal);
-            });
-            treeTableView.setFixedCellSize(60.0);
 
 
-            TreeItem<Visit> rootItem = new TreeItem<>(new Visit("", "", "", "", ""));
-            rootItem.setExpanded(true);
-            treeTableView.setRoot(rootItem);
-            treeTableView.setShowRoot(false);
 
-            // Coloane
-
-            TreeTableColumn<Visit, String> col3 = createColumn("Start Time", person -> person.getStartTime());
-            TreeTableColumn<Visit, String> col4 = createColumn("End Time", person -> person.getEndTime());
-            TreeTableColumn<Visit, String> col5 = createColumn("Name of Inmate", person -> person.getInmateName());
-
-
-            treeTableView.getColumns().addAll(col3, col4, col5);
-            ArrayList<Visit> data = getDataFromDatabase(databaseConnector, newUser);
-            addDataToTreeTable(rootItem, data);
             // Set data
             // now we add it to the panel
+            setUpDetaliiProgramari(primaryStage, treeTableView, databaseConnector, newUser);
+            setUpDetaliiDetinut(databaseConnector, newUser);
 
-            AnchorPane.setTopAnchor(treeTableView, 25.5);
-            AnchorPane.setLeftAnchor(treeTableView, 10.0);
-            AnchorPane.setRightAnchor(treeTableView, 10.0);
-            AnchorPane.setBottomAnchor(treeTableView, 10.0);
+
             programareTab.setPrefWidth(scene2.getWidth());
             programareTab.setPrefHeight(scene2.getHeight());
 
@@ -128,6 +126,36 @@ public class InterfataVizitator extends Application {
             e.printStackTrace();
             System.err.println("Error loading FXML file. Ensure the file path is correct and the file exists.");
         }
+    }
+
+    private void setUpDetaliiProgramari(Stage primaryStage, TreeTableView<Visit> treeTableView, DatabaseConnector databaseConnector, User newUser) {
+
+        treeTableView.widthProperty().addListener((obs, oldVal, newVal) -> {
+            resizeTable(treeTableView, newVal);
+        });
+
+        treeTableView.setFixedCellSize(60.0);
+        TreeItem<Visit> rootItem = new TreeItem<>(new Visit("", "", "", "", ""));
+        rootItem.setExpanded(true);
+        treeTableView.setRoot(rootItem);
+        treeTableView.setShowRoot(false);
+        // dau resize-ul acum
+
+        // Coloane
+
+        TreeTableColumn<Visit, String> col3 = createColumn("Start Time", person -> person.getStartTime());
+        TreeTableColumn<Visit, String> col4 = createColumn("End Time", person -> person.getEndTime());
+        TreeTableColumn<Visit, String> col5 = createColumn("Name of Inmate", person -> person.getInmateName());
+
+
+        treeTableView.getColumns().addAll(col3, col4, col5);
+        ArrayList<Visit> data = getDataFromDatabase(databaseConnector, newUser);
+        addDataToTreeTable(rootItem, data);
+
+        AnchorPane.setTopAnchor(treeTableView, 25.5);
+        AnchorPane.setLeftAnchor(treeTableView, 10.0);
+        AnchorPane.setRightAnchor(treeTableView, 10.0);
+        AnchorPane.setBottomAnchor(treeTableView, 10.0);
     }
 
     private void addDataToTreeTable(TreeItem<Visit> rootItem, ArrayList<Visit> data) {
@@ -151,16 +179,45 @@ public class InterfataVizitator extends Application {
         tabPane.setPrefHeight(newVal.doubleValue());
         programareTab.setPrefHeight(newVal.doubleValue());
         mainVbox.setPrefHeight(newVal.doubleValue());
+        double actualHeigth = newVal.doubleValue();
+
+
+        parentOfListView.prefHeightProperty().bind(mainVbox.prefHeightProperty());
 
         table.setPrefHeight(newVal.doubleValue());
     }
 
     private void resizeWindowWidth(TabPane tabPane, TreeTableView<Visit> table, AnchorPane programareTab, VBox mainVbox, Number width) {
+        // we resize everything based on width
         tabPane.setPrefWidth(width.doubleValue());
         table.setPrefWidth(width.doubleValue());
-
+        // need to do this for the padding to be the same regardless if you change width or height
+        //listViewDetinut.setPadding(new Insets(listViewDetinut.getHeight() * 0.05, width.doubleValue() * 0.1, listViewDetinut.getHeight() * 0.1, width.doubleValue() * 0.1));
         programareTab.setPrefWidth(width.doubleValue());
         mainVbox.setPrefWidth(width.doubleValue());
+
+        parentOfListView.prefWidthProperty().bind(mainVbox.widthProperty());
+    }
+    private void setUpDetaliiDetinut(DatabaseConnector databaseConnector, User newUser){
+
+
+        listViewDetinut.getItems().add(new Inmates());
+        getElementsToListViewFromDatabase(databaseConnector, newUser);
+
+        listViewDetinut.prefHeightProperty().bind(parentOfListView.prefHeightProperty());
+        listViewDetinut.prefWidthProperty().bind(parentOfListView.prefWidthProperty());
+
+
+        listViewDetinut.setCellFactory( param -> new ListItem(listViewDetinut));
+
+
+    }
+
+    private void getElementsToListViewFromDatabase(DatabaseConnector databaseConnector, User newUser) {
+        ArrayList<Inmates> inmates = databaseConnector.getVisitedInmates(newUser.getId());
+        listViewDetinut.getItems().clear();
+        listViewDetinut.getItems().addAll(inmates);
+
     }
 
     private void changeBackground(Scene scene, String imageName) {
@@ -188,6 +245,7 @@ public class InterfataVizitator extends Application {
     public void start(Stage primaryStage) throws Exception {
 
     }
+    // we resize the width
     private void resizeTable(TreeTableView table, Number newVal) {
         double totalWidth = newVal.doubleValue();
         table.setColumnResizePolicy(TreeTableView.CONSTRAINED_RESIZE_POLICY);

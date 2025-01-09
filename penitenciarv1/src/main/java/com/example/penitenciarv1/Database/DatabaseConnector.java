@@ -366,4 +366,23 @@ public class DatabaseConnector {
 
 
     }
+
+    public ArrayList<Inmates> getVisitedInmates(int idVisitor) {
+        try{
+            CallableStatement cs = conn.prepareCall("{CALL get_data_detinut_from_vizitor(?)}");
+            cs.setInt(1, idVisitor);
+            ResultSet rs = cs.executeQuery();
+            ArrayList<Inmates> inmates = new ArrayList<>();
+            while (rs.next()) {
+                String idInmate = rs.getString("fk_id_prizioner");
+                String numeInmate = rs.getString("nume");
+                String remainingSentence = rs.getString("sentence_remained");
+                inmates.add(new Inmates(numeInmate, idInmate, remainingSentence));
+
+            }
+            return inmates;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
