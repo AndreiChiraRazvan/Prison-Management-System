@@ -41,6 +41,10 @@ public class Inmates {
         this.name = name;
     }
 
+    public void setName(String name){
+        this.name = new SimpleStringProperty(name);
+    }
+
     public StringProperty getSentenceRemained() {
         return sentenceRemained;
     }
@@ -64,4 +68,6 @@ public class Inmates {
     public StringProperty getIdCelula() {
         return idCelula;
     }
+
+
 }

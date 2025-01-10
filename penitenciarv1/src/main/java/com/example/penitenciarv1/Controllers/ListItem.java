@@ -5,6 +5,7 @@ import com.example.penitenciarv1.Entities.Inmates;
 import com.example.penitenciarv1.Entities.Sentence;
 import com.example.penitenciarv1.Entities.Visit;
 import com.example.penitenciarv1.HelloApplication;
+import com.example.penitenciarv1.Interfaces.InterfataVizitator;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -180,9 +181,9 @@ public class ListItem extends ListCell<Inmates> {
                 loadTheTableOfSentences(person.getid().get());
                 everyColumnIsEntered = true;
             }
-
+            // /Avatars/Inmates/"+ person.getName().get() +".jpg
             setImagePath("../Avatars/Inmates/"+ person.getName().get() +".jpg");
-           imageView.setImage(image);
+            imageView.setImage(image);
             iconLabel.setText("Sentence left: (" + person.getSentenceRemained().get() + ")");
             modifyLayouts();
             setGraphic(layout); // Set the VBox as the cell's graphic
@@ -191,12 +192,15 @@ public class ListItem extends ListCell<Inmates> {
     }
 
     private void setImagePath(String imagePathString) {
-        if(HelloApplication.class.getResource(imagePathString) != null){
-            imagePath = HelloApplication.class.getResource(imagePathString).toExternalForm();
+        ///  format is:
+        /// "../Avatars/Inmates/"+ person.getName().get() +".jpg" for each inmate
+        /// replace Inmates with Guardians for guardians
+        if(InterfataVizitator.class.getResource(imagePathString) != null){
+            imagePath = InterfataVizitator.class.getResource(imagePathString).toExternalForm();
             image = new Image(imagePath);
         }
         else{
-            System.out.println(HelloApplication.class.getResource(imagePathString));
+            System.out.println(InterfataVizitator.class.getResource(imagePathString));
             System.out.println(imagePathString);
         }
     }

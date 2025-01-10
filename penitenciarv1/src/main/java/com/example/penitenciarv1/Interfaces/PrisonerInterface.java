@@ -1,8 +1,10 @@
 package com.example.penitenciarv1.Interfaces;
 
+import com.example.penitenciarv1.Entities.Inmates;
 import com.example.penitenciarv1.HelloApplication;
 import com.example.penitenciarv1.Listeners.DynamicScallingAppIntPrisonerFutureTasks;
 import com.example.penitenciarv1.Listeners.DynamicScallingAppIntPrisonerPastTask;
+import eu.hansolo.toolbox.properties.StringProperty;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -27,6 +29,7 @@ public class PrisonerInterface extends Application {
 
     public PrisonerInterface(int idDetinut) {
         this.idUserDetinut = idDetinut;
+
     }
 
     @Override
@@ -185,7 +188,10 @@ public class PrisonerInterface extends Application {
             );
 
             // Profile image with circular styling
-            ImageView imageView = createImageView();
+            Inmates inmate = new Inmates();
+            inmate.setName(detinutName);
+
+            ImageView imageView = createImageView(inmate);
             if (imageView != null) {
                 imageView.setFitWidth(130);
                 imageView.setFitHeight(130);
@@ -418,9 +424,11 @@ public class PrisonerInterface extends Application {
         }
 
 }
-    private ImageView createImageView() {
+    private ImageView createImageView(Inmates inmate) {
         try {
             Image image = new Image(getClass().getResource("/com/example/penitenciarv1/images/pozadetinut.png").toExternalForm());
+
+            image = setImagePath("../Avatars/Guardians/"+ inmate.getName().get() +".jpg", image);
             ImageView imageView = new ImageView(image);
             imageView.setFitWidth(100);
             imageView.setFitHeight(100);
@@ -430,6 +438,22 @@ public class PrisonerInterface extends Application {
             System.out.println("Error loading image: " + e.getMessage());
             return null;
         }
+    }
+
+    private Image setImagePath(String imagePathString, Image image) {
+        ///  format is:
+        /// "../Avatars/Inmates/"+ person.getName().get() +".jpg" for each inmate
+        /// replace Inmates with Guardians for guardians
+
+        if(PrisonerInterface.class.getResource(imagePathString) != null){
+            String imagePath = PrisonerInterface.class.getResource(imagePathString).toExternalForm();
+            image = new Image(imagePath);
+        }
+        else{
+            System.out.println(PrisonerInterface.class.getResource(imagePathString));
+            System.out.println(imagePathString);
+        }
+        return image;
     }
 
     private AnchorPane createAccountDetails() {
