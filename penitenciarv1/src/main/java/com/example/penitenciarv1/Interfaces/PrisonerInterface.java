@@ -2,8 +2,10 @@ package com.example.penitenciarv1.Interfaces;
 
 import com.example.penitenciarv1.Entities.Inmates;
 import com.example.penitenciarv1.HelloApplication;
+import com.example.penitenciarv1.Listeners.DynamicScallingAppIntLaundry;
 import com.example.penitenciarv1.Listeners.DynamicScallingAppIntPrisonerFutureTasks;
 import com.example.penitenciarv1.Listeners.DynamicScallingAppIntPrisonerPastTask;
+import com.example.penitenciarv1.Listeners.DynamicScallingAppPrisonerVisit;
 import eu.hansolo.toolbox.properties.StringProperty;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -29,7 +31,6 @@ public class PrisonerInterface extends Application {
 
     public PrisonerInterface(int idDetinut) {
         this.idUserDetinut = idDetinut;
-
     }
 
     @Override
@@ -418,9 +419,29 @@ public class PrisonerInterface extends Application {
         } else if ("Daily Schedule".equalsIgnoreCase(taskType)) {
 
         } else if ("Visit Schedule".equalsIgnoreCase(taskType)) {
+            String currentUsername = Session.getCurrentUsername();
 
+            DynamicScallingAppPrisonerVisit prisonerInterface = new DynamicScallingAppPrisonerVisit(currentUsername); // Inițializează clasa cu username-ul utilizatorului
+            System.out.println("Opening DynamicScallingAppIntPrisoner for Guardian username: " + currentUsername);
+
+            Stage newStage = new Stage();
+            try {
+                prisonerInterface.start(newStage); // Pornește noua interfață
+            } catch (Exception ex) {
+                ex.printStackTrace(); // Gestionare erori
+            }
         } else if ("Laundry".equalsIgnoreCase(taskType)) {
+            String currentUsername = Session.getCurrentUsername();
 
+            DynamicScallingAppIntLaundry prisonerInterface = new DynamicScallingAppIntLaundry(currentUsername); // Inițializează clasa cu username-ul utilizatorului
+            System.out.println("Opening DynamicScallingAppIntPrisoner for Guardian username: " + currentUsername);
+
+            Stage newStage = new Stage();
+            try {
+                prisonerInterface.start(newStage); // Pornește noua interfață
+            } catch (Exception ex) {
+                ex.printStackTrace(); // Gestionare erori
+            }
         }
 
 }
