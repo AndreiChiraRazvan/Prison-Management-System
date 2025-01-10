@@ -11,12 +11,18 @@
     -fx-border-color: #aca5a5;
 
 }
+.tree-table-cell {
+    -fx-alignment: center;
+
+}
+
 .tree-table-row-cell {
     /*-fx-border-color: #aca5a5;*/
     /*-fx-border-width: "thin";*/
 }
 
 /* Style for odd and even rows */
+
 
 
 .tree-table-view .tree-table-row-cell. :hover td{

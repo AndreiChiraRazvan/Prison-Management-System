@@ -1,9 +1,6 @@
 package com.example.penitenciarv1.Database;
 
-import com.example.penitenciarv1.Entities.Guardian;
-import com.example.penitenciarv1.Entities.Inmates;
-import com.example.penitenciarv1.Entities.User;
-import com.example.penitenciarv1.Entities.Visit;
+import com.example.penitenciarv1.Entities.*;
 import com.example.penitenciarv1.Listeners.DynamicScallingAppIntPrisonerFutureTasks;
 import eu.hansolo.toolbox.time.DateTimes;
 import javafx.beans.property.SimpleStringProperty;
@@ -313,11 +310,20 @@ public class DatabaseConnector {
         return carceraInfo;
     }
 
-    private ArrayList<DateTimes> getAllSentencesOfOneInmate() {
+    public ArrayList<Sentence> getAllSentencesOfOneInmate(int idInmate) {
         try{
             ///  caut sentintele fiecariu detinut
-            ArrayList<DateTimes> sentences = new ArrayList<>();
-
+            ArrayList<Sentence> sentences = new ArrayList<>();
+            CallableStatement cs = conn.prepareCall("SELECT * FROM penitenciar.sentinta where fk_id_detinut = "+ idInmate +" ;");
+            
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()) {
+                    String categorie = rs.getString("categorie");
+                    String motivSpecific = rs.getString("motiv_specific");
+                    String start_time = rs.getString("start_time");
+                    String end_time = rs.getString("end_time");
+                    sentences.add(new Sentence(categorie, motivSpecific, start_time, end_time));
+            }
 
 
             return sentences;

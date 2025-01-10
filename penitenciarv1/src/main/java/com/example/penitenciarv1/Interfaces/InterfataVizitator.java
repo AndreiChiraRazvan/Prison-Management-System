@@ -208,7 +208,7 @@ public class InterfataVizitator extends Application {
         listViewDetinut.prefWidthProperty().bind(parentOfListView.prefWidthProperty());
 
 
-        listViewDetinut.setCellFactory( param -> new ListItem(listViewDetinut));
+        listViewDetinut.setCellFactory( param -> new ListItem(listViewDetinut, databaseConnector));
 
 
     }
