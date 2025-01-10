@@ -428,7 +428,7 @@ public class PrisonerInterface extends Application {
         try {
             Image image = new Image(getClass().getResource("/com/example/penitenciarv1/images/pozadetinut.png").toExternalForm());
 
-            image = setImagePath("../Avatars/Guardians/"+ inmate.getName().get() +".jpg", image);
+            image = setImagePath("../Avatars/Inmates/"+ inmate.getName().get() +".jpg", image);
             ImageView imageView = new ImageView(image);
             imageView.setFitWidth(100);
             imageView.setFitHeight(100);

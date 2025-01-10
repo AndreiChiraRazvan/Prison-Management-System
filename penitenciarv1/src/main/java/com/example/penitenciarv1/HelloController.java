@@ -39,7 +39,7 @@ public class HelloController {
     }
 
     @FXML
-    public void login_btn_onClick(ActionEvent e) throws IOException {
+    public void login_btn_onClick(ActionEvent e) throws Exception {
         String username = usr_txt.getText();
         String password = pw_txt.getText();
         System.out.println(username + password);
@@ -54,7 +54,8 @@ public class HelloController {
             stage.close();
             Stage newStage = new Stage();
             if(newUser.getAccessRights() == 0){
-                ;
+                WardenInterface newInterface = new WardenInterface();
+                newInterface.start(newStage);
             }
             if (newUser.getAccessRights() == 1)
             {
@@ -174,6 +175,8 @@ public class HelloController {
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Problem when introducing your data!");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

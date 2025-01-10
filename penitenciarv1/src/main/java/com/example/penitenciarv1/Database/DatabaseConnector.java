@@ -391,4 +391,8 @@ public class DatabaseConnector {
             throw new RuntimeException(e);
         }
     }
+
+    public Connection getConnection() {
+        return this.conn;
+    }
 }
