@@ -9,9 +9,7 @@ import com.example.penitenciarv1.Listeners.DynamicScallingAppIntPrisonerPastTask
 import com.example.penitenciarv1.Listeners.DynamicScallingAppPrisonerVisit;
 import com.example.penitenciarv1.Listeners.DynamicScalingAppDailySchedule;
 
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.ResultSet;
+import java.sql.*;
 
 
 import eu.hansolo.toolbox.properties.StringProperty;
@@ -349,7 +347,7 @@ public class PrisonerInterface extends Application {
             );
 
             // Sentence details with premium styling
-            Text sentenceDetails = new Text("Remaining Time: 2 years, 5 months, 12 days");
+            Text sentenceDetails = new Text("Fetching remaining time...");
             sentenceDetails.setFont(Font.font("Arial", 18));
             sentenceDetails.setStyle("-fx-text-fill: #2d3436;");
 
@@ -405,6 +403,19 @@ public class PrisonerInterface extends Application {
                 sentenceStage.close();
                 mainStage.show();
             });
+            // Fetch remaining sentence dynamically
+            // String username = "john_doe"; // Replace with dynamic username if needed
+            String currentUsername = Session.getCurrentUsername();
+
+            DatabaseConnector myInstance = new DatabaseConnector();
+            String remainingTime = myInstance.fetchRemainingSentence(currentUsername);
+
+        //    String remainingTime = fetchRemainingSentence(username);
+            if (remainingTime != null) {
+                sentenceDetails.setText(remainingTime);
+            } else {
+                sentenceDetails.setText("No sentence data found.");
+            }
 
             // Add components to the root layout
             rootLayout.getChildren().addAll(title, cardLayout, backButton);
@@ -489,6 +500,10 @@ public class PrisonerInterface extends Application {
         }
 
 }
+
+
+
+
     private ImageView createImageView(Inmates inmate) {
         try {
             Image image = new Image(getClass().getResource("/com/example/penitenciarv1/images/pozadetinut.png").toExternalForm());

@@ -391,6 +391,32 @@ public class DatabaseConnector {
             throw new RuntimeException(e);
         }
     }
+    public String fetchRemainingSentence(String username) {
+        if (conn == null) {
+            return "Database connection is not established.";
+        }
+
+        String callQuery = "{CALL GetRemainingSentence(?)}";
+        try (CallableStatement callableStatement = conn.prepareCall(callQuery)) {
+            callableStatement.setString(1, username);
+
+            try (ResultSet resultSet = callableStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int years = resultSet.getInt("Ani");
+                    int months = resultSet.getInt("Luni");
+                    int days = resultSet.getInt("Zile");
+                    return String.format("Remaining Time: %d years, %d months, %d days", years, months, days);
+                } else {
+                    return "No data available for the given username.";
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Error fetching sentence data: " + e.getMessage();
+        }
+    }
+
+
 
     public Connection getConnection() {
         return this.conn;
