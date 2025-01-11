@@ -89,6 +89,9 @@ public class InterfataVizitator extends Application {
             resizeTable(treeTableView, 650);
             // we initialized the table
 
+            programareTab.setStyle("-fx-padding: 20; -fx-background-color: linear-gradient(to bottom, #e3f2fd, #bbdefb);");
+            parentOfListView.setStyle(" -fx-background-color: linear-gradient(to bottom, #e3f2fd, #bbdefb);");
+
 
             backButton.setOnSelectionChanged(event -> {
                 HelloApplication newApplication = new HelloApplication();

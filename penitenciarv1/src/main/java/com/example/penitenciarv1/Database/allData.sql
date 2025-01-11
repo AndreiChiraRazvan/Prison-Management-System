@@ -1,4 +1,6 @@
 -- Insert into Bloc
+use penitenciar;
+
 INSERT IGNORE INTO `Bloc` (`id_bloc`, `descriere_bloc`) VALUES
 (1, 'Bloc A'),
 (2, 'Bloc B'),
@@ -28,7 +30,8 @@ INSERT IGNORE INTO `Utilizator` (`id_utilizator`, `username`, `password`, `drept
 (2, 'guard1', 'pass123', 1),
 (3, 'inmate1', 'pass123', 2),
 (4, 'visitor1', 'pass123', 3),
-(5, 'visitor2', 'pass123', 3);
+(5, 'visitor2', 'pass123', 3),
+(6, 'chi', '1234', 3);
 
 -- Insert into Gardian
 INSERT IGNORE INTO `Gardian` (`id`, `fk_id_shift`, `fk_id_utilizator`) VALUES
@@ -281,10 +284,122 @@ END$$
 DELIMITER ;
 
 
+DELIMITER $$
+DROP PROCEDURE IF EXISTS `GetRemainingSentence`$$
+CREATE PROCEDURE GetRemainingSentence(
+    IN p_username VARCHAR(255)
+)
+BEGIN
+    DECLARE release_date DATETIME;
+    DECLARE remaining_days INT;
+    DECLARE years INT;
+    DECLARE months INT;
+    DECLARE days INT;
 
+    SELECT s.end_time
+    INTO release_date
+    FROM Detinut d
+             INNER JOIN Utilizator u ON d.fk_id_utilizator = u.id_utilizator
+             INNER JOIN sentinta s ON s.fk_id_detinut = d.id_detinut
+    WHERE u.username = p_username;
 
+    IF release_date IS NULL THEN
+        SELECT 'Nu există sentință asociată pentru acest utilizator.' AS mesaj;
 
+    END IF;
 
+    SET remaining_days = DATEDIFF(release_date, CURDATE());
+
+    IF remaining_days <= 0 THEN
+        SELECT 'Deținutul a fost eliberat deja.' AS mesaj;
+    ELSE
+        -- Conversie în ani, luni și zile
+        SET years = remaining_days DIV 365;
+        SET months = (remaining_days MOD 365) DIV 30;
+        SET days = (remaining_days MOD 365) MOD 30;
+
+        SELECT years AS Ani, months AS Luni, days AS Zile;
+    END IF;
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE PROCEDURE GetDailyScheduleByUsername(
+    IN detinutUsername VARCHAR(255)
+)
+BEGIN
+    SELECT
+        t.id_task AS ID,
+        t.description AS Descriere,
+        t.difficulty AS Dificultate,
+        DATE_FORMAT(t.start_time, '%Y-%m-%d %H:%i') AS DataInceput,
+        DATE_FORMAT(t.end_time, '%Y-%m-%d %H) AS DataInceputtaSfarsit
+    FROM
+        Task_inchisoare t
+    INNER JOIN
+        Inscriere_task i ON t.id_task = i.fk_id_task
+    INNER JOIN
+        Detinut d ON i.fk_id_detinut = d.id_detinut
+    INNER JOIN
+        Utilizator u ON d.fk_id_utilizator = u.id_utilizator
+    WHERE
+        u.username = detinutUsername
+
+    UNION ALL
+
+    SELECT
+        p.id_programare AS ID,
+        'Vizită' AS Descriere,
+        NULL AS Dificultate,
+        DATE_FORMAT(p.start_time, '%Y-%m-%d %H:%i') AS DataInceput,
+        DATE_FORMAT(p.end_time, '%Y-%m-%d %H:%i') AS DataSfarsit
+    FROM
+        Programari p
+    INNER JOIN
+        Detinut d ON p.fk_id_prizioner = d.id_detinut
+    INNER JOIN
+        Utilizator u ON d.fk_id_utilizator = u.id_utilizator
+    WHERE
+        u.username = detinutUsername
+        AND p.tip_programari = 1
+
+    UNION ALL
+
+    SELECT
+        p.id_programare AS ID,
+        'Program Spălătorie' AS Descriere,
+        NULL AS Dificultate,
+        DATE_FORMAT(p.start_time, '%Y-%m-%d %H:%i') AS DataInceput,
+        DATE_FORMAT(p.end_time, '%Y-%m-%d %H:%i') AS DataSfarsit
+    FROM
+        Programari p
+    INNER JOIN
+        Detinut d ON p.fk_id_prizioner = d.id_detinut
+    INNER JOIN
+        Utilizator u ON d.fk_id_utilizator = u.id_utilizator
+    WHERE
+        u.username = detinutUsername
+        AND p.tip_programari = 2
+    ORDER BY DataInceput;
+END $$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE EVENT update_carcera_status_event
+    ON SCHEDULE EVERY 1 MINUTE
+    DO
+    BEGIN
+        UPDATE carcera c
+            JOIN inregistrare_carcera ic ON c.id_carcera = ic.fk_id_carcera
+        SET c.is_free = 1
+        WHERE ic.end_time < NOW();
+    END$$
+
+DELIMITER ;
 
 
 

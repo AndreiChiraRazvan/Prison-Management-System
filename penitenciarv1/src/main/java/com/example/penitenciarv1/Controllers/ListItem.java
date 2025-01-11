@@ -13,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
 import java.util.ArrayList;
@@ -90,7 +91,12 @@ public class ListItem extends ListCell<Inmates> {
         imageView.fitWidthProperty().bind(imageBox.widthProperty());
         imageView.fitHeightProperty().bind(imageBox.heightProperty());
         imageView.setPreserveRatio(true);
-
+//        Rectangle clip = new Rectangle(imageView.getFitWidth(), imageView.getFitHeight()); // Match ImageView dimensions
+//        clip.setArcWidth(30);  // Set rounded corner width
+//        clip.setArcHeight(30); // Set rounded corner height
+//          this thing should add corners
+//        // Apply the clip to the ImageView
+//        imageView.setClip(clip);
 
         imageView.setStyle("-fx-alignment: center");
 
@@ -98,13 +104,10 @@ public class ListItem extends ListCell<Inmates> {
         theTable.widthProperty().addListener((obs, oldVal, newVal) -> {
             resizeTable(theTable, newVal);
         });
-
         theTable.prefHeightProperty().bind(sentinteDetinutVBox.heightProperty().multiply(0.90));
         // imaginea va fi 1/2 din detaliiDetinutVBox
-        theTable.getStyleClass().add(getClass().getResource("../Interfaces/tableViewVizitatori.css").toExternalForm());
-        theTable.setStyle(".tree-table-cell {\n" +
-                "    -fx-background-color: red;\n" +
-                "}");
+        //theTable.getStyleClass().add(getClass().getResource("../Interfaces/notSelectableRow.css").toExternalForm());
+
         layout.getStylesheets().add(getClass().getResource("ListItem.css").toExternalForm());
         iconLabel.getStyleClass().add(getClass().getResource("ListItem.css").toExternalForm());
         textLabel.getStyleClass().add(getClass().getResource("ListItem.css").toExternalForm());
@@ -116,6 +119,7 @@ public class ListItem extends ListCell<Inmates> {
         theTable.setRoot(rootItem);
         theTable.setShowRoot(false);
         //
+        theTable.setSelectionModel(null);
 
 
 
