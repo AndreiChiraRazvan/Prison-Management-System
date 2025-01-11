@@ -1,11 +1,19 @@
 package com.example.penitenciarv1.Interfaces;
 
+import com.example.penitenciarv1.Database.DatabaseConnector;
 import com.example.penitenciarv1.Entities.Inmates;
 import com.example.penitenciarv1.HelloApplication;
 import com.example.penitenciarv1.Listeners.DynamicScallingAppIntLaundry;
 import com.example.penitenciarv1.Listeners.DynamicScallingAppIntPrisonerFutureTasks;
 import com.example.penitenciarv1.Listeners.DynamicScallingAppIntPrisonerPastTask;
 import com.example.penitenciarv1.Listeners.DynamicScallingAppPrisonerVisit;
+import com.example.penitenciarv1.Listeners.DynamicScalingAppDailySchedule;
+
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
+
+
 import eu.hansolo.toolbox.properties.StringProperty;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -19,6 +27,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.sql.ResultSet;
 
 public class PrisonerInterface extends Application {
 
@@ -177,6 +187,30 @@ public class PrisonerInterface extends Application {
 
 
         if ("Profile".equalsIgnoreCase(taskType)) {
+            // Preia detaliile deținutului din baza de date
+            DatabaseConnector dbConnector = new DatabaseConnector(); // Inițializare conexiune
+            String query = "SELECT u.username AS Username, d.nume AS NumeDetinut " +
+                    "FROM Detinut d " +
+                    "INNER JOIN Utilizator u ON d.fk_id_utilizator = u.id_utilizator " +
+                    "WHERE u.id_utilizator = " + idUserDetinut;
+
+            String username = "";
+            String detinutName = "";
+
+            try (Statement statement = dbConnector.conn.createStatement();
+                 ResultSet resultSet = statement.executeQuery(query)) {
+
+                if (resultSet.next()) {
+                    username = resultSet.getString("Username");
+                    detinutName = resultSet.getString("NumeDetinut");
+                } else {
+                    System.out.println("No data found for user ID: " + idUserDetinut);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+
             Stage profileStage = new Stage();
             VBox profileLayout = new VBox();
             profileLayout.setSpacing(25);
@@ -228,7 +262,7 @@ public class PrisonerInterface extends Application {
                             "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 6);"
             );
 
-            Text name = new Text(detinutName + " (" + detinutUsername + ")");
+            Text name = new Text(detinutName + " (" + username + ")");
             name.setFont(Font.font("Arial", 18));
             name.setStyle("-fx-text-fill: #34495e; -fx-font-weight: bold;");
 
@@ -417,7 +451,17 @@ public class PrisonerInterface extends Application {
             }
 
         } else if ("Daily Schedule".equalsIgnoreCase(taskType)) {
+            String currentUsername = Session.getCurrentUsername();
 
+            DynamicScalingAppDailySchedule prisonerInterface = new DynamicScalingAppDailySchedule(currentUsername); // Inițializează clasa cu username-ul utilizatorului
+            System.out.println("Opening DynamicScallingAppIntPrisoner for Guardian username: " + currentUsername);
+
+            Stage newStage = new Stage();
+            try {
+                prisonerInterface.start(newStage); // Pornește noua interfață
+            } catch (Exception ex) {
+                ex.printStackTrace(); // Gestionare erori
+            }
         } else if ("Visit Schedule".equalsIgnoreCase(taskType)) {
             String currentUsername = Session.getCurrentUsername();
 
