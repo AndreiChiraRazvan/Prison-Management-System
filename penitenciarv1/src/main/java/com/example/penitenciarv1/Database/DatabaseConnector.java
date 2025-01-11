@@ -5,6 +5,7 @@ import com.example.penitenciarv1.Listeners.DynamicScallingAppIntPrisonerFutureTa
 import eu.hansolo.toolbox.time.DateTimes;
 import javafx.beans.property.SimpleStringProperty;
 
+import javax.print.DocFlavor;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -308,6 +309,31 @@ public class DatabaseConnector {
             throw new RuntimeException(e);
         }
         return carceraInfo;
+    }
+
+    public void updateCarceraStatus(int id_carcera){
+        String updateStatusQuery = "UPDATE carcera SET is_free = ? WHERE id_carcera = ?";
+        try {
+            CallableStatement cs = conn.prepareCall(updateStatusQuery);
+            cs.setInt(1, 0);
+            cs.setInt(2, id_carcera);
+            cs.execute();
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void newRegistrationToSolitude(String idInmate, int idCarcera, String endTime) {
+        String newInsertQuery = "INSERT INTO `inregistrare_carcera`(`fk_id_carcera`, `fk_id_detinut`, `end_time`) VALUES(?,?,?);";
+        try{
+            CallableStatement cs = conn.prepareCall(newInsertQuery);
+            cs.setInt(1, idCarcera);
+            cs.setString(2, idInmate);
+            cs.setString(3, endTime);
+            cs.execute();
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
 
     public ArrayList<Sentence> getAllSentencesOfOneInmate(int idInmate) {

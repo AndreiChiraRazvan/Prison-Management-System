@@ -1,5 +1,6 @@
 package com.example.penitenciarv1.Interfaces;
 
+import com.example.penitenciarv1.HelloApplication;
 import com.example.penitenciarv1.Listeners.DynamicScalingAppIntGardianColegiPenitenciar;
 import com.example.penitenciarv1.Listeners.DynamicScalingAppIntGardianDetinut;
 import com.example.penitenciarv1.Listeners.DynamicScalingAppIntGardianColegiBloc;
@@ -49,6 +50,8 @@ public class GuardianInterface extends Application {
 
         Menu account = new Menu("Account");
         menuBar.getMenus().addAll(coleagues, inmates, account);
+        MenuItem logOut = new MenuItem("Log out");
+        account.getItems().add(logOut);
 
         AnchorPane.setTopAnchor(menuBar, 0.0);
         AnchorPane.setLeftAnchor(menuBar, 0.0);
@@ -80,6 +83,13 @@ public class GuardianInterface extends Application {
             }catch (Exception ex){
                 ex.printStackTrace();
             }
+        });
+
+        logOut.setOnAction(e -> {
+           primaryStage.close();
+           Stage logIn = new Stage();
+           HelloApplication logInApp = new HelloApplication();
+           logInApp.start(logIn);
         });
 
         root.getChildren().addAll(anchorPaneVbox1, stackPane);

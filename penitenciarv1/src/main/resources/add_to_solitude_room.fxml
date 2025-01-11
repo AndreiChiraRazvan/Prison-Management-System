@@ -11,11 +11,25 @@
 
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="464.0" prefWidth="530.0" styleClass="vbox" stylesheets="@background.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.penitenciarv1.Interfaces.popUps.solitudeRoom.AddToSolitudeController">
    <children>
-      <Label styleClass="label-title" text="Adding to solitude Room">
-         <VBox.margin>
-            <Insets bottom="40.0" top="30.0" />
-         </VBox.margin>
-      </Label>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="377.0">
+         <children>
+            <VBox prefHeight="100.0" prefWidth="120.0">
+               <children>
+                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#backToMainScene" prefHeight="40.0" prefWidth="74.0" stylesheets="@backButton.css" text="&lt;Back">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="100.0" prefWidth="324.0">
+               <children>
+                  <Label styleClass="label-title" text="Adding to solitude Room" />
+               </children>
+            </VBox>
+            <VBox prefHeight="100.0" prefWidth="116.0" />
+         </children>
+      </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="510.0">
          <children>
             <VBox prefHeight="100.0" prefWidth="128.0">
@@ -35,7 +49,7 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="100.0" prefWidth="132.0">
                <children>
-                  <Label prefHeight="72.0" prefWidth="128.0" stylesheets="@labelTips.css" text="Tip: Enter final time like this: yyyy-mmm-dd hh:mm:ss" wrapText="true" VBox.vgrow="ALWAYS">
+                  <Label prefHeight="72.0" prefWidth="128.0" stylesheets="@labelTips.css" text="Tip: Enter final time like this: yyyy-mm-dd hh:mm:ss" wrapText="true" VBox.vgrow="ALWAYS">
                      <font>
                         <Font size="10.0" />
                      </font>
@@ -69,7 +83,7 @@
             <Insets bottom="30.0" left="150.0" right="150.0" />
          </VBox.margin>
       </TextArea>
-      <Button mnemonicParsing="false" onAction="#updateAndExit" prefHeight="40.0" prefWidth="85.0" text="OK">
+      <Button fx:id="button" mnemonicParsing="false" onAction="#updateAndExit" prefHeight="40.0" prefWidth="85.0" text="OK">
          <VBox.margin>
             <Insets bottom="20.0" />
          </VBox.margin></Button>

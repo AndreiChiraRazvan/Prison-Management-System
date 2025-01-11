@@ -76,9 +76,11 @@ public class AddToNewCellController implements Initializable {
     }
 
     public void customInitialize() {
-
-
-        
+        ArrayList<String> emptyCells = databaseConnector.getEmptyCells(guardianId);
+        if (!emptyCells.isEmpty()) {
+            comboBox.getItems().addAll(emptyCells);
+        }else
+            comboBox.getItems().add("No free cells");
     }
 
     @Override

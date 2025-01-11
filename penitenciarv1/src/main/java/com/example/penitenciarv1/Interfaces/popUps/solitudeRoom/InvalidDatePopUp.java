@@ -1,4 +1,4 @@
-package com.example.penitenciarv1.Interfaces.popUps;
+package com.example.penitenciarv1.Interfaces.popUps.solitudeRoom;
 
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -10,17 +10,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class NoActionPopUp extends Application {
+public class InvalidDatePopUp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
         VBox root = new VBox();
-        root.setStyle("-fx-background-color: linear-gradient(to bottom, #ff7e5f, #feb47b);");
         root.setSpacing(40);
+        root.setStyle("-fx-background-color: linear-gradient(to bottom, #ff7e5f, #feb47b);");
         root.setAlignment(Pos.CENTER);
 
-        Label label = new Label("No action was performed");
-        label.setFont(Font.font("Arial", 24));
+        Label label = new Label("Invalid Date! Please enter a valid date !");
+        label.setFont(Font.font("Arial", 20));
         label.setTextFill(Color.WHITE);
 
         Button button = new Button("OK");
@@ -56,14 +56,14 @@ public class NoActionPopUp extends Application {
         ));
 
         button.setOnAction(e -> {
-           Stage window = (Stage) button.getScene().getWindow();
-           window.close();
+            Stage window = (Stage) button.getScene().getWindow();
+            window.close();
         });
+
         root.getChildren().addAll(label, button);
-
-
         Scene scene = new Scene(root, 400, 200);
         stage.setScene(scene);
         stage.show();
+
     }
 }
