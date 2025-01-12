@@ -82,7 +82,7 @@ public class AddToSolitudeController {
                 openMainStage(mainStage);
             }else{
                 //deschis fereastra noua care arata cat timp mai are pana poate adauga detinut
-                CountdownPopUp newPopUp = new CountdownPopUp(finalTime);
+                CountdownPopUp newPopUp = new CountdownPopUp(dbConnector.getLastIncarceration(carceraId));
                 Stage newStage = new Stage();
                 try {
                     newPopUp.start(newStage);

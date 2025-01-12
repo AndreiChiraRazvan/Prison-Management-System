@@ -336,6 +336,22 @@ public class DatabaseConnector {
         }
     }
 
+    public String getLastIncarceration(int carceraId) {
+        String lastIncarceration = null;
+        String query = "SELECT end_time FROM inregistrare_carcera WHERE fk_id_carcera = ? ORDER BY end_time DESC;";
+        try {
+            CallableStatement cs = conn.prepareCall(query);
+            cs.setInt(1, carceraId);
+            ResultSet rs = cs.executeQuery();
+            if(rs.next()) {
+                lastIncarceration = rs.getString(1);
+            }
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        return lastIncarceration;
+    }
+
     public ArrayList<Sentence> getAllSentencesOfOneInmate(int idInmate) {
         try{
             ///  caut sentintele fiecariu detinut

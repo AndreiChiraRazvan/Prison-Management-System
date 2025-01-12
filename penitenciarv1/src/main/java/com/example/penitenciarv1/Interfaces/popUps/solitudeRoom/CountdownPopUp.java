@@ -48,12 +48,9 @@ public class CountdownPopUp extends Application {
                     countdownLabel.setText("Error parsing time");
                     return;
                 }
-                System.out.println(targetTime);
                 LocalDateTime now = LocalDateTime.now();
-                System.out.println(now);
 
                 Duration duration = Duration.between(now, targetTime);
-
 
                 if(duration.isNegative() || duration.isZero()) {
                     countdownLabel.setText("Time's up! You can add new inmate!");
@@ -103,9 +100,9 @@ public class CountdownPopUp extends Application {
             stage.close();
         });
 
-        root.getChildren().addAll(label, backButton, countdownLabel);
+        root.getChildren().addAll(label, countdownLabel, backButton);
 
-        Scene scene = new Scene(root, 500, 600);
+        Scene scene = new Scene(root, 400, 350);
         stage.setScene(scene);
         stage.setTitle("Solitude Room");
         stage.show();
