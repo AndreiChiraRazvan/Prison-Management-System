@@ -144,6 +144,7 @@ public class WardenDashboard extends Application {
                         "-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 2, 2);" +
                         "-fx-transition: all 0.3s ease;"
         );
+
         button.setOnMouseEntered(e -> button.setStyle(
                 "-fx-background-color: #00cec9; " +
                         "-fx-text-fill: white; " +
@@ -154,6 +155,7 @@ public class WardenDashboard extends Application {
                         "-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 12, 0, 3, 3);" +
                         "-fx-transition: all 0.3s ease;"
         ));
+
         button.setOnMouseExited(e -> button.setStyle(
                 "-fx-background-color: #6c5ce7; " +
                         "-fx-text-fill: white; " +
