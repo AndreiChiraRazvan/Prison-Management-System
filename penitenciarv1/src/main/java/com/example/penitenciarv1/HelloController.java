@@ -55,7 +55,7 @@ public class HelloController {
             Stage newStage = new Stage();
             if(newUser.getAccessRights() == 0){
                 WardenInterface newInterface = new WardenInterface();
-                newInterface.start(newStage);
+                newInterface.start(databaseConnector, stage, newUser);
             }
             if (newUser.getAccessRights() == 1)
             {

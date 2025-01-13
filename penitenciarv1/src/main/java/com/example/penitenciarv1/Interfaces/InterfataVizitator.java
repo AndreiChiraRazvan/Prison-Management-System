@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -42,6 +43,21 @@ public class InterfataVizitator extends Application {
     private ListView<Inmates>listViewDetinut;
     @FXML
     private AnchorPane parentOfListView;
+
+    TreeTableView<Visit> treeTableView;
+
+    public InterfataVizitator(){
+
+    }
+    public InterfataVizitator(Stage stage2, DatabaseConnector databaseConnector,  User newUser) {
+        System.out.println("damn");
+        start(stage2, databaseConnector, newUser);
+        // here we can change everything, the new design should be here
+
+        treeTableView.setRoot(null);
+
+    }
+
     public void start(Stage primaryStage, DatabaseConnector databaseConnector, User newUser) {
         try {
 
@@ -78,7 +94,7 @@ public class InterfataVizitator extends Application {
             tabPane.getTabs().add(backButton);
             // we just added/recognized all the needed object
 
-            TreeTableView<Visit> treeTableView = new TreeTableView<>();
+            treeTableView = new TreeTableView<>();
             String css = getClass().getResource("tableViewVizitatori.css").toExternalForm();
             treeTableView.getStylesheets().add(css);
 
