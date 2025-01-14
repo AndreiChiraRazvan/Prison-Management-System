@@ -13,7 +13,7 @@
          <children>
             <TabPane fx:id="mainContainer" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab text="Programare">
+                <Tab fx:id="textProgramareTab" text="Programare">
                   <content>
                     <AnchorPane fx:id="programareTab" minHeight="0.0" minWidth="0.0" prefWidth="527.0" />
                   </content>

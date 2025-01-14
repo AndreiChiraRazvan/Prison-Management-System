@@ -2,6 +2,7 @@ package com.example.penitenciarv1.Database;
 
 import com.example.penitenciarv1.Entities.*;
 import com.example.penitenciarv1.Listeners.DynamicScallingAppIntPrisonerFutureTasks;
+import com.example.penitenciarv1.Services.WrapperClassArrayListAndInt;
 import eu.hansolo.toolbox.time.DateTimes;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -458,9 +459,82 @@ public class DatabaseConnector {
         }
     }
 
+    public String getInmateUsername(int idInmate) {
+        String inmateUsername = null;
+        String query = "{CALL  GetUsernameDetinut(?)}";
+        try {
+            CallableStatement cs = conn.prepareCall(query);
+            cs.setInt(1, idInmate);
+            ResultSet rs = cs.executeQuery();
+            if (rs.next()) {
+                inmateUsername = rs.getString("username");
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return inmateUsername;
+    }
+
+    public WrapperClassArrayListAndInt getProgramariPtDetinut(String inmateUsername) {
+        ArrayList<Visit> visits = new ArrayList<>();
+        int [] idVisit = new int[10];
+        int contIdVisits = 0;
+        try{
+            String query = "{CALL GetVisitorScheduleByUsernamePerf(?)}";
+            CallableStatement cs = conn.prepareCall(query);
+            cs.setString(1, inmateUsername);
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()) {
+                visits.add(new Visit(rs.getString(2), rs.getString(3), rs.getString(1)));
+                idVisit[contIdVisits] = rs.getInt(4);
+                contIdVisits++;
+            }
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        return new WrapperClassArrayListAndInt(visits, idVisit);
+    }
+
+    public void deleteVisit(int idVisit) {
+        String query = "DELETE FROM programari WHERE id_programare = ?";
+        try{
+            CallableStatement cs = conn.prepareCall(query);
+            cs.setInt(1, idVisit);
+            cs.execute();
+        }catch (Exception e){
+            System.out.println("Nu s-a putut sterge");
+            throw new RuntimeException(e);
+        }
+    }
 
 
     public Connection getConnection() {
         return this.conn;
+    }
+
+    public ArrayList<Visit> getAllVisits(DatabaseConnector databaseConnector, User newUser) {
+        try{
+            ArrayList<Visit> visits = new ArrayList<>();
+            CallableStatement cs = conn.prepareCall("call penitenciar.get_programare_details();");
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()) {
+                Visit visit = new Visit();
+                visit.setIdVisit(rs.getString("id_programare"));
+                visit.setVisitType(rs.getString("tip_programari").equals("1") ? "Visit" : "Laundry");
+                visit.setStartTime(rs.getString("start_time"));
+                visit.setEndTime(rs.getString("end_time"));
+                visit.setInmateName(rs.getString("detinut_name"));
+                visit.setVisitorName(rs.getString("vizitator_name"));
+                //
+                visits.add(visit);
+            }
+
+
+
+            return visits;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
