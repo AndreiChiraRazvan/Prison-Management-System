@@ -4,19 +4,19 @@ import com.example.penitenciarv1.Database.DatabaseConnector;
 import com.example.penitenciarv1.Entities.Guardian;
 import com.example.penitenciarv1.Interfaces.GuardianInterface;
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import javax.xml.crypto.Data;
-import java.sql.Array;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -27,15 +27,38 @@ public class DynamicScalingAppIntGardianColegiPenitenciar extends Application {
     public DynamicScalingAppIntGardianColegiPenitenciar() {
 
     }
+    public AnchorPane getContentPane(Stage primaryStage, VBox contentArea) {
+        AnchorPane pane = new AnchorPane();
 
+        VBox root = new VBox();
+        root.prefWidthProperty().bind(Bindings.min(contentArea.widthProperty(), 1000));
+       System.out.println(contentArea.getWidth());
+        startTheEngine(root, primaryStage);
+        pane.getChildren().add(root);
+        return pane;
+    }
     public DynamicScalingAppIntGardianColegiPenitenciar(int id) {
         this.idGardian = id;
     }
+    public void backButtonSetter(Stage primaryStage, VBox root) {
+        Button backButton = new Button("Back");
+        backButton.setStyle("-fx-background-color: linear-gradient(to right, #42a5f5, #1e88e5);"
+                + "-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-background-radius: 20;");
+        backButton.setOnMouseEntered(e -> backButton.setStyle("-fx-background-color: linear-gradient(to right, #1e88e5, #42a5f5);"
+                + "-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-background-radius: 20;"));
+        backButton.setOnMouseExited(e -> backButton.setStyle("-fx-background-color: linear-gradient(to right, #42a5f5, #1e88e5);"
+                + "-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-background-radius: 20;"));
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        //VBox principal
-        VBox root = new VBox();
+        backButton.setOnAction(e -> {
+            GuardianInterface gin = new GuardianInterface(idGardian);
+            Stage stage = new Stage();
+            primaryStage.close();
+            gin.start(stage);
+        });
+        root.getChildren().add(backButton);
+    }
+    public void startTheEngine(VBox root, Stage primaryStage) {
+
         root.setSpacing(20);
         root.setAlignment(Pos.CENTER);
         root.setStyle("-fx-padding: 20; -fx-background-color: linear-gradient(to bottom, #e3f2fd, #bbdefb);");
@@ -68,24 +91,19 @@ public class DynamicScalingAppIntGardianColegiPenitenciar extends Application {
         loadColeaguesWholePrison(coleaguesTable);
 
         //back button
-        Button backButton = new Button("Back");
-        backButton.setStyle("-fx-background-color: linear-gradient(to right, #42a5f5, #1e88e5);"
-                + "-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-background-radius: 20;");
-        backButton.setOnMouseEntered(e -> backButton.setStyle("-fx-background-color: linear-gradient(to right, #1e88e5, #42a5f5);"
-                + "-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-background-radius: 20;"));
-        backButton.setOnMouseExited(e -> backButton.setStyle("-fx-background-color: linear-gradient(to right, #42a5f5, #1e88e5);"
-                + "-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-background-radius: 20;"));
 
-        backButton.setOnAction(e -> {
-            GuardianInterface gin = new GuardianInterface(idGardian);
-            Stage stage = new Stage();
-            primaryStage.close();
-            gin.start(stage);
-        });
-
+        root.getChildren().addAll(titleLabel, coleaguesTable);
+        backButtonSetter(primaryStage, root);
 
         //scene layout
-        root.getChildren().addAll(titleLabel, coleaguesTable, backButton);
+
+
+    }
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        //VBox principal
+        VBox root = new VBox();
+        startTheEngine(root, primaryStage);
         Scene scene = new Scene(root, 1400, 600);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Coleagues from whole Prison");
@@ -113,5 +131,11 @@ public class DynamicScalingAppIntGardianColegiPenitenciar extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public AnchorPane getContent() {
+        AnchorPane newContentPane = new AnchorPane();
+
+        return newContentPane;
     }
 }

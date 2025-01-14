@@ -324,7 +324,7 @@ public class DynamicScalingAppWardenSchedulesPrisoner extends Application {
         if (!username.isEmpty()) {
             try {
                 System.out.println("opening schedule pt username: " + username);
-                DynamicScalingAppDailySchedule dailyScheduleApp = new DynamicScalingAppDailySchedule();
+                WardenSchedulreViewer dailyScheduleApp = new WardenSchedulreViewer();
                 dailyScheduleApp.setDetaineeUsername(username); // Set the detainee's username
                 dailyScheduleApp.start(new Stage()); // Launch in a new stage
             } catch (Exception e) {

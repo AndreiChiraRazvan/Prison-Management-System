@@ -62,14 +62,14 @@ public class InterfataVizitator extends Application {
         TextField searchField = new TextField();
         VBox vBox = new VBox(searchField);
         searchField.setPromptText("Search...");
-        vBox.prefWidthProperty().bind(programareTab.widthProperty().multiply(0.15));
+        vBox.prefWidthProperty().bind(programareTab.widthProperty());
+        searchField.prefWidthProperty().bind(programareTab.widthProperty().multiply(0.15));
+        VBox.setMargin(searchField, new Insets(10, programareTab.getWidth() * 0.10, 10, programareTab.getWidth() * 0.10));
 
-        //searchField.prefWidthProperty().bind(vBox.widthProperty().multiply(0.15));
 
 
         programareTab.getChildren().add(vBox);
 
-        vBox.setStyle("-fx-background-color: red");
         treeTableView.setRoot(null);
         TreeItem<Visit> rootItem = new TreeItem<>(new Visit("", "", "", "", ""));
         treeTableView.setRoot(rootItem);

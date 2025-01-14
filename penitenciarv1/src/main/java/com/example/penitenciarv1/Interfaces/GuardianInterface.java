@@ -10,6 +10,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -17,19 +18,26 @@ import javafx.stage.Stage;
 public class GuardianInterface extends Application {
 
     private int idUserGardian;
-
+    private VBox root;
     public GuardianInterface() {
 
     }
+
+    public AnchorPane getContent(Stage primaryStage) {
+        AnchorPane pane = new AnchorPane();
+        startTheEngine(primaryStage);
+
+        pane.getChildren().add(root);
+        return pane;
+    }
+
+
     public GuardianInterface(int idGardian) {
         this.idUserGardian = idGardian;
     }
+    public void startTheEngine(Stage primaryStage) {
+        root = new VBox();
 
-    @Override
-    public void start(Stage primaryStage) {
-
-        // Pane 1 - Root with MenuBar and StackPane
-        VBox root = new VBox();
         root.setPrefSize(600, 400);
         AnchorPane anchorPaneVbox1 = new AnchorPane();
 
@@ -95,6 +103,12 @@ public class GuardianInterface extends Application {
 
         root.getChildren().addAll(anchorPaneVbox1, stackPane);
 
+    }
+    @Override
+    public void start(Stage primaryStage) {
+
+        // Pane 1 - Root with MenuBar and StackPane
+        startTheEngine(primaryStage);
         Scene scene = new Scene(root, 800, 600);
 
         primaryStage.setScene(scene);

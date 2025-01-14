@@ -19,7 +19,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class DynamicScalingAppDailySchedule extends Application {
+public  class DynamicScalingAppDailySchedule extends Application {
 
     private String detinutUsername;
 
@@ -78,6 +78,8 @@ public class DynamicScalingAppDailySchedule extends Application {
         // Returnăm layout-ul principal ca nod
         return layout;
     }
+
+
     public static class ScheduleItem {
         private final StringProperty id;
         private final StringProperty description;
@@ -161,14 +163,7 @@ public class DynamicScalingAppDailySchedule extends Application {
         backButton.setOnMouseExited(e -> backButton.setStyle("-fx-background-color: linear-gradient(to right, #42a5f5, #1e88e5);"
                 + "-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-background-radius: 20;"));
         backButton.setOnAction(e -> {
-            PrisonerInterface prisonerInterface = new PrisonerInterface();
-            Stage newStage = new Stage();
-            primaryStage.close();
-            try {
-                prisonerInterface.start(newStage);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            backButtonFuction(primaryStage);
         });
 
         // Add elements to layout
@@ -180,7 +175,16 @@ public class DynamicScalingAppDailySchedule extends Application {
         primaryStage.setTitle("Program Zilnic");
         primaryStage.show();
     }
-
+    public void backButtonFuction(Stage primaryStage) {
+        PrisonerInterface prisonerInterface = new PrisonerInterface();
+        Stage newStage = new Stage();
+        primaryStage.close();
+        try {
+            prisonerInterface.start(newStage);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
     private void loadDailySchedule(TableView<ScheduleItem> dailyScheduleTable) {
         DatabaseConnector dbConnector = new DatabaseConnector();
         try (Statement statement = dbConnector.conn.createStatement()) {
