@@ -54,9 +54,9 @@ public class HelloController {
             stage.close();
             Stage newStage = new Stage();
             if(newUser.getAccessRights() == 0){
-
+                System.out.println("Access rights revoked");
                 WardenDashboard newInterface = new WardenDashboard();
-                newInterface.start(newStage);
+                newInterface.start(newStage, databaseConnector, newUser);
 
             }
             if (newUser.getAccessRights() == 1)

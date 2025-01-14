@@ -4,5 +4,6 @@ import javafx.stage.Stage;
 
 public class WardenInterface {
     public void start(Stage newStage) {
+
     }
 }

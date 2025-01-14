@@ -160,6 +160,8 @@ public class DynamicScalingAppDailySchedule extends Application {
                 + "-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-background-radius: 20;"));
         backButton.setOnMouseExited(e -> backButton.setStyle("-fx-background-color: linear-gradient(to right, #42a5f5, #1e88e5);"
                 + "-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-background-radius: 20;"));
+
+
         backButton.setOnAction(e -> {
             PrisonerInterface prisonerInterface = new PrisonerInterface();
             Stage newStage = new Stage();

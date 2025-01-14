@@ -1,6 +1,8 @@
 
 package com.example.penitenciarv1.Interfaces;
 
+import com.example.penitenciarv1.Database.DatabaseConnector;
+import com.example.penitenciarv1.Entities.User;
 import com.example.penitenciarv1.HelloApplication;
 import com.example.penitenciarv1.Listeners.DynamicScalingAppDailySchedule;
 import com.example.penitenciarv1.Listeners.DynamicScalingAppWardenSchedulesPrisoner;
@@ -19,8 +21,8 @@ public class WardenDashboard extends Application {
 
     private VBox contentArea; // Reference to the main content area for dynamic updates
 
-    @Override
-    public void start(Stage primaryStage) {
+
+    public void start(Stage primaryStage, DatabaseConnector databaseConnector, User newUser) {
         // Root Layout
         BorderPane rootLayout = new BorderPane();
         rootLayout.setStyle("-fx-background-color: #f3f4f6;");
@@ -30,7 +32,7 @@ public class WardenDashboard extends Application {
         rootLayout.setTop(headerPane);
 
         // Sidebar Navigation
-        VBox sidebar = createSidebar(primaryStage);
+        VBox sidebar = createSidebar(databaseConnector, newUser, primaryStage);
         rootLayout.setLeft(sidebar);
 
         // Main Content Area
@@ -72,7 +74,7 @@ public class WardenDashboard extends Application {
         return headerPane;
     }
 
-    private VBox createSidebar(Stage primaryStage) {
+    private VBox createSidebar(DatabaseConnector databaseConnector, User newUser, Stage primaryStage) {
         VBox sidebar = new VBox(20);
         sidebar.setPadding(new Insets(15));
         sidebar.setAlignment(Pos.TOP_CENTER);
@@ -82,7 +84,8 @@ public class WardenDashboard extends Application {
         Button inmatesButton = createSidebarButton("Manage Inmates");
         Button guardsButton = createSidebarButton("Manage Guards");
         Button cellsButton = createSidebarButton("Manage Cells");
-        Button schedulesButton = createSidebarButton("Schedules");
+        Button schedulesPrisonersButton = createSidebarButton("Schedules Prisoners");
+        Button schedulesPrisonersVisitButton = createSidebarButton("Schedules Visits");
         Button reportsButton = createSidebarButton("Reports");
         Button logoutButton = createSidebarButton("Logout");
 
@@ -90,7 +93,7 @@ public class WardenDashboard extends Application {
         inmatesButton.setOnAction(e -> updateContentArea("Manage Inmates", "Here you can manage inmate records and details."));
         guardsButton.setOnAction(e -> updateContentArea("Manage Guards", "Here you can assign duties and manage guards."));
         cellsButton.setOnAction(e -> updateContentArea("Manage Cells", "View and manage cell allocations and maintenance."));
-        schedulesButton.setOnAction(e -> {
+        schedulesPrisonersButton.setOnAction(e -> {
             contentArea.getChildren().clear(); // Golește zona centrală
 
             // Creează instanța din DynamicScalingAppWardenSchedulesPrisoner
@@ -100,6 +103,15 @@ public class WardenDashboard extends Application {
             AnchorPane fullInterface = dynamicApp.getContent();
 
             // Adaugă interfața în contentArea
+            contentArea.getChildren().add(fullInterface);
+        });
+        schedulesPrisonersVisitButton.setOnAction(e -> {
+            contentArea.getChildren().clear(); // Clear the central area
+            // Create an instance of WardenVizitator
+            InterfataVizitator dynamicApp = new InterfataVizitator();
+            // Get the content to load into the contentArea
+            AnchorPane fullInterface = dynamicApp.getContent(primaryStage, databaseConnector, newUser);
+            // Add the interface to the contentArea
             contentArea.getChildren().add(fullInterface);
         });
 
@@ -128,7 +140,7 @@ public class WardenDashboard extends Application {
             }
         });
 
-        sidebar.getChildren().addAll(inmatesButton, guardsButton, cellsButton, schedulesButton, reportsButton, logoutButton);
+        sidebar.getChildren().addAll(inmatesButton, guardsButton, cellsButton, schedulesPrisonersButton,schedulesPrisonersVisitButton, reportsButton, logoutButton);
         return sidebar;
     }
 
@@ -215,7 +227,12 @@ public class WardenDashboard extends Application {
         return footerPane;
     }
 
+
     public static void main(String[] args) {
         launch(args);
+    }
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
     }
 }
