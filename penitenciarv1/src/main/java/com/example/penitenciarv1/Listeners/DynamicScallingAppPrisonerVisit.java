@@ -129,7 +129,7 @@ public class DynamicScallingAppPrisonerVisit extends Application {
         DatabaseConnector dbConnector = new DatabaseConnector();
         try (Statement statement = dbConnector.conn.createStatement()) {
        //     String query = "CALL GetVisitorScheduleByUsername('\" + detinutUsername + \"')";
-            String query = "CALL GetVisitorScheduleByUsernamePerf('" + detinutUsername + "')";
+            String query = "CALL GetVisitorScheduleByUsernamePerfUPDATED1('" + detinutUsername + "')";
 
 
             ResultSet resultSet = statement.executeQuery(query);

@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -24,11 +25,59 @@ public class DynamicScalingAppDailySchedule extends Application {
 
     public DynamicScalingAppDailySchedule() {
     }
+    // metoda pentru set username
+    public void setDetaineeUsername(String username) {
+        this.detinutUsername = username;
+    }
+
 
     public DynamicScalingAppDailySchedule(String detinutUsername) {
         this.detinutUsername = detinutUsername;
     }
+    public Node getContent() {
+        // Layout principal
+        VBox layout = new VBox();
+        layout.setSpacing(20);
+        layout.setAlignment(Pos.CENTER);
+        layout.setStyle("-fx-padding: 20; -fx-background-color: linear-gradient(to bottom, #e3f2fd, #bbdefb);");
 
+        // Titlu
+        Label titleLabel = new Label("Program Zilnic");
+        titleLabel.setFont(Font.font("Arial", 24));
+        titleLabel.setTextFill(Color.DARKBLUE);
+
+        // Tabel pentru programul zilnic
+        TableView<ScheduleItem> dailyScheduleTable = new TableView<>();
+
+        // Definirea coloanelor
+        TableColumn<ScheduleItem, String> idColumn = new TableColumn<>("ID");
+        idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty());
+
+        TableColumn<ScheduleItem, String> descriptionColumn = new TableColumn<>("Descriere");
+        descriptionColumn.setCellValueFactory(cellData -> cellData.getValue().descriptionProperty());
+
+        TableColumn<ScheduleItem, String> difficultyColumn = new TableColumn<>("Dificultate");
+        difficultyColumn.setCellValueFactory(cellData -> cellData.getValue().difficultyProperty());
+
+        TableColumn<ScheduleItem, String> startDateColumn = new TableColumn<>("Data Început");
+        startDateColumn.setCellValueFactory(cellData -> cellData.getValue().startDateProperty());
+
+        TableColumn<ScheduleItem, String> endDateColumn = new TableColumn<>("Data Sfârșit");
+        endDateColumn.setCellValueFactory(cellData -> cellData.getValue().endDateProperty());
+
+        // Adăugarea coloanelor în tabel
+        dailyScheduleTable.getColumns().addAll(idColumn, descriptionColumn, difficultyColumn, startDateColumn, endDateColumn);
+        dailyScheduleTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        // Încărcarea datelor în tabel
+        loadDailySchedule(dailyScheduleTable);
+
+        // Adăugarea elementelor în layout
+        layout.getChildren().addAll(titleLabel, dailyScheduleTable);
+
+        // Returnăm layout-ul principal ca nod
+        return layout;
+    }
     public static class ScheduleItem {
         private final StringProperty id;
         private final StringProperty description;
