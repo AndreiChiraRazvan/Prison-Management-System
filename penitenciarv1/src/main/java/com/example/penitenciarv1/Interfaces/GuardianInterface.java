@@ -1,5 +1,6 @@
 package com.example.penitenciarv1.Interfaces;
 
+import com.example.penitenciarv1.HelloApplication;
 import com.example.penitenciarv1.Listeners.DynamicScalingAppIntGardianColegiPenitenciar;
 import com.example.penitenciarv1.Listeners.DynamicScalingAppIntGardianDetinut;
 import com.example.penitenciarv1.Listeners.DynamicScalingAppIntGardianColegiBloc;
@@ -38,6 +39,7 @@ public class GuardianInterface extends Application {
 
         // MenuBar
         MenuBar menuBar = new MenuBar();
+        menuBar.setStyle("-fx-background-color: linear-gradient(to right, #71a2ff ,#070c3a); -fx-padding: 5;");
         Menu coleagues = new Menu("Coleagues");
         MenuItem sameDetentionBlock = new MenuItem("In the same detention block");
         coleagues.getItems().add(sameDetentionBlock);
@@ -46,8 +48,9 @@ public class GuardianInterface extends Application {
         Menu inmates = new Menu("Inmates");
         MenuItem prisonersOnShift = new MenuItem("Manage inmates");
         inmates.getItems().add(prisonersOnShift);
-
         Menu account = new Menu("Account");
+        MenuItem logOut = new MenuItem("Log out");
+        account.getItems().add(logOut);
         menuBar.getMenus().addAll(coleagues, inmates, account);
 
         AnchorPane.setTopAnchor(menuBar, 0.0);
@@ -80,6 +83,14 @@ public class GuardianInterface extends Application {
             }catch (Exception ex){
                 ex.printStackTrace();
             }
+        });
+
+        logOut.setOnAction(e -> {
+            HelloApplication logIn = new HelloApplication();
+            Stage newScene = new Stage();
+            logIn.start(newScene);
+            primaryStage.close();
+
         });
 
         root.getChildren().addAll(anchorPaneVbox1, stackPane);

@@ -508,6 +508,52 @@ public class DatabaseConnector {
         }
     }
 
+    public void deleteInscriereTask(int idTask, int idDetinut) {
+        String query = "DELETE FROM inscriere_task WHERE fk_id_detinut = ? AND fk_id_task = ?";
+        try{
+            CallableStatement cs = conn.prepareCall(query);
+            cs.setInt(1, idDetinut);
+            cs.setInt(2, idTask);
+            cs.execute();
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteTask(int idTask, int idDetinut) {
+        String query = "DELETE FROM task_inchisoare WHERE id_task = ?";
+        try{
+            deleteInscriereTask(idTask, idDetinut);
+            CallableStatement cs = conn.prepareCall(query);
+            cs.setInt(1, idTask);
+            cs.execute();
+        }catch (Exception e){
+            System.out.println("Nu s-a putut sterge");
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ArrayList<Task> getTasksDetinut(String inmateUsername) {
+        ArrayList<Task> tasks = new ArrayList<>();
+        String query = "{CALL GetTaskuriViitoare(?)}";
+        try{
+            CallableStatement cs = conn.prepareCall(query);
+            cs.setString(1, inmateUsername);
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()) {
+                String taskId = rs.getString(1);
+                String description = rs.getString(2);
+                String dificulty = rs.getString(3);
+                String startDate = rs.getString(4);
+                String endDate = rs.getString(5);
+                tasks.add(new Task(taskId, description, dificulty, startDate, endDate));
+            }
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        return tasks;
+    }
+
 
     public Connection getConnection() {
         return this.conn;

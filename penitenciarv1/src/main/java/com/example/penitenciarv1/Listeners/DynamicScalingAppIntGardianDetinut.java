@@ -67,13 +67,13 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
         col6.setCellFactory(param -> new TableCell<Inmates, String>() {
             final Button addToSolitude = new Button("Add to Solitude");
             final Button cancelVisit = new Button("Cancel Visit");
-            final Button addTask = new Button("Manage Tasks");
+            final Button manageTask = new Button("Manage Tasks");
             final Button moveToAnotherCell = new Button("Move To Another Cell");
 
             // HBox ca sa tina mai multe butoane
             final HBox buttonContainer = new HBox(10);  // Horizontal box with 10px spacing
             {
-                buttonContainer.getChildren().addAll(addToSolitude, cancelVisit, addTask, moveToAnotherCell);
+                buttonContainer.getChildren().addAll(addToSolitude, cancelVisit, manageTask, moveToAnotherCell);
                 buttonContainer.setSpacing(5);  // Optional spacing between buttons
             }
 
@@ -101,7 +101,7 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
                     cancelVisit.setOnAction(event -> {
                         Inmates inmate = getTableRow().getItem();
                         if (inmate != null) {
-                            DynamicScallingAppIntVisitsForAnInmate newWindow = new DynamicScallingAppIntVisitsForAnInmate(inmate.getid().get(), idUserGardian);
+                            DynamicScallingAppIntVisitsForAnInmate newWindow = new DynamicScallingAppIntVisitsForAnInmate(inmate.getid().get(), idUserGardian, inmate.getName().get());
                             Stage stage = new Stage();
                             try{
                                 newWindow.start(stage);
@@ -113,6 +113,20 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
                     });
                     setGraphic(buttonContainer);
                     setText(null);
+
+                    manageTask.setOnAction(event-> {
+                        Inmates inmate = getTableRow().getItem();
+                        if(inmate != null) {
+                            DynamicScallingAppIntManageTasks newWindow = new DynamicScallingAppIntManageTasks(idUserGardian, inmate.getid().get());
+                            Stage stage = new Stage();
+                            try{
+                                newWindow.start(stage);
+                            }catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            primaryStage.close();
+                        }
+                    });
 
                     moveToAnotherCell.setOnAction(event -> {
                        Inmates inmate = getTableRow().getItem();
@@ -172,7 +186,7 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
         root.getChildren().addAll(titleLabel, tableView, goBack);
 
         // Scenă
-        Scene scene = new Scene(root, 1400, 600);
+        Scene scene = new Scene(root, 1500, 600);
         primaryStage.setTitle("Tabel cu Deținuți");
         primaryStage.setScene(scene);
         primaryStage.show();
