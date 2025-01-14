@@ -7,9 +7,12 @@ import com.example.penitenciarv1.Entities.Inmates;
 import com.example.penitenciarv1.Entities.User;
 import com.example.penitenciarv1.Entities.Visit;
 import com.example.penitenciarv1.HelloApplication;
-import com.sun.source.tree.Tree;
+import com.example.penitenciarv1.Listeners.DynamicScalingAppWardenSchedulesPrisoner;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -20,18 +23,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-import java.awt.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.function.Function;
-
-import static java.lang.Double.max;
-import static java.lang.Double.min;
 
 public class InterfataVizitator extends Application {
     @FXML
@@ -52,8 +48,109 @@ public class InterfataVizitator extends Application {
 
     TreeTableView<Visit> treeTableView;
 
+
     public InterfataVizitator(){
 
+    }
+    public AnchorPane getContent(Stage primaryStage,DatabaseConnector databaseConnector, User newUser) {
+
+        VBox root2 = null;
+        try {
+            ObservableList<DynamicScalingAppWardenSchedulesPrisoner.Detinut> observableList = FXCollections.observableArrayList();
+            FilteredList<DynamicScalingAppWardenSchedulesPrisoner.Detinut> filteredData = new FilteredList<>(observableList, p -> true);
+
+            root2 = new VBox(20);
+            root2.setPadding(new Insets(20));
+            root2.setAlignment(Pos.CENTER);
+
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("interfatavizitator.fxml"));
+            Parent root = fxmlLoader.load();
+
+            primaryStage.setTitle("Vizitator -Meniu");
+//            Scene scene = new Scene(root);
+//            primaryStage.setScene(scene);
+//            primaryStage.show();
+//          StackPane root2 = new StackPane();
+            root.setId("pane");
+            Scene scene2 = new Scene(root, 600, 450);
+            //HelloApplication.class.getResource("demo.css");
+            scene2.getStylesheets().addAll(this.getClass().getResource("demo.css").toExternalForm());
+            //changeBackground(scene2, "pozavizitator");
+
+            primaryStage.setScene(scene2);
+            //pentru setare minim si maxim
+            primaryStage.setMinWidth(500);
+            primaryStage.setMinHeight(500);
+
+            primaryStage.show();
+            //TO DO add information off inmate
+            // tree table view for sentences
+            mainVbox = (VBox) scene2.lookup("#mainVBox");
+            programareTab = (AnchorPane) scene2.lookup("#programareTab");
+            tabPane = (TabPane) scene2.lookup("#mainContainer");
+            backButton = new Tab("Back");
+            listViewDetinut = (ListView<Inmates>) scene2.lookup("#listViewDetinut");
+            parentOfListView = (AnchorPane) scene2.lookup("#parentOfListView");
+            mainContainer = (TabPane) scene2.lookup("#mainContainer");
+            tabPane.getTabs().add(backButton);
+            // we just added/recognized all the needed object
+
+            treeTableView = new TreeTableView<>();
+            String css = getClass().getResource("tableViewVizitatori.css").toExternalForm();
+            treeTableView.getStylesheets().add(css);
+
+
+            resizeWindowWidth(tabPane, treeTableView, programareTab, mainVbox, scene2.getWidth());
+            resizeWindowHeight(tabPane, treeTableView, programareTab, mainVbox, scene2.getHeight());
+            resizeTable(treeTableView, 650);
+            // we initialized the table
+
+            programareTab.setStyle("-fx-padding: 20; -fx-background-color: linear-gradient(to bottom, #e3f2fd, #bbdefb);");
+            parentOfListView.setStyle(" -fx-background-color: linear-gradient(to bottom, #e3f2fd, #bbdefb);");
+
+
+            backButton.setOnSelectionChanged(event -> {
+                HelloApplication newApplication = new HelloApplication();
+                Stage newStage = new Stage();
+                primaryStage.close();
+                newApplication.start(newStage);
+            });
+            // on going back
+
+            primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
+                // Do whatever you wantr
+                resizeWindowWidth(tabPane, treeTableView, programareTab, mainVbox, newVal);
+            });
+
+            primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> {
+                // Do whatever you want
+                resizeWindowHeight(tabPane, treeTableView, programareTab, mainVbox, newVal);
+            });
+
+
+            // Set data
+            // now we add it to the panel
+            setUpDetaliiProgramari(primaryStage, treeTableView, databaseConnector, newUser);
+            setUpDetaliiDetinut(databaseConnector, newUser);
+
+
+            programareTab.setPrefWidth(scene2.getWidth());
+            programareTab.setPrefHeight(scene2.getHeight());
+
+            programareTab.getChildren().add(treeTableView);
+            //programareTab.getChildren().add(table);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error loading FXML file. Ensure the file path is correct and the file exists.");
+        }
+        AnchorPane contentPane = new AnchorPane(root2);
+        AnchorPane.setTopAnchor(root2, 0.0);
+        AnchorPane.setBottomAnchor(root2, 0.0);
+        AnchorPane.setLeftAnchor(root2, 0.0);
+        AnchorPane.setRightAnchor(root2, 0.0);
+        return contentPane;
     }
     public InterfataVizitator(Stage stage2, DatabaseConnector databaseConnector,  User newUser) {
         System.out.println("damn");
@@ -117,7 +214,7 @@ public class InterfataVizitator extends Application {
         });
 
     }
-    private TreeItem<Visit> createFilteredTree(TreeItem<Visit> root, String query) {
+    TreeItem<Visit> createFilteredTree(TreeItem<Visit> root, String query) {
         TreeItem<Visit> filteredRoot = new TreeItem<>(root.getValue());
 
         for (TreeItem<Visit> child : root.getChildren()) {
@@ -256,7 +353,7 @@ public class InterfataVizitator extends Application {
         AnchorPane.setBottomAnchor(treeTableView, 10.0);
     }
 
-    private void addDataToTreeTable(TreeItem<Visit> rootItem, ArrayList<Visit> data) {
+    void addDataToTreeTable(TreeItem<Visit> rootItem, ArrayList<Visit> data) {
         for(int i = 0; i < data.size(); i++) {
 
             TreeItem<Visit> item = new TreeItem<>(data.get(i));
@@ -328,7 +425,7 @@ public class InterfataVizitator extends Application {
         ));
     }
 
-    private TreeTableColumn<Visit, String> createColumn(String title, Function<Visit, ObservableValue<String>> mapper) {
+    TreeTableColumn<Visit, String> createColumn(String title, Function<Visit, ObservableValue<String>> mapper) {
         TreeTableColumn<Visit, String> column = new TreeTableColumn<>(title);
         column.setCellValueFactory(cellData -> mapper.apply(cellData.getValue().getValue()));
         return column;
@@ -353,4 +450,6 @@ public class InterfataVizitator extends Application {
         }
 
     }
+
+
 }
