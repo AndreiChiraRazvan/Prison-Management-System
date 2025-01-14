@@ -2,6 +2,8 @@ package com.example.penitenciarv1.Listeners;
 
 import com.example.penitenciarv1.Database.DatabaseConnector;
 import com.example.penitenciarv1.Entities.Task;
+import com.example.penitenciarv1.Interfaces.popUps.addTask.AddTaskController;
+import com.example.penitenciarv1.Interfaces.popUps.addTask.AddTaskPopUp;
 import com.mysql.cj.xdevapi.Table;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -40,7 +42,7 @@ public class DynamicScallingAppIntManageTasks extends Application{
         root.setStyle("-fx-padding: 20; -fx-background-color: linear-gradient(to bottom, #e3f2fd, #bbdefb);");
 
         Label title = new Label("Manage Tasks");
-        title.setTextFill(Color.WHITE);
+        title.setTextFill(Color.DARKBLUE);
         title.setFont(Font.font("Arian", 24));
 
         TableView<Task> tasks = new TableView<>();
@@ -63,14 +65,8 @@ public class DynamicScallingAppIntManageTasks extends Application{
 
         TableColumn<Task, String> actions = new TableColumn<>("Actions");
         actions.setCellFactory(param -> new TableCell<Task, String>() {
-            final Button addTask = new Button("Add Task");
             final Button markComplete = new Button("Mark Complete");
 
-            final HBox buttonContainer = new HBox(10);
-            {
-                buttonContainer.getChildren().addAll(addTask, markComplete);
-                buttonContainer.setSpacing(5);
-            }
 
             @Override
             protected void updateItem(String s, boolean empty) {
@@ -79,10 +75,6 @@ public class DynamicScallingAppIntManageTasks extends Application{
                     setGraphic(null);
                     setText(null);
                 }else{
-                    addTask.setOnAction(event -> {
-
-                    });
-
                     markComplete.setOnAction(event -> {
                         Task task = getTableRow().getItem();
                         if(task != null){
@@ -91,7 +83,7 @@ public class DynamicScallingAppIntManageTasks extends Application{
                             dbConn.deleteTask(Integer.parseInt(task.getId()), Integer.parseInt(idDetinut));
                         }
                     });
-                    setGraphic(buttonContainer);
+                    setGraphic(markComplete);
                     setText(null);
                 }
             }
@@ -126,7 +118,26 @@ public class DynamicScallingAppIntManageTasks extends Application{
             newScene.start(newStage);
         });
 
-        root.getChildren().addAll(title, tasks, goBack);
+        Button addNewTask = new Button("Add New Task");
+        addNewTask.setStyle("-fx-background-color: linear-gradient(to right, #42a5f5, #1e88e5);"
+                + "-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-background-radius: 20;");
+        addNewTask.setOnMouseEntered(e -> addNewTask.setStyle("-fx-background-color: linear-gradient(to right, #1e88e5, #42a5f5);"
+                + "-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-background-radius: 20;"));
+        addNewTask.setOnMouseExited(e -> addNewTask.setStyle("-fx-background-color: linear-gradient(to right, #42a5f5, #1e88e5);"
+                + "-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-background-radius: 20;"));
+
+        addNewTask.setOnAction(event -> {
+            AddTaskPopUp newPopUp = new AddTaskPopUp(idDetinut, idUserGardian);
+            Stage newStage = new Stage();
+            try {
+                newPopUp.start(newStage);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            stage.close();
+        });
+
+        root.getChildren().addAll(title, tasks, addNewTask, goBack);
 
         Scene scene = new Scene(root, 1000, 500);
         stage.setScene(scene);

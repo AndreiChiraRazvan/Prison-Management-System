@@ -575,11 +575,46 @@ public class DatabaseConnector {
                 //
                 visits.add(visit);
             }
-
-
-
             return visits;
         } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void addInscriereTask(int idLastIns, int inmateId){
+        String query = "INSERT INTO `inscriere_task`(`fk_id_detinut`, `fk_id_task`) VALUES (?, ?);";
+        try{
+            CallableStatement cs = conn.prepareCall(query);
+            cs.setInt(1, inmateId);
+            cs.setInt(2, idLastIns);
+            cs.execute();
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void addTask(String dificulty, String startTime, String endTime, String description, int inmateId){
+        String query = "INSERT INTO `task_inchisoare` (`difficulty`, `start_time`, `end_time`, `description`) VALUES\n" +
+                "(?,?,?,?);";
+        try{
+            CallableStatement cs = conn.prepareCall(query);
+            cs.setString(1, dificulty);
+            cs.setString(2, startTime);
+            cs.setString(3, endTime);
+            cs.setString(4, description);
+            cs.execute();
+            String lastIdQuery = "SELECT last_insert_id();";
+            try{
+                CallableStatement cs1 = conn.prepareCall(lastIdQuery);
+                ResultSet rs1 = cs1.executeQuery();
+                if(rs1.next()){
+                    int idLastIns = rs1.getInt(1);
+                    addInscriereTask(idLastIns, inmateId);
+                }
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }catch (Exception e){
             throw new RuntimeException(e);
         }
     }
