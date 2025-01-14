@@ -326,6 +326,30 @@ DELIMITER ;
 
 DELIMITER $$
 
+DROP PROCEDURE IF EXISTS get_programare_details$$
+
+CREATE PROCEDURE get_programare_details()
+BEGIN
+    SELECT
+        id_programare,
+        tip_programari,
+        start_time,
+        end_time,
+        detinut.nume AS detinut_name,
+        vizitator.nume AS vizitator_name
+    FROM
+        programari
+            JOIN
+        detinut ON detinut.id_detinut = programari.fk_id_prizioner
+            JOIN
+        vizitator ON vizitator.id_vizitator = programari.fk_id_vizitator;
+END$$
+
+DELIMITER ;
+
+
+DELIMITER $$
+
 CREATE PROCEDURE GetDailyScheduleByUsername(
     IN detinutUsername VARCHAR(255)
 )

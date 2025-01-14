@@ -54,8 +54,10 @@ public class HelloController {
             stage.close();
             Stage newStage = new Stage();
             if(newUser.getAccessRights() == 0){
+
                 WardenDashboard newInterface = new WardenDashboard();
                 newInterface.start(newStage);
+
             }
             if (newUser.getAccessRights() == 1)
             {

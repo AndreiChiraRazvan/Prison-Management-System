@@ -1,17 +1,13 @@
 package com.example.penitenciarv1.Interfaces;
 
-import com.example.penitenciarv1.HelloApplication;
 import com.example.penitenciarv1.Listeners.DynamicScalingAppIntGardianColegiPenitenciar;
 import com.example.penitenciarv1.Listeners.DynamicScalingAppIntGardianDetinut;
 import com.example.penitenciarv1.Listeners.DynamicScalingAppIntGardianColegiBloc;
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -36,10 +32,12 @@ public class GuardianInterface extends Application {
         root.setPrefSize(600, 400);
         AnchorPane anchorPaneVbox1 = new AnchorPane();
 
+        // Pane for Switching
+        StackPane stackPane = new StackPane();
+        stackPane.setPrefSize(600, 400);
 
         // MenuBar
         MenuBar menuBar = new MenuBar();
-        menuBar.setStyle("-fx-background-color: linear-gradient(to right, #71a2ff ,#070c3a); -fx-padding: 5;");
         Menu coleagues = new Menu("Coleagues");
         MenuItem sameDetentionBlock = new MenuItem("In the same detention block");
         coleagues.getItems().add(sameDetentionBlock);
@@ -51,8 +49,6 @@ public class GuardianInterface extends Application {
 
         Menu account = new Menu("Account");
         menuBar.getMenus().addAll(coleagues, inmates, account);
-        MenuItem logOut = new MenuItem("Log out");
-        account.getItems().add(logOut);
 
         AnchorPane.setTopAnchor(menuBar, 0.0);
         AnchorPane.setLeftAnchor(menuBar, 0.0);
@@ -86,23 +82,7 @@ public class GuardianInterface extends Application {
             }
         });
 
-        logOut.setOnAction(e -> {
-           primaryStage.close();
-           Stage logIn = new Stage();
-           HelloApplication logInApp = new HelloApplication();
-           logInApp.start(logIn);
-        });
-
-        Image image = new Image("/com/example/penitenciarv1/images/prison.png");
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(600);
-        imageView.setFitHeight(600);
-        imageView.setPreserveRatio(true);
-
-
-        AnchorPane imageAnchorPane = new AnchorPane(imageView);
-
-        root.getChildren().addAll(anchorPaneVbox1, imageAnchorPane);
+        root.getChildren().addAll(anchorPaneVbox1, stackPane);
 
         Scene scene = new Scene(root, 800, 600);
 
@@ -116,3 +96,16 @@ public class GuardianInterface extends Application {
     }
 }
 
+// ImageView for Background
+//        Image image = new Image(getClass().getResource("/com/example/penitenciarv1/images/cazulcorpA.png").toExternalForm());
+//        if (image.isError()) {
+//            System.out.println("Error loading image: " + image.getException());
+//        }
+//
+//        ImageView imageView = new ImageView(image);
+//        imageView.setPreserveRatio(true); // Maintain the aspect ratio
+//        imageView.setSmooth(true);
+//
+//        // Bind the imageView size to the root pane size
+//        imageView.fitWidthProperty().bind(stackPane.widthProperty()); // Bind to root pane's width
+//        imageView.fitHeightProperty().bind(stackPane.heightProperty());

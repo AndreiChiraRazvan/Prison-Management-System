@@ -67,7 +67,7 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
         col6.setCellFactory(param -> new TableCell<Inmates, String>() {
             final Button addToSolitude = new Button("Add to Solitude");
             final Button cancelVisit = new Button("Cancel Visit");
-            final Button addTask = new Button("Add Task");
+            final Button addTask = new Button("Manage Tasks");
             final Button moveToAnotherCell = new Button("Move To Another Cell");
 
             // HBox ca sa tina mai multe butoane
@@ -97,13 +97,18 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
                             primaryStage.close();
                         }
                     });
-                    setGraphic(addToSolitude);
-                    setText(null);
 
                     cancelVisit.setOnAction(event -> {
                         Inmates inmate = getTableRow().getItem();
                         if (inmate != null) {
-                            System.out.println("Action for: " + inmate.getName().get());
+                            DynamicScallingAppIntVisitsForAnInmate newWindow = new DynamicScallingAppIntVisitsForAnInmate(inmate.getid().get(), idUserGardian);
+                            Stage stage = new Stage();
+                            try{
+                                newWindow.start(stage);
+                            }catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            primaryStage.close();
                         }
                     });
                     setGraphic(buttonContainer);

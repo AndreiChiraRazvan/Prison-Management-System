@@ -13,7 +13,7 @@ public class Visit {
     private SimpleStringProperty  inmateName;
     private SimpleStringProperty date;
     private SimpleStringProperty hourTime;
-
+    private SimpleStringProperty visitorName;
     public Visit() {
         this.idVisit = new SimpleStringProperty("0");
         this.visitType = new SimpleStringProperty("0");
@@ -21,6 +21,7 @@ public class Visit {
         this.endTime = new SimpleStringProperty("0");
         this.idInmate = new SimpleStringProperty("0");
         this.inmateName = new SimpleStringProperty("0");
+        this.visitorName = new SimpleStringProperty("0");
     }
     public Visit(String idVisit, String visitType, String startTime, String endTime, String idInmate) {
         this.idVisit = new SimpleStringProperty(idVisit);
@@ -98,5 +99,17 @@ public class Visit {
         this.date = new SimpleStringProperty(strings[0]);
         this.hourTime = new SimpleStringProperty(strings[1]);
 
+    }
+
+    public String getVisitorName() {
+        return visitorName.get();
+    }
+
+    public SimpleStringProperty visitorNameProperty() {
+        return visitorName;
+    }
+
+    public void setVisitorName(String visitorName) {
+        this.visitorName.set(visitorName);
     }
 }

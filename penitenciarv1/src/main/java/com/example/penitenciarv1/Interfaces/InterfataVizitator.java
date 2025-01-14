@@ -7,15 +7,20 @@ import com.example.penitenciarv1.Entities.Inmates;
 import com.example.penitenciarv1.Entities.User;
 import com.example.penitenciarv1.Entities.Visit;
 import com.example.penitenciarv1.HelloApplication;
+import com.sun.source.tree.Tree;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -35,6 +40,8 @@ public class InterfataVizitator extends Application {
     @FXML
     private VBox mainVbox;
     @FXML
+    private TabPane mainContainer;
+    @FXML
     TabPane tabPane;
     @FXML
     private Tab backButton;
@@ -42,6 +49,94 @@ public class InterfataVizitator extends Application {
     private ListView<Inmates>listViewDetinut;
     @FXML
     private AnchorPane parentOfListView;
+
+    TreeTableView<Visit> treeTableView;
+
+    public InterfataVizitator(){
+
+    }
+    public InterfataVizitator(Stage stage2, DatabaseConnector databaseConnector,  User newUser) {
+        System.out.println("damn");
+        start(stage2, databaseConnector, newUser);
+        // here we can change everything, the new design should be here
+        TextField searchField = new TextField();
+        VBox vBox = new VBox(searchField);
+        searchField.setPromptText("Search...");
+        vBox.prefWidthProperty().bind(programareTab.widthProperty().multiply(0.15));
+
+        //searchField.prefWidthProperty().bind(vBox.widthProperty().multiply(0.15));
+
+
+        programareTab.getChildren().add(vBox);
+
+        vBox.setStyle("-fx-background-color: red");
+        treeTableView.setRoot(null);
+        TreeItem<Visit> rootItem = new TreeItem<>(new Visit("", "", "", "", ""));
+        treeTableView.setRoot(rootItem);
+        mainContainer.getTabs().remove(1);
+        TreeTableColumn<Visit, String> col3 = createColumn("Programming Type", person -> person.getVisitType());
+        TreeTableColumn<Visit, String> col4 = createColumn("Visitor Name", person -> person.visitorNameProperty());
+        TreeTableColumn<Visit, String> col5 = new TreeTableColumn<>("Actions");
+        // cancel visit
+        col5.setCellFactory(param -> new TreeTableCell<>(){
+        private final Button button = new Button("Cancel");
+
+        @Override
+        protected void updateItem(String item, boolean empty) {
+            super.updateItem(item, empty);
+            button.setStyle("-fx-background-color: red");
+            if (empty || getTreeTableRow().getTreeItem() == null) {
+                setGraphic(null);
+            } else {
+                // Set action for the button
+                button.setOnAction(event -> {
+                    int value = Integer.valueOf(getTreeTableRow().getTreeItem().getValue().getIdVisit().get());
+                    System.out.println("Button clicked for: " + value);
+                    TreeItem<Visit> toBeDeleted =  getTreeTableRow().getTreeItem();
+                    TreeItem<Visit> parent = toBeDeleted.getParent();
+                    parent.getChildren().remove(toBeDeleted);
+                    databaseConnector.deleteVisit(value);
+                });
+
+                setGraphic(button);
+            }
+        }
+
+        });
+        treeTableView.getColumns().addAll(col3, col4, col5);
+
+        addAllInmateVisits(databaseConnector, newUser, rootItem);
+        // search bar function
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null || newValue.isEmpty()) {
+                treeTableView.setRoot(rootItem); // Reset to original root
+            } else {
+                TreeItem<Visit> filteredRoot = createFilteredTree(rootItem, newValue.toLowerCase());
+                treeTableView.setRoot(filteredRoot);
+            }
+        });
+
+    }
+    private TreeItem<Visit> createFilteredTree(TreeItem<Visit> root, String query) {
+        TreeItem<Visit> filteredRoot = new TreeItem<>(root.getValue());
+
+        for (TreeItem<Visit> child : root.getChildren()) {
+            TreeItem<Visit> filteredChild = createFilteredTree(child, query);
+            if (!filteredChild.getChildren().isEmpty() || child.getValue().getInmateName().get().toLowerCase().contains(query)
+            || child.getValue().getVisitorName().toLowerCase().contains(query)) {
+                filteredRoot.getChildren().add(filteredChild);
+            }
+        }
+
+        return filteredRoot;
+    }
+
+    private void addAllInmateVisits(DatabaseConnector databaseConnector, User newUser, TreeItem<Visit> rootItem) {
+        ArrayList<Visit> data = databaseConnector.getAllVisits(databaseConnector, newUser);
+        addDataToTreeTable(rootItem, data);
+
+    }
+
     public void start(Stage primaryStage, DatabaseConnector databaseConnector, User newUser) {
         try {
 
@@ -74,11 +169,11 @@ public class InterfataVizitator extends Application {
             backButton = new Tab("Back");
             listViewDetinut = (ListView<Inmates>) scene2.lookup("#listViewDetinut");
             parentOfListView = (AnchorPane) scene2.lookup("#parentOfListView");
-
+            mainContainer = (TabPane) scene2.lookup("#mainContainer");
             tabPane.getTabs().add(backButton);
             // we just added/recognized all the needed object
 
-            TreeTableView<Visit> treeTableView = new TreeTableView<>();
+            treeTableView = new TreeTableView<>();
             String css = getClass().getResource("tableViewVizitatori.css").toExternalForm();
             treeTableView.getStylesheets().add(css);
 
