@@ -4,10 +4,7 @@ package com.example.penitenciarv1.Interfaces;
 import com.example.penitenciarv1.Database.DatabaseConnector;
 import com.example.penitenciarv1.Entities.User;
 import com.example.penitenciarv1.HelloApplication;
-import com.example.penitenciarv1.Listeners.DynamicScalingAppDailySchedule;
-import com.example.penitenciarv1.Listeners.DynamicScalingAppIntGardianColegiPenitenciar;
-import com.example.penitenciarv1.Listeners.DynamicScalingAppWardenSchedulesPrisoner;
-import com.example.penitenciarv1.Listeners.WardenSchedulreViewer;
+import com.example.penitenciarv1.Listeners.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -85,10 +82,9 @@ public class WardenDashboard extends Application {
         // Sidebar Buttons
         Button inmatesButton = createSidebarButton("Manage Inmates");
         Button guardsButton = createSidebarButton("Manage Guards");
-        Button cellsButton = createSidebarButton("Manage Cells");
+
         Button schedulesPrisonersButton = createSidebarButton("Schedules Prisoners");
         Button schedulesPrisonersVisitButton = createSidebarButton("Schedules Visits");
-        Button reportsButton = createSidebarButton("Reports");
         Button logoutButton = createSidebarButton("Logout");
 
         // Button Actions
@@ -105,8 +101,26 @@ public class WardenDashboard extends Application {
             AnchorPane paneInmateManagement = newInterfataTotiColegii.getContentPane(primaryStage, contentArea);
             contentArea.getChildren().add(paneInmateManagement);
         });
-        inmatesButton.setOnAction(e -> updateContentArea("Manage Inmates", "Here you can assign duties and manage guards."));
-        cellsButton.setOnAction(e -> updateContentArea("Manage Cells", "View and manage cell allocations and maintenance."));
+        inmatesButton.setOnAction(e -> {
+                //updateContentArea("Manage Inmates", "Here you can assign duties and manage guards.")
+                contentArea.getChildren().clear(); // Golește zona centrală
+
+        // Creează instanța din DynamicScalingAppWardenSchedulesPrisoner
+            DynamicScalingAppIntGardianDetinut dynamicApp = new DynamicScalingAppIntGardianDetinut(){
+                @Override
+                public void backButtonSettere(Stage primaryStage, VBox root){
+
+                }
+            };
+
+
+        // Obține întreaga interfață folosind metoda getFullInterface()
+             AnchorPane fullInterface = dynamicApp.getContentPane(primaryStage, contentArea);
+
+        // Adaugă interfața în contentArea
+        contentArea.getChildren().add(fullInterface);
+
+        });
         schedulesPrisonersButton.setOnAction(e -> {
             contentArea.getChildren().clear(); // Golește zona centrală
 
@@ -120,6 +134,7 @@ public class WardenDashboard extends Application {
             // Adaugă interfața în contentArea
             contentArea.getChildren().add(fullInterface);
         });
+
         schedulesPrisonersVisitButton.setOnAction(e -> {
             contentArea.getChildren().clear(); // Clear the central area
             // Create an instance of WardenVizitator
@@ -132,18 +147,8 @@ public class WardenDashboard extends Application {
 
 
 
-        reportsButton.setOnAction(e -> updateContentArea("Reports", "Generate and view operational reports."));
-        logoutButton.setOnAction(e -> {
-            primaryStage.close(); // Close the current window
-            HelloApplication loginInterface = new HelloApplication();
-            Stage loginStage = new Stage();
-            try {
-                loginInterface.start(loginStage);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        });
-        reportsButton.setOnAction(e -> updateContentArea("Reports", "Generate and view operational reports."));
+
+        logoutButton.setOnAction(e -> updateContentArea("Reports", "Generate and view operational reports."));
         logoutButton.setOnAction(e -> {
             primaryStage.close(); // Close the current window
             HelloApplication loginInterface = new HelloApplication();
@@ -155,7 +160,7 @@ public class WardenDashboard extends Application {
             }
         });
 
-        sidebar.getChildren().addAll(inmatesButton, guardsButton, cellsButton, schedulesPrisonersButton,schedulesPrisonersVisitButton, reportsButton, logoutButton);
+        sidebar.getChildren().addAll(inmatesButton, guardsButton, schedulesPrisonersButton,schedulesPrisonersVisitButton,logoutButton);
         return sidebar;
     }
 

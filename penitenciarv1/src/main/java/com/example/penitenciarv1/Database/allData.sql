@@ -426,4 +426,125 @@ CREATE EVENT update_carcera_status_event
 DELIMITER ;
 
 
+#  giurgiuuuuuuuu
+-- Dezactivare constrângeri chei externe
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- Golire tabele
+TRUNCATE TABLE Inscriere_task;
+TRUNCATE TABLE Task_inchisoare;
+TRUNCATE TABLE Detinut;
+TRUNCATE TABLE Utilizator;
+TRUNCATE TABLE Celula;
+TRUNCATE TABLE etaj;
+TRUNCATE TABLE Bloc;
+TRUNCATE TABLE Programari;
+TRUNCATE TABLE vizitator;
+TRUNCATE TABLE sentinta;
+
+-- Activare constrângeri chei externe
+-- SET FOREIGN_KEY_CHECKS = 1;
+-- Inserare Bloc
+INSERT INTO Bloc (descriere_bloc) VALUES
+    ('Bloc A');
+
+-- Inserare Etaj
+INSERT INTO etaj (fk_id_bloc, nr_etaj) VALUES
+    (1, 1);
+
+-- Inserare Celula
+INSERT INTO Celula (fk_id_etaj, locuri_ramase) VALUES
+                                                   (1, 5), -- Celula 1
+                                                   (1, 5); -- Celula 2
+
+-- Inserare Utilizator
+INSERT INTO Utilizator (username, password, drept_access) VALUES
+                                                              ('john_doe', 'password123', 2), -- User pentru John Doe
+                                                              ('jane_smith', 'password456', 2); -- User pentru Jane Smith
+
+-- Inserare Detinut
+INSERT INTO Detinut (nume, fk_id_celula, fk_id_utilizator, profesie) VALUES
+                                                                         ('John Doe', 1, 1, 'Electrician'), -- John Doe legat de Utilizator ID 1
+                                                                         ('Jane Smith', 2, 2, 'Doctor'); -- Jane Smith legat de Utilizator ID 2
+
+-- Inserare Task_inchisoare - Taskuri viitoare
+INSERT INTO Task_inchisoare (difficulty, start_time, end_time, description) VALUES
+                                                                                (3, '2025-12-30 09:00:00', '2025-12-30 11:00:00', 'Inspect the yard'), -- Viitor
+                                                                                (4, '2025-01-30 14:00:00', '2025-01-30 16:00:00', 'Assist in the kitchen'), -- Viitor
+                                                                                (2, '2026-04-10 10:00:00', '2025-04-10 12:00:00', 'Organize the library'); -- Viitor
+
+-- Inserare Task_inchisoare
+INSERT INTO Task_inchisoare (difficulty, start_time, end_time, description) VALUES
+                                                                                (2, '2023-12-20 10:00:00', '2023-12-20 12:00:00', 'Library cleanup'), -- Task trecut
+                                                                                (4, '2023-12-15 13:00:00', '2023-12-15 15:00:00', 'Warehouse inventory'); -- Task trecut
+
+-- Inserare Inscriere_task - Asociere Taskuri viitoare
+INSERT INTO Inscriere_task (fk_id_detinut, fk_id_task) VALUES
+                                                           (1, 1), -- John Doe pentru "Inspect the yard"
+                                                           (1, 2), -- John Doe pentru "Assist in the kitchen"
+                                                           (2, 3); -- Jane Smith pentru "Organize the library"
+
+-- Inserare Inscriere_task
+INSERT INTO Inscriere_task (fk_id_detinut, fk_id_task) VALUES
+                                                           (1, 3), -- John Doe pentru "Library cleanup" (trecut)
+                                                           (2, 4); -- Jane Smith pentru "Warehouse inventory" (trecut)
+
+-- Inserare Celule suplimentare
+INSERT INTO Celula (fk_id_etaj, locuri_ramase) VALUES
+                                                   (1, 3), -- Celula 3
+                                                   (1, 4); -- Celula 4
+
+-- Inserare Utilizatori suplimentari
+INSERT INTO Utilizator (username, password, drept_access) VALUES
+                                                              ('mark_adams', 'password789', 2), -- User pentru Mark Adams
+                                                              ('emma_watson', 'password321', 2); -- User pentru Emma Watson
+
+-- Inserare Deținuți suplimentari
+INSERT INTO Detinut (nume, fk_id_celula, fk_id_utilizator, profesie) VALUES
+                                                                         ('Mark Adams', 3, 3, 'Mechanic'), -- Mark Adams în Celula 3
+                                                                         ('Emma Watson', 4, 4, 'Nurse');   -- Emma Watson în Celula 4
+
+
+-- Inserare Programări
+INSERT INTO Programari (tip_programari, start_time, end_time, fk_id_prizioner) VALUES
+                                                                                   (2, '2025-01-15 10:00:00', '2025-01-15 11:00:00', 1), -- John Doe
+                                                                                   (2, '2025-01-16 12:00:00', '2025-01-16 13:00:00', 1), -- John Doe
+                                                                                   (2, '2025-01-17 14:00:00', '2025-01-17 15:00:00', 2), -- Jane Smith
+                                                                                   (2, '2025-01-18 10:00:00', '2025-01-18 11:00:00', 2), -- Jane Smith
+                                                                                   (2, '2025-01-19 08:00:00', '2025-01-19 09:00:00', 1); -- John Doe
+
+-- Inserare Programări suplimentare pentru spălătorie
+INSERT INTO Programari (tip_programari, start_time, end_time, fk_id_prizioner) VALUES
+                                                                                   (2, '2025-01-20 09:00:00', '2025-01-20 10:00:00', 3), -- Mark Adams
+                                                                                   (2, '2025-01-21 11:00:00', '2025-01-21 12:00:00', 3), -- Mark Adams
+                                                                                   (2, '2025-01-22 13:00:00', '2025-01-22 14:00:00', 4), -- Emma Watson
+                                                                                   (2, '2025-01-23 15:00:00', '2025-01-23 16:00:00', 4), -- Emma Watson
+                                                                                   (2, '2025-01-24 17:00:00', '2025-01-24 18:00:00', 1); -- John Doe
+
+INSERT INTO Programari (id_programare, tip_programari, start_time, end_time, fk_id_prizioner) VALUES
+                                                                                                  (101, 1, '2025-01-15 10:00:00', '2025-01-15 11:00:00', 1), -- Vizită pentru John Doe
+                                                                                                  (102, 1, '2025-01-16 12:00:00', '2025-01-16 13:00:00', 1), -- Vizită pentru John Doe
+                                                                                                  (103, 1, '2025-01-17 14:00:00', '2025-01-17 15:00:00', 2), -- Vizită pentru Jane Smith
+                                                                                                  (104, 1, '2025-01-18 10:00:00', '2025-01-18 11:00:00', 2); -- Vizită pentru Jane Smith
+
+-- Inserare Vizitatori pentru Programările de Vizită
+INSERT INTO vizitator (id_vizitator, nume, fk_id_programare, fk_id_utilizator) VALUES
+                                                                                   (1, 'Alice Smith', 101, 3), -- Vizitator pentru Programare ID 1
+                                                                                   (2, 'Bob Johnson', 102, 4), -- Vizitator pentru Programare ID 2
+                                                                                   (3, 'Charlie Brown', 103, 5), -- Vizitator pentru Programare ID 3
+                                                                                   (4, 'Diana Prince', 104, 6); -- Vizitator pentru Programare ID 4
+
+-- Inserare Sentințe pentru deținuți
+INSERT INTO sentinta (categorie, motiv_specific, start_time, end_time, fk_id_detinut) VALUES
+                                                                                          ('Fraudă', 'Fraudă financiară de amploare', '2023-01-01 00:00:00', '2030-01-01 00:00:00', 1), -- Sentință pentru John Doe
+                                                                                          ('Violenta', 'Agresiune fizică gravă', '2024-03-01 00:00:00', '2028-03-01 00:00:00', 2), -- Sentință pentru Jane Smith
+                                                                                          ('Furt', 'Furt calificat de bunuri de mare valoare', '2022-05-10 00:00:00', '2027-05-10 00:00:00', 3), -- Sentință pentru Mark Adams
+                                                                                          ('Corupție', 'Luare de mită', '2021-07-15 00:00:00', '2031-07-15 00:00:00', 4); -- Sentință pentru Emma Watson
+
+
+INSERT INTO Utilizator (username, password, drept_access) VALUES
+    ('paul_giurgiu', '1234', 0); -- admin
+
+
+SET FOREIGN_KEY_CHECKS = 1;
 

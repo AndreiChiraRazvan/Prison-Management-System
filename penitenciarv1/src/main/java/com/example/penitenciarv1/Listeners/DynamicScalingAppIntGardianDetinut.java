@@ -1,14 +1,17 @@
 package com.example.penitenciarv1.Listeners;
 
 import com.example.penitenciarv1.Database.DatabaseConnector;
+import com.example.penitenciarv1.Entities.Guardian;
 import com.example.penitenciarv1.Entities.Inmates;
 import com.example.penitenciarv1.Interfaces.GuardianInterface;
 import com.example.penitenciarv1.Interfaces.popUps.newCell.AddToNewCellPopUp;
 import com.example.penitenciarv1.Interfaces.popUps.solitudeRoom.AddToSolitudePopUp;
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -29,10 +32,23 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
     public DynamicScalingAppIntGardianDetinut(int idUserGardian) {
         this.idUserGardian = idUserGardian;
     }
-
-    @Override
-    public void start(Stage primaryStage) {
+    public AnchorPane getContentPane(Stage primaryStage, VBox contentArea) {
+        AnchorPane pane = new AnchorPane();
         VBox root = new VBox();
+        root.prefWidthProperty().bind(Bindings.min(contentArea.widthProperty(), 1000));
+        root.prefWidthProperty().bind(contentArea.widthProperty());
+        root.prefHeightProperty().bind(contentArea.heightProperty());
+        System.out.println(contentArea.getWidth());
+        startTheEngine(root, primaryStage);
+        pane.getChildren().add(root);
+        AnchorPane.setTopAnchor(root, 0.0);
+        AnchorPane.setBottomAnchor(root, 0.0);
+        AnchorPane.setLeftAnchor(root, 0.0);
+        AnchorPane.setRightAnchor(root, 0.0);
+        return pane;
+    }
+
+    public void startTheEngine(VBox root, Stage primaryStage) {
         root.setSpacing(20);
         root.setAlignment(Pos.CENTER);
         root.setStyle("-fx-padding: 20; -fx-background-color: linear-gradient(to bottom, #e3f2fd, #bbdefb);");
@@ -129,17 +145,17 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
                     });
 
                     moveToAnotherCell.setOnAction(event -> {
-                       Inmates inmate = getTableRow().getItem();
-                       if (inmate != null) {
-                           AddToNewCellPopUp popUp = new AddToNewCellPopUp(inmate.getid().get(), idUserGardian);
-                           Stage stage = new Stage();
-                           try {
-                               popUp.start(stage);
-                           }catch (Exception e) {
-                               e.printStackTrace();
-                           }
-                           primaryStage.close();
-                       }
+                        Inmates inmate = getTableRow().getItem();
+                        if (inmate != null) {
+                            AddToNewCellPopUp popUp = new AddToNewCellPopUp(inmate.getid().get(), idUserGardian);
+                            Stage stage = new Stage();
+                            try {
+                                popUp.start(stage);
+                            }catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            primaryStage.close();
+                        }
                     });
                 }
             }
@@ -166,6 +182,15 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
 
 
 
+
+
+
+        root.getChildren().addAll(titleLabel, tableView);
+        //scene layout
+        backButtonSettere(primaryStage,root);
+
+    }
+    public void backButtonSettere(Stage primaryStage, VBox root) {
         Button goBack = new Button("Go Back");
         goBack.setStyle("-fx-background-color: linear-gradient(to right, #42a5f5, #1e88e5);"
                 + "-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-background-radius: 20;");
@@ -182,8 +207,13 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
         });
         goBack.setAlignment(Pos.TOP_LEFT);
         goBack.setPrefHeight(20);
+        root.getChildren().add(goBack);
 
-        root.getChildren().addAll(titleLabel, tableView, goBack);
+    }
+        @Override
+    public void start(Stage primaryStage) {
+        VBox root = new VBox();
+        startTheEngine(root, primaryStage);
 
         // Scenă
         Scene scene = new Scene(root, 1500, 600);
