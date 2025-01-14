@@ -3,6 +3,7 @@ package com.example.penitenciarv1.Listeners;
 import com.example.penitenciarv1.Database.DatabaseConnector;
 import com.example.penitenciarv1.Entities.Visit;
 import com.example.penitenciarv1.Interfaces.GuardianInterface;
+import com.example.penitenciarv1.Interfaces.popUps.cancelVisit.CancelVisitPopUp;
 import com.example.penitenciarv1.Services.WrapperClassArrayListAndInt;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -20,10 +21,12 @@ public class DynamicScallingAppIntVisitsForAnInmate extends Application {
 
     private int idUserGuardian;
     private String idInmate;
+    private String inmateName;
 
-    public DynamicScallingAppIntVisitsForAnInmate(String idInmate, int idUserGuardian) {
+    public DynamicScallingAppIntVisitsForAnInmate(String idInmate, int idUserGuardian, String inmateName) {
         this.idUserGuardian = idUserGuardian;
         this.idInmate = idInmate;
+        this.inmateName = inmateName;
     }
 
     public DynamicScallingAppIntVisitsForAnInmate() {
@@ -74,6 +77,15 @@ public class DynamicScallingAppIntVisitsForAnInmate extends Application {
                         if(visit != null){
                             getTableView().getItems().remove(visit);
                             dbConn.deleteVisit(visitsIds[rowIndex]);
+                            Stage newStage = new Stage();
+                            //getInmateName aici are visitor name
+                            //am refolosit clasa de Visit
+                            CancelVisitPopUp newPopUp = new CancelVisitPopUp(visit.getInmateName(), inmateName);
+                            try {
+                                newPopUp.start(newStage);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
                         }
                     });
                     setGraphic(cancelVisit);

@@ -76,7 +76,7 @@ public class AddToNewCellController implements Initializable {
     }
 
     public void customInitialize() {
-        ArrayList<String> emptyCells = databaseConnector.getEmptyCells(guardianId);
+        ArrayList<String> emptyCells = databaseConnector.getEmptyCells(databaseConnector.getGuardianId(guardianId));
         if (!emptyCells.isEmpty()) {
             comboBox.getItems().addAll(emptyCells);
         }else

@@ -16,13 +16,12 @@ public class Task {
 
     }
 
-    public Task(String id, String description, String difficulty, String startTime, String endTime, int markedByGuardian) {
+    public Task(String id, String description, String difficulty, String startTime, String endTime) {
         this.id = new SimpleStringProperty(id);
         this.description = new SimpleStringProperty(description);
         this.difficulty = new SimpleStringProperty(difficulty);
         this.startTime = new SimpleStringProperty(startTime);
         this.endTime = new SimpleStringProperty(endTime);
-        this.markedByGuardian = markedByGuardian;
     }
 
     public String getId() {
