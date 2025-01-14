@@ -512,4 +512,29 @@ public class DatabaseConnector {
     public Connection getConnection() {
         return this.conn;
     }
+
+    public ArrayList<Visit> getAllVisits(DatabaseConnector databaseConnector, User newUser) {
+        try{
+            ArrayList<Visit> visits = new ArrayList<>();
+            CallableStatement cs = conn.prepareCall("call penitenciar.get_programare_details();");
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()) {
+                Visit visit = new Visit();
+                visit.setIdVisit(rs.getString("id_programare"));
+                visit.setVisitType(rs.getString("tip_programari").equals("1") ? "Visit" : "Laundry");
+                visit.setStartTime(rs.getString("start_time"));
+                visit.setEndTime(rs.getString("end_time"));
+                visit.setInmateName(rs.getString("detinut_name"));
+                visit.setVisitorName(rs.getString("vizitator_name"));
+                //
+                visits.add(visit);
+            }
+
+
+
+            return visits;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
