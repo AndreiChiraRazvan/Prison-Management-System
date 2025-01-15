@@ -559,7 +559,7 @@ public class DatabaseConnector {
         return this.conn;
     }
 
-    public ArrayList<Visit> getAllVisits(DatabaseConnector databaseConnector, User newUser) {
+    public ArrayList<Visit> getAllVisits() {
         try{
             ArrayList<Visit> visits = new ArrayList<>();
             CallableStatement cs = conn.prepareCall("call penitenciar.get_programare_details();");

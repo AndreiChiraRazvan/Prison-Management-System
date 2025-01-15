@@ -8,6 +8,7 @@ import com.example.penitenciarv1.Listeners.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
@@ -138,11 +139,15 @@ public class WardenDashboard extends Application {
         schedulesPrisonersVisitButton.setOnAction(e -> {
             contentArea.getChildren().clear(); // Clear the central area
             // Create an instance of WardenVizitator
-            InterfataVizitator dynamicApp = new InterfataVizitator();
-            // Get the content to load into the contentArea
-            AnchorPane fullInterface = dynamicApp.getContent(primaryStage, databaseConnector, newUser);
-            // Add the interface to the contentArea
-            contentArea.getChildren().add(fullInterface);
+           WardenInterfaceVizitator newInterface = new WardenInterfaceVizitator();
+            try {
+                newInterface.start(databaseConnector, primaryStage, newUser);
+                contentArea.getChildren().add(newInterface.root);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+//            dynamicApp
+
         });
 
 

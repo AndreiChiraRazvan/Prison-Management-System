@@ -52,115 +52,51 @@ public class InterfataVizitator extends Application {
     public InterfataVizitator(){
 
     }
-    public AnchorPane getContent(Stage primaryStage,DatabaseConnector databaseConnector, User newUser) {
-
-        VBox root2 = null;
-        try {
-            ObservableList<DynamicScalingAppWardenSchedulesPrisoner.Detinut> observableList = FXCollections.observableArrayList();
-            FilteredList<DynamicScalingAppWardenSchedulesPrisoner.Detinut> filteredData = new FilteredList<>(observableList, p -> true);
-
-            root2 = new VBox(20);
-            root2.setPadding(new Insets(20));
-            root2.setAlignment(Pos.CENTER);
-
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("interfatavizitator.fxml"));
-            Parent root = fxmlLoader.load();
-
-            primaryStage.setTitle("Vizitator -Meniu");
-//            Scene scene = new Scene(root);
-//            primaryStage.setScene(scene);
-//            primaryStage.show();
-//          StackPane root2 = new StackPane();
-            root.setId("pane");
-            Scene scene2 = new Scene(root, 600, 450);
-            //HelloApplication.class.getResource("demo.css");
-            scene2.getStylesheets().addAll(this.getClass().getResource("demo.css").toExternalForm());
-            //changeBackground(scene2, "pozavizitator");
-
-            primaryStage.setScene(scene2);
-            //pentru setare minim si maxim
-            primaryStage.setMinWidth(500);
-            primaryStage.setMinHeight(500);
-
-            primaryStage.show();
-            //TO DO add information off inmate
-            // tree table view for sentences
-            mainVbox = (VBox) scene2.lookup("#mainVBox");
-            programareTab = (AnchorPane) scene2.lookup("#programareTab");
-            tabPane = (TabPane) scene2.lookup("#mainContainer");
-            backButton = new Tab("Back");
-            listViewDetinut = (ListView<Inmates>) scene2.lookup("#listViewDetinut");
-            parentOfListView = (AnchorPane) scene2.lookup("#parentOfListView");
-            mainContainer = (TabPane) scene2.lookup("#mainContainer");
-            tabPane.getTabs().add(backButton);
-            // we just added/recognized all the needed object
-
-            treeTableView = new TreeTableView<>();
-            String css = getClass().getResource("tableViewVizitatori.css").toExternalForm();
-            treeTableView.getStylesheets().add(css);
+//    public AnchorPane getContent(Stage primaryStage,DatabaseConnector databaseConnector, User newUser) {
+//
+//        AnchorPane contentPane = new AnchorPane();
+//        new InterfataVizitator(primaryStage, databaseConnector, newUser){
+//            @Override
+//            public void setSceneUp(Parent root, Stage primaryStage){
+//
+//
+//                scene2 = new Scene(root, 600, 450);
+//                //HelloApplication.class.getResource("demo.css");
+//                scene2.getStylesheets().addAll(this.getClass().getResource("demo.css").toExternalForm());
+//                //changeBackground(scene2, "pozavizitator");
+//
+//                primaryStage.setScene(scene2);
+//            }
+//        };
+//        contentPane.getChildren().add(mainVbox);
+//        return contentPane;
+//    }
 
 
-            resizeWindowWidth(tabPane, treeTableView, programareTab, mainVbox, scene2.getWidth());
-            resizeWindowHeight(tabPane, treeTableView, programareTab, mainVbox, scene2.getHeight());
-            resizeTable(treeTableView, 650);
-            // we initialized the table
+    public AnchorPane getContent(Stage primaryStage, DatabaseConnector databaseConnector, User newUser) {
+        // Create the main content AnchorPane
+        AnchorPane contentPane = new AnchorPane();
 
-            programareTab.setStyle("-fx-padding: 20; -fx-background-color: linear-gradient(to bottom, #e3f2fd, #bbdefb);");
-            parentOfListView.setStyle(" -fx-background-color: linear-gradient(to bottom, #e3f2fd, #bbdefb);");
+        // Create a new interface and override setSceneUp to update the current content
+        InterfataVizitator vizit = new InterfataVizitator(primaryStage, databaseConnector, newUser) {
 
-
-            backButton.setOnSelectionChanged(event -> {
-                HelloApplication newApplication = new HelloApplication();
-                Stage newStage = new Stage();
-                primaryStage.close();
-                newApplication.start(newStage);
-            });
-            // on going back
-
-            primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
-                // Do whatever you wantr
-                resizeWindowWidth(tabPane, treeTableView, programareTab, mainVbox, newVal);
-            });
-
-            primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> {
-                // Do whatever you want
-                resizeWindowHeight(tabPane, treeTableView, programareTab, mainVbox, newVal);
-            });
-
-
-            // Set data
-            // now we add it to the panel
-            setUpDetaliiProgramari(primaryStage, treeTableView, databaseConnector, newUser);
-            setUpDetaliiDetinut(databaseConnector, newUser);
-
-
-            programareTab.setPrefWidth(scene2.getWidth());
-            programareTab.setPrefHeight(scene2.getHeight());
-
-            programareTab.getChildren().add(treeTableView);
-            //programareTab.getChildren().add(table);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Error loading FXML file. Ensure the file path is correct and the file exists.");
-        }
-        AnchorPane contentPane = new AnchorPane(root2);
-        AnchorPane.setTopAnchor(root2, 0.0);
-        AnchorPane.setBottomAnchor(root2, 0.0);
-        AnchorPane.setLeftAnchor(root2, 0.0);
-        AnchorPane.setRightAnchor(root2, 0.0);
+        };
+        contentPane.getChildren().add(mainVbox);
         return contentPane;
     }
+
+
     public InterfataVizitator(Stage stage2, DatabaseConnector databaseConnector,  User newUser) {
         System.out.println("damn");
-        start(stage2, databaseConnector, newUser);
+
+
+
+
         // here we can change everything, the new design should be here
         TextField searchField = new TextField();
         VBox vBox = new VBox(searchField);
         searchField.setPromptText("Search...");
-        vBox.prefWidthProperty().bind(programareTab.widthProperty());
-        searchField.prefWidthProperty().bind(programareTab.widthProperty().multiply(0.15));
+
         VBox.setMargin(searchField, new Insets(10, programareTab.getWidth() * 0.10, 10, programareTab.getWidth() * 0.10));
 
 
@@ -229,11 +165,19 @@ public class InterfataVizitator extends Application {
     }
 
     private void addAllInmateVisits(DatabaseConnector databaseConnector, User newUser, TreeItem<Visit> rootItem) {
-        ArrayList<Visit> data = databaseConnector.getAllVisits(databaseConnector, newUser);
+        ArrayList<Visit> data = databaseConnector.getAllVisits();
         addDataToTreeTable(rootItem, data);
 
     }
+    private Scene scene2;
+    public void setSceneUp(Parent root, Stage primaryStage){
+        scene2 = new Scene(root, 600, 450);
+        //HelloApplication.class.getResource("demo.css");
+        scene2.getStylesheets().addAll(this.getClass().getResource("demo.css").toExternalForm());
+        //changeBackground(scene2, "pozavizitator");
 
+        primaryStage.setScene(scene2);
+    }
     public void start(Stage primaryStage, DatabaseConnector databaseConnector, User newUser) {
         try {
 
@@ -247,37 +191,35 @@ public class InterfataVizitator extends Application {
 //            primaryStage.show();
 //          StackPane root2 = new StackPane();
             root.setId("pane");
-            Scene scene2 = new Scene(root, 600, 450);
-            //HelloApplication.class.getResource("demo.css");
-            scene2.getStylesheets().addAll(this.getClass().getResource("demo.css").toExternalForm());
-            //changeBackground(scene2, "pozavizitator");
-
-            primaryStage.setScene(scene2);
+            // this makes a new tab
+            setSceneUp(root, primaryStage);
             //pentru setare minim si maxim
+
             primaryStage.setMinWidth(500);
             primaryStage.setMinHeight(500);
 
             primaryStage.show();
             //TO DO add information off inmate
             // tree table view for sentences
-            mainVbox = (VBox) scene2.lookup("#mainVBox");
-            programareTab = (AnchorPane) scene2.lookup("#programareTab");
-            tabPane = (TabPane) scene2.lookup("#mainContainer");
+            mainVbox = (VBox) primaryStage.getScene().lookup("#mainVBox");
+            programareTab = (AnchorPane) primaryStage.getScene().lookup("#programareTab");
+            tabPane = (TabPane) primaryStage.getScene().lookup("#mainContainer");
             backButton = new Tab("Back");
-            listViewDetinut = (ListView<Inmates>) scene2.lookup("#listViewDetinut");
-            parentOfListView = (AnchorPane) scene2.lookup("#parentOfListView");
-            mainContainer = (TabPane) scene2.lookup("#mainContainer");
+            listViewDetinut = (ListView<Inmates>) primaryStage.getScene().lookup("#listViewDetinut");
+            parentOfListView = (AnchorPane) primaryStage.getScene().lookup("#parentOfListView");
+            mainContainer = (TabPane) primaryStage.getScene().lookup("#mainContainer");
             tabPane.getTabs().add(backButton);
             // we just added/recognized all the needed object
 
             treeTableView = new TreeTableView<>();
+
             String css = getClass().getResource("tableViewVizitatori.css").toExternalForm();
             treeTableView.getStylesheets().add(css);
 
 
 
-            resizeWindowWidth(tabPane, treeTableView, programareTab, mainVbox, scene2.getWidth());
-            resizeWindowHeight(tabPane, treeTableView, programareTab, mainVbox, scene2.getHeight());
+            resizeWindowWidth(tabPane, treeTableView, programareTab, mainVbox, primaryStage.getScene().getWidth());
+            resizeWindowHeight(tabPane, treeTableView, programareTab, mainVbox, primaryStage.getScene().getHeight());
             resizeTable(treeTableView, 650);
             // we initialized the table
 
@@ -311,8 +253,8 @@ public class InterfataVizitator extends Application {
             setUpDetaliiDetinut(databaseConnector, newUser);
 
 
-            programareTab.setPrefWidth(scene2.getWidth());
-            programareTab.setPrefHeight(scene2.getHeight());
+            programareTab.setPrefWidth(primaryStage.getScene().getWidth());
+            programareTab.setPrefHeight(primaryStage.getScene().getHeight());
 
             programareTab.getChildren().add(treeTableView);
             //programareTab.getChildren().add(table);
@@ -347,6 +289,8 @@ public class InterfataVizitator extends Application {
         ArrayList<Visit> data = getDataFromDatabase(databaseConnector, newUser);
         addDataToTreeTable(rootItem, data);
 
+
+
         AnchorPane.setTopAnchor(treeTableView, 25.5);
         AnchorPane.setLeftAnchor(treeTableView, 10.0);
         AnchorPane.setRightAnchor(treeTableView, 10.0);
@@ -377,12 +321,12 @@ public class InterfataVizitator extends Application {
         double actualHeigth = newVal.doubleValue();
 
 
-        parentOfListView.prefHeightProperty().bind(mainVbox.prefHeightProperty());
+        //parentOfListView.prefHeightProperty().bind(mainVbox.prefHeightProperty());
 
         table.setPrefHeight(newVal.doubleValue());
     }
 
-    private void resizeWindowWidth(TabPane tabPane, TreeTableView<Visit> table, AnchorPane programareTab, VBox mainVbox, Number width) {
+    private void resizeWindowWidth(TabPane tabPane, TreeTableView<Visit> table, AnchorPane programareTab, VBox mainVbox, Number width)  {
         // we resize everything based on width
         tabPane.setPrefWidth(width.doubleValue());
         table.setPrefWidth(width.doubleValue());
@@ -391,7 +335,8 @@ public class InterfataVizitator extends Application {
         programareTab.setPrefWidth(width.doubleValue());
         mainVbox.setPrefWidth(width.doubleValue());
 
-        parentOfListView.prefWidthProperty().bind(mainVbox.widthProperty());
+            //parentOfListView.prefWidthProperty().bind(mainVbox.widthProperty());
+
     }
     private void setUpDetaliiDetinut(DatabaseConnector databaseConnector, User newUser){
 
