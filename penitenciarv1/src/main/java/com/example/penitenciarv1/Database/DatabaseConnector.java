@@ -353,10 +353,33 @@ public class DatabaseConnector {
         return lastIncarceration;
     }
 
+    public ArrayList<Inmates> getAllInmates(){
+
+        ArrayList<Inmates> inmates = new ArrayList<>();
+        try{
+            CallableStatement cs = conn.prepareCall("SELECT * FROM detinut");
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()) {
+                String name = rs.getString("nume");
+                String id =  rs.getString("id_detinut");
+                String sentenceRemained =  rs.getString("");
+                String profession = rs.getString("");
+                String celular = rs.getString("profesie");
+            }
+            return inmates;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            return inmates;
+        }
+
+    }
     public ArrayList<Sentence> getAllSentencesOfOneInmate(int idInmate) {
+        ArrayList<Sentence> sentences = new ArrayList<>();
         try{
             ///  caut sentintele fiecariu detinut
-            ArrayList<Sentence> sentences = new ArrayList<>();
+
             CallableStatement cs = conn.prepareCall("SELECT * FROM penitenciar.sentinta where fk_id_detinut = "+ idInmate +" ;");
             
             ResultSet rs = cs.executeQuery();
@@ -373,6 +396,10 @@ public class DatabaseConnector {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        finally {
+            return sentences;
+        }
+
     }
 
     public ArrayList<Visit> getVisits(int idVisitor){

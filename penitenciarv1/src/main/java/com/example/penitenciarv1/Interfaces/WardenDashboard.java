@@ -2,6 +2,7 @@
 package com.example.penitenciarv1.Interfaces;
 
 import com.example.penitenciarv1.Database.DatabaseConnector;
+import com.example.penitenciarv1.Entities.Inmates;
 import com.example.penitenciarv1.Entities.User;
 import com.example.penitenciarv1.HelloApplication;
 import com.example.penitenciarv1.Listeners.*;
@@ -16,6 +17,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
 
 public class WardenDashboard extends Application {
 
@@ -111,6 +114,12 @@ public class WardenDashboard extends Application {
                 @Override
                 public void backButtonSettere(Stage primaryStage, VBox root){
 
+                }
+                @Override
+                public ArrayList<Inmates> getInmateData(int idGardian, DatabaseConnector dbConnector){
+                    System.out.println(idGardian);
+                    System.out.println(databaseConnector.getAllInmates().size());
+                    return databaseConnector.getAllInmates();
                 }
             };
 

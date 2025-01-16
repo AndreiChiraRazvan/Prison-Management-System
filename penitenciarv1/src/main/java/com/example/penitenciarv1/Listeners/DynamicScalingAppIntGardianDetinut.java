@@ -222,11 +222,14 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
         primaryStage.show();
     }
 
+    public ArrayList<Inmates> getInmateData(int idGardian, DatabaseConnector dbConnector) {
+        return dbConnector.getInmatesOnShift(idGardian);
+    }
     private void loadInmatesOnShift(TableView<Inmates> tableView) {
         DatabaseConnector dbConnector = new DatabaseConnector();
         int idGardian = dbConnector.getGuardianId(idUserGardian);
         try(Statement statement = dbConnector.conn.createStatement()){
-            ArrayList<Inmates> inmates = dbConnector.getInmatesOnShift(idGardian);
+            ArrayList<Inmates> inmates = getInmateData(idGardian, dbConnector);
             if(inmates.isEmpty()){
                 System.out.println("No inmates found");
             }else {
