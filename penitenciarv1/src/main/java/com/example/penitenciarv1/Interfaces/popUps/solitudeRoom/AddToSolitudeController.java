@@ -68,7 +68,7 @@ public class AddToSolitudeController {
         String finalTime = enterFinalTimeField.getText();
         boolean isValid = DateTimeValidator.isValidDateTime(finalTime);
         if (isValid) {
-            int [] carceraIdAndStatus = dbConnector.getCarceraIdAndOcupationStatus(dbConnector.getGuardianId(guardianUserID));
+            int [] carceraIdAndStatus = dbConnector.getCarceraIdAndOcupationStatus(Integer.parseInt(inmateID));
             int carceraId = carceraIdAndStatus[0];
             int ocupationStatus = carceraIdAndStatus[1];
             System.out.println(carceraId);

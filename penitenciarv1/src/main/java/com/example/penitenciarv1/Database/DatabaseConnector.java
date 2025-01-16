@@ -299,6 +299,7 @@ public class DatabaseConnector {
     public int[] getCarceraIdAndOcupationStatus(int idInmate) {
         int [] carceraInfo = new int[2];
         try{
+            System.out.println("ASDADADASD" + idInmate);
             CallableStatement cs = conn.prepareCall("{CALL penitenciar.GetCarceraPrizonier(?)}");
             cs.setInt(1, idInmate);
             ResultSet rs = cs.executeQuery();
