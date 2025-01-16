@@ -22,11 +22,13 @@ public class DynamicScallingAppIntVisitsForAnInmate extends Application {
     private int idUserGuardian;
     private String idInmate;
     private String inmateName;
+    private String guardianUserName;
 
-    public DynamicScallingAppIntVisitsForAnInmate(String idInmate, int idUserGuardian, String inmateName) {
+    public DynamicScallingAppIntVisitsForAnInmate(String idInmate, int idUserGuardian, String inmateName, String guardianUserName) {
         this.idUserGuardian = idUserGuardian;
         this.idInmate = idInmate;
         this.inmateName = inmateName;
+        this.guardianUserName = guardianUserName;
     }
 
     public DynamicScallingAppIntVisitsForAnInmate() {
@@ -116,7 +118,7 @@ public class DynamicScallingAppIntVisitsForAnInmate extends Application {
                 + "-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-background-radius: 20;"));
 
         goBack.setOnAction(event -> {
-            DynamicScalingAppIntGardianDetinut newScene = new DynamicScalingAppIntGardianDetinut(idUserGuardian);
+            DynamicScalingAppIntGardianDetinut newScene = new DynamicScalingAppIntGardianDetinut(idUserGuardian, guardianUserName);
             Stage newStage = new Stage();
             stage.close();
             newScene.start(newStage);

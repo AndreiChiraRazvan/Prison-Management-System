@@ -10,14 +10,16 @@ public class AddToSolitudePopUp extends Application {
 
     private String inmateID;
     private int guardianUserID;
+    private String guardianUserName;
 
     public AddToSolitudePopUp() {
 
     }
 
-    public AddToSolitudePopUp(String inmateID, int guardianID) {
+    public AddToSolitudePopUp(String inmateID, int guardianID,  String guardianUserName) {
         this.inmateID = inmateID;
         this.guardianUserID = guardianID;
+        this.guardianUserName = guardianUserName;
     }
 
     @Override
@@ -29,6 +31,7 @@ public class AddToSolitudePopUp extends Application {
         AddToSolitudeController controller = fxmlLoader.getController();
         controller.setInmateID(inmateID);
         controller.setGuardianUserID(guardianUserID);
+        controller.setGuardianUserName(guardianUserName);
 
         Scene rootScene = new Scene(root, 500, 420);
         stage.setScene(rootScene);

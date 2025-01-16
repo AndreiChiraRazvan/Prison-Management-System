@@ -20,6 +20,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -31,14 +32,20 @@ import java.sql.ResultSet;
 public class PrisonerInterface extends Application {
 
     private int idUserDetinut;
-    private String detinutName = "Ion Popescu"; // Exemplu nume
-    private String detinutUsername = "ionpopescu123"; // Exemplu username
-
+   // Exemplu nume
+    private String detinutUsername = Session.getCurrentUsername(); // Exemplu username
+    private String detinutName;
+    private String detinutName1   = getDetinutNameByUsername(detinutUsername);
     public PrisonerInterface() {
     }
 
     public PrisonerInterface(int idDetinut) {
         this.idUserDetinut = idDetinut;
+    }
+
+    public PrisonerInterface(int idDetinut, String detinutUsername) {
+        this.idUserDetinut = idDetinut;
+        this.detinutName = detinutUsername;
     }
 
     @Override
@@ -129,8 +136,20 @@ public class PrisonerInterface extends Application {
             primaryStage.close();
         });
 
+        VBox helloScreen = new VBox();
+        helloScreen.setStyle("-fx-background-color: linear-gradient(to right, #71a2ff ,#070c3a);");
+        helloScreen.setAlignment(Pos.CENTER);
+        String text = "Hello " + detinutUsername + "!";
+        Label helloText = new Label(text);
+        helloText.setStyle("-fx-text-fill: white;");
+        helloText.setFont(Font.font("Arial", 35));
+        helloScreen.getChildren().add(helloText);
+
+        VBox.setVgrow(helloScreen, Priority.ALWAYS);
+
+
         // Add components to root
-        root.getChildren().addAll(anchorPaneVbox1, stackPane);
+        root.getChildren().addAll(anchorPaneVbox1, helloScreen);
 
         // Eveniment pentru profil
 
@@ -179,21 +198,48 @@ public class PrisonerInterface extends Application {
 
     }
 
+    public String getDetinutNameByUsername(String username) {
+        String detinutName = null; // Inițializează cu null
+        DatabaseConnector dbConnector = new DatabaseConnector();
+        String query = "SELECT d.nume AS NumeDetinut " +
+                "FROM Detinut d " +
+                "INNER JOIN Utilizator u ON d.fk_id_utilizator = u.id_utilizator " +
+                "WHERE u.username = ?";
+
+        try (PreparedStatement preparedStatement = dbConnector.conn.prepareStatement(query)) {
+            preparedStatement.setString(1, username); // Setează valoarea parametrului
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    detinutName = resultSet.getString("NumeDetinut");
+                } else {
+                    System.out.println("No detinut found for username: " + username);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return detinutName; // Returnează numele deținutului sau null dacă nu este găsit
+    }
+
+
     /// ///////////////////////////////////////////////////////////////////////
     private void openProfileWindow(Stage mainStage, String taskType) {
         // Fereastra nouă
 
 
+
         if ("Profile".equalsIgnoreCase(taskType)) {
             // Preia detaliile deținutului din baza de date
             DatabaseConnector dbConnector = new DatabaseConnector(); // Inițializare conexiune
+             String username = Session.getCurrentUsername();
+             String detinutName = getDetinutNameByUsername(username);
             String query = "SELECT u.username AS Username, d.nume AS NumeDetinut " +
                     "FROM Detinut d " +
                     "INNER JOIN Utilizator u ON d.fk_id_utilizator = u.id_utilizator " +
-                    "WHERE u.id_utilizator = " + idUserDetinut;
+                    "WHERE u.id_utilizator = '" + idUserDetinut + "'";
 
-            String username = "";
-            String detinutName = "";
+
 
             try (Statement statement = dbConnector.conn.createStatement();
                  ResultSet resultSet = statement.executeQuery(query)) {

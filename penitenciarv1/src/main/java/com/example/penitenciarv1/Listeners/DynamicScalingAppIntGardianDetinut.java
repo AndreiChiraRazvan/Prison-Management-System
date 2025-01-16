@@ -25,12 +25,19 @@ import java.util.ArrayList;
 public class DynamicScalingAppIntGardianDetinut extends Application {
 
     private int idUserGardian;
+    private String username;
 
     public DynamicScalingAppIntGardianDetinut() {
 
     }
-    public DynamicScalingAppIntGardianDetinut(int idUserGardian) {
+
+    public DynamicScalingAppIntGardianDetinut(int idUserGardian){
         this.idUserGardian = idUserGardian;
+    }
+
+    public DynamicScalingAppIntGardianDetinut(int idUserGardian, String username) {
+        this.idUserGardian = idUserGardian;
+        this.username = username;
     }
     public AnchorPane getContentPane(Stage primaryStage, VBox contentArea) {
         AnchorPane pane = new AnchorPane();
@@ -103,7 +110,7 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
                     addToSolitude.setOnAction(event -> {
                         Inmates inmate = getTableRow().getItem();
                         if (inmate != null) {
-                            AddToSolitudePopUp newPopUp = new AddToSolitudePopUp(inmate.getid().get(), idUserGardian);
+                            AddToSolitudePopUp newPopUp = new AddToSolitudePopUp(inmate.getid().get(), idUserGardian, username);
                             Stage stage = new Stage();
                             try {
                                 newPopUp.start(stage);
@@ -117,7 +124,7 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
                     cancelVisit.setOnAction(event -> {
                         Inmates inmate = getTableRow().getItem();
                         if (inmate != null) {
-                            DynamicScallingAppIntVisitsForAnInmate newWindow = new DynamicScallingAppIntVisitsForAnInmate(inmate.getid().get(), idUserGardian, inmate.getName().get());
+                            DynamicScallingAppIntVisitsForAnInmate newWindow = new DynamicScallingAppIntVisitsForAnInmate(inmate.getid().get(), idUserGardian, inmate.getName().get(), username);
                             Stage stage = new Stage();
                             try{
                                 newWindow.start(stage);
@@ -133,7 +140,7 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
                     manageTask.setOnAction(event-> {
                         Inmates inmate = getTableRow().getItem();
                         if(inmate != null) {
-                            DynamicScallingAppIntManageTasks newWindow = new DynamicScallingAppIntManageTasks(idUserGardian, inmate.getid().get());
+                            DynamicScallingAppIntManageTasks newWindow = new DynamicScallingAppIntManageTasks(idUserGardian, inmate.getid().get(), username);
                             Stage stage = new Stage();
                             try{
                                 newWindow.start(stage);
@@ -147,7 +154,7 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
                     moveToAnotherCell.setOnAction(event -> {
                         Inmates inmate = getTableRow().getItem();
                         if (inmate != null) {
-                            AddToNewCellPopUp popUp = new AddToNewCellPopUp(inmate.getid().get(), idUserGardian);
+                            AddToNewCellPopUp popUp = new AddToNewCellPopUp(inmate.getid().get(), idUserGardian, username);
                             Stage stage = new Stage();
                             try {
                                 popUp.start(stage);
@@ -200,7 +207,7 @@ public class DynamicScalingAppIntGardianDetinut extends Application {
                 + "-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-background-radius: 20;"));
 
         goBack.setOnAction(event -> {
-            GuardianInterface gi = new GuardianInterface(idUserGardian);
+            GuardianInterface gi = new GuardianInterface(idUserGardian, username);
             Stage newStage = new Stage();
             primaryStage.close();
             gi.start(newStage);

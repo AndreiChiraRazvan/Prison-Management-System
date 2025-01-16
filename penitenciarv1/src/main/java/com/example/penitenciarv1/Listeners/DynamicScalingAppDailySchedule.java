@@ -177,6 +177,7 @@ public  class DynamicScalingAppDailySchedule extends Application {
         primaryStage.setTitle("Program Zilnic");
         primaryStage.show();
     }
+
     public void backButtonFuction(Stage primaryStage) {
         PrisonerInterface prisonerInterface = new PrisonerInterface();
         Stage newStage = new Stage();
@@ -187,6 +188,8 @@ public  class DynamicScalingAppDailySchedule extends Application {
             ex.printStackTrace();
         }
     }
+
+
     private void loadDailySchedule(TableView<ScheduleItem> dailyScheduleTable) {
         DatabaseConnector dbConnector = new DatabaseConnector();
         try (Statement statement = dbConnector.conn.createStatement()) {

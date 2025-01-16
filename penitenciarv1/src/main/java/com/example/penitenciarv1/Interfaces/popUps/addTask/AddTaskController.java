@@ -22,6 +22,7 @@ public class AddTaskController implements Initializable {
 
     private String inmateId;
     private int guardianId;
+    private String guardianUsername;
 
     public void setInmateId(String inmateId) {
         this.inmateId = inmateId;
@@ -30,6 +31,8 @@ public class AddTaskController implements Initializable {
     public void setGuardianId(int guardianId) {
         this.guardianId = guardianId;
     }
+
+    public void setGuardianUsername(String guardianUsername) { this.guardianUsername = guardianUsername; }
 
     @FXML
     private Button addTaskBtn;
@@ -71,7 +74,7 @@ public class AddTaskController implements Initializable {
                 Stage newStage = new Stage();
                 Stage currStage = (Stage) addTaskBtn.getScene().getWindow();
                 currStage.close();
-                DynamicScallingAppIntManageTasks newInt = new DynamicScallingAppIntManageTasks(guardianId, inmateId);
+                DynamicScallingAppIntManageTasks newInt = new DynamicScallingAppIntManageTasks(guardianId, inmateId, guardianUsername);
                 try {
                     newInt.start(currStage);
                 }catch (Exception e){
