@@ -178,22 +178,67 @@ public class PrisonerInterface extends Application {
         });
 
     }
+    private void loadUserData(String idUserDetinut) {
+        DatabaseConnector dbConnector = new DatabaseConnector();
+        String query = "SELECT u.username AS Username, d.nume AS NumeDetinut " +
+                "FROM Detinut d " +
+                "INNER JOIN Utilizator u ON d.fk_id_utilizator = u.id_utilizator " +
+                "WHERE u.id_utilizator = " + idUserDetinut;
+
+        try (Statement statement = dbConnector.conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            if (resultSet.next()) {
+                String username = resultSet.getString("Username");
+                String detinutName = resultSet.getString("NumeDetinut");
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public String getDetinutNameByUsername(String username) {
+        String detinutName = null; // Inițializează cu null
+        DatabaseConnector dbConnector = new DatabaseConnector();
+        String query = "SELECT d.nume AS NumeDetinut " +
+                "FROM Detinut d " +
+                "INNER JOIN Utilizator u ON d.fk_id_utilizator = u.id_utilizator " +
+                "WHERE u.username = ?";
+
+        try (PreparedStatement preparedStatement = dbConnector.conn.prepareStatement(query)) {
+            preparedStatement.setString(1, username); // Setează valoarea parametrului
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    detinutName = resultSet.getString("NumeDetinut");
+                } else {
+                    System.out.println("No detinut found for username: " + username);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return detinutName; // Returnează numele deținutului sau null dacă nu este găsit
+    }
+
 
     /// ///////////////////////////////////////////////////////////////////////
     private void openProfileWindow(Stage mainStage, String taskType) {
         // Fereastra nouă
 
 
+
         if ("Profile".equalsIgnoreCase(taskType)) {
             // Preia detaliile deținutului din baza de date
             DatabaseConnector dbConnector = new DatabaseConnector(); // Inițializare conexiune
+             String username = Session.getCurrentUsername();
+             String detinutName = getDetinutNameByUsername(username);
             String query = "SELECT u.username AS Username, d.nume AS NumeDetinut " +
                     "FROM Detinut d " +
                     "INNER JOIN Utilizator u ON d.fk_id_utilizator = u.id_utilizator " +
-                    "WHERE u.id_utilizator = " + idUserDetinut;
+                    "WHERE u.id_utilizator = '" + idUserDetinut + "'";
 
-            String username = "";
-            String detinutName = "";
+
 
             try (Statement statement = dbConnector.conn.createStatement();
                  ResultSet resultSet = statement.executeQuery(query)) {

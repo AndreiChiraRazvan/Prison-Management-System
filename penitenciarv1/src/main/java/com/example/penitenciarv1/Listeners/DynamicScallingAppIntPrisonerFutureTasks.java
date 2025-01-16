@@ -140,6 +140,7 @@ package com.example.penitenciarv1.Listeners;
 
 import com.example.penitenciarv1.Database.DatabaseConnector;
 import com.example.penitenciarv1.Interfaces.PrisonerInterface;
+import com.example.penitenciarv1.Interfaces.Session;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -153,6 +154,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DynamicScallingAppIntPrisonerFutureTasks extends Application {
@@ -265,6 +267,8 @@ public class DynamicScallingAppIntPrisonerFutureTasks extends Application {
             PrisonerInterface prisonerInterface = new PrisonerInterface();
             Stage newStage = new Stage();
             primaryStage.close();
+
+
             try {
                 prisonerInterface.start(newStage);
             } catch (Exception ex) {
@@ -281,7 +285,6 @@ public class DynamicScallingAppIntPrisonerFutureTasks extends Application {
         primaryStage.setTitle("Sarcinile Viitoare");
         primaryStage.show();
     }
-
     private void loadfutureTasks(TableView<Task> taskTable) {
         DatabaseConnector dbConnector = new DatabaseConnector();
         try (Statement statement = dbConnector.conn.createStatement()) {
