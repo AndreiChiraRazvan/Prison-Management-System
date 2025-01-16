@@ -357,14 +357,15 @@ public class DatabaseConnector {
 
         ArrayList<Inmates> inmates = new ArrayList<>();
         try{
-            CallableStatement cs = conn.prepareCall("SELECT * FROM detinut");
+            CallableStatement cs = conn.prepareCall("call GetAllInmates()");
             ResultSet rs = cs.executeQuery();
             while (rs.next()) {
                 String name = rs.getString("nume");
-                String id =  rs.getString("id_detinut");
-                String sentenceRemained =  rs.getString("");
-                String profession = rs.getString("");
-                String celular = rs.getString("profesie");
+                String id =  rs.getString("id");
+                String sentenceRemained =  rs.getString("0");
+                String profession = rs.getString("profesie");
+                String celula = rs.getString("celula");
+                inmates.add(new Inmates(name, id, sentenceRemained, profession, celula));
             }
             return inmates;
         } catch (Exception e) {
