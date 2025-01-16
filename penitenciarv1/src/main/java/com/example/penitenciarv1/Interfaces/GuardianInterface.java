@@ -71,14 +71,14 @@ public class GuardianInterface extends Application {
 
         //Go to prisoners list
         prisonersOnShift.setOnAction(e -> {
-            DynamicScalingAppIntGardianDetinut newInterfataPrisoners = new DynamicScalingAppIntGardianDetinut(idUserGardian);
+            DynamicScalingAppIntGardianDetinut newInterfataPrisoners = new DynamicScalingAppIntGardianDetinut(idUserGardian, username);
             Stage newStage = new Stage();
             primaryStage.close();
             newInterfataPrisoners.start(newStage);
         });
 
         sameDetentionBlock.setOnAction(e -> {
-            DynamicScalingAppIntGardianColegiBloc newInterfataColegi =  new DynamicScalingAppIntGardianColegiBloc(idUserGardian);
+            DynamicScalingAppIntGardianColegiBloc newInterfataColegi =  new DynamicScalingAppIntGardianColegiBloc(idUserGardian, username);
             System.out.println("guardian interfata" + idUserGardian);
             Stage newStage = new Stage();
             primaryStage.close();
@@ -86,7 +86,7 @@ public class GuardianInterface extends Application {
         });
 
         wholePrison.setOnAction(e -> {
-            DynamicScalingAppIntGardianColegiPenitenciar newInterfataTotiColegii = new DynamicScalingAppIntGardianColegiPenitenciar(idUserGardian);
+            DynamicScalingAppIntGardianColegiPenitenciar newInterfataTotiColegii = new DynamicScalingAppIntGardianColegiPenitenciar(idUserGardian, username);
             Stage newStage = new Stage();
             primaryStage.close();
             try {

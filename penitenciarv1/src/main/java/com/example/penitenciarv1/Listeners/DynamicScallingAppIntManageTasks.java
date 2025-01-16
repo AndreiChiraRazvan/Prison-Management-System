@@ -22,10 +22,17 @@ public class DynamicScallingAppIntManageTasks extends Application{
 
     private int idUserGardian;
     private String idDetinut;
+    private String guardianUserName;
 
     public DynamicScallingAppIntManageTasks(int idUserGardian, String idDetinut) {
         this.idUserGardian = idUserGardian;
         this.idDetinut = idDetinut;
+    }
+
+    public DynamicScallingAppIntManageTasks(int idUserGardian, String idDetinut, String guardianUserName) {
+        this.idUserGardian = idUserGardian;
+        this.idDetinut = idDetinut;
+        this.guardianUserName = guardianUserName;
     }
 
     public DynamicScallingAppIntManageTasks(){
@@ -112,7 +119,7 @@ public class DynamicScallingAppIntManageTasks extends Application{
                 + "-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-background-radius: 20;"));
 
         goBack.setOnAction(event -> {
-            DynamicScalingAppIntGardianDetinut newScene = new DynamicScalingAppIntGardianDetinut(idUserGardian);
+            DynamicScalingAppIntGardianDetinut newScene = new DynamicScalingAppIntGardianDetinut(idUserGardian, guardianUserName);
             Stage newStage = new Stage();
             stage.close();
             newScene.start(newStage);
@@ -127,7 +134,7 @@ public class DynamicScallingAppIntManageTasks extends Application{
                 + "-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-background-radius: 20;"));
 
         addNewTask.setOnAction(event -> {
-            AddTaskPopUp newPopUp = new AddTaskPopUp(idDetinut, idUserGardian);
+            AddTaskPopUp newPopUp = new AddTaskPopUp(idDetinut, idUserGardian, guardianUserName);
             Stage newStage = new Stage();
             try {
                 newPopUp.start(newStage);

@@ -12,10 +12,12 @@ public class AddTaskPopUp extends Application {
 
     private String inmateId;
     private int guardianId;
+    private String guardianUsername;
 
-    public AddTaskPopUp(String inmateId, int guardianId) {
+    public AddTaskPopUp(String inmateId, int guardianId, String guardianUsername) {
         this.inmateId = inmateId;
         this.guardianId = guardianId;
+        this.guardianUsername = guardianUsername;
     }
 
     public AddTaskPopUp() {
@@ -31,6 +33,7 @@ public class AddTaskPopUp extends Application {
         AddTaskController controller = fxmlLoader.getController();
         controller.setInmateId(inmateId);
         controller.setGuardianId(guardianId);
+        controller.setGuardianUsername(guardianUsername);
 
         Scene rootScene = new Scene(root, 600, 600);
         stage.setScene(rootScene);

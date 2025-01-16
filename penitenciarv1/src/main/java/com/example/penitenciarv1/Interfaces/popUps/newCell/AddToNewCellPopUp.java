@@ -10,14 +10,16 @@ public class AddToNewCellPopUp extends Application {
 
     private String inmateId;
     private int guardianId;
+    private String guardianUsername;
 
     public AddToNewCellPopUp() {
 
     }
 
-    public AddToNewCellPopUp(String inmateId, int guardianId) {
+    public AddToNewCellPopUp(String inmateId, int guardianId, String guardianUsername) {
         this.inmateId = inmateId;
         this.guardianId = guardianId;
+        this.guardianUsername = guardianUsername;
     }
 
     @Override
@@ -29,6 +31,8 @@ public class AddToNewCellPopUp extends Application {
         AddToNewCellController controller = fxmlLoader.getController();
         controller.setInmateId(inmateId);
         controller.setGuardianId(guardianId);
+        controller.setGuardianUserName(guardianUsername);
+
 
         controller.customInitialize();
 

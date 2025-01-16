@@ -21,12 +21,14 @@ import java.util.function.Function;
 
 public class DynamicScalingAppIntGardianColegiBloc extends Application {
     private int idUserGardian;
+    private String username;
     public DynamicScalingAppIntGardianColegiBloc() {
 
     }
 
-    public DynamicScalingAppIntGardianColegiBloc(int idGardian) {
+    public DynamicScalingAppIntGardianColegiBloc(int idGardian, String username) {
         this.idUserGardian = idGardian;
+        this.username = username;
     }
 
 
@@ -97,7 +99,7 @@ public class DynamicScalingAppIntGardianColegiBloc extends Application {
                 + "-fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-background-radius: 20;"));
 
         goBackButton.setOnAction(event -> {
-            GuardianInterface gin = new GuardianInterface(idUserGardian);
+            GuardianInterface gin = new GuardianInterface(idUserGardian, username);
             Stage stage = new Stage();
             primaryStage.close();
             gin.start(stage);

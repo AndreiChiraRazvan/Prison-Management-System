@@ -23,6 +23,7 @@ public class AddToSolitudeController {
 
     private String inmateID;
     private int guardianUserID;
+    private String guardianUserName;
 
     public void setInmateID(String inmateID) {
         this.inmateID = inmateID;
@@ -31,6 +32,8 @@ public class AddToSolitudeController {
     public void setGuardianUserID(int guardianUserID) {
         this.guardianUserID = guardianUserID;
     }
+
+    public void setGuardianUserName(String guardianUserName) { this.guardianUserName = guardianUserName; }
     DatabaseConnector dbConnector = new DatabaseConnector();
 
 
@@ -104,7 +107,7 @@ public class AddToSolitudeController {
     }
 
     void openMainStage(Stage mainStage) {
-        DynamicScalingAppIntGardianDetinut mainIntGuardian = new DynamicScalingAppIntGardianDetinut(guardianUserID);
+        DynamicScalingAppIntGardianDetinut mainIntGuardian = new DynamicScalingAppIntGardianDetinut(guardianUserID, guardianUserName);
         Stage currStage = (Stage) button.getScene().getWindow();
         currStage.close();
         mainIntGuardian.start(mainStage);

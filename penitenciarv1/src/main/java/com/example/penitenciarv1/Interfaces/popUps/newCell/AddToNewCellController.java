@@ -19,6 +19,7 @@ public class AddToNewCellController implements Initializable {
 
     private String inmateId;
     private int guardianId;
+    private String guardianUserName;
 
     DatabaseConnector databaseConnector = new DatabaseConnector();
 
@@ -33,6 +34,8 @@ public class AddToNewCellController implements Initializable {
     public void setGuardianId(int guardianId) {
         this.guardianId = guardianId;
     }
+
+    public void setGuardianUserName(String guardianUserName) { this.guardianUserName = guardianUserName; }
 
     @FXML
     private Button button;
@@ -69,7 +72,7 @@ public class AddToNewCellController implements Initializable {
     }
 
     private void openMainScene(Stage newStage) {
-        DynamicScalingAppIntGardianDetinut newIntGardian = new DynamicScalingAppIntGardianDetinut(guardianId);
+        DynamicScalingAppIntGardianDetinut newIntGardian = new DynamicScalingAppIntGardianDetinut(guardianId, guardianUserName);
         Stage stage = (Stage) button.getScene().getWindow();
         stage.close();
         newIntGardian.start(newStage);
