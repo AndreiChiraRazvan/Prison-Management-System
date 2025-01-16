@@ -362,10 +362,10 @@ public class DatabaseConnector {
             while (rs.next()) {
                 String name = rs.getString("nume");
                 String id =  rs.getString("id");
-
+                String sentence = getRemainingSentence(Integer.parseInt(id));
                 String profession = rs.getString("profesie");
                 String celula = rs.getString("celula");
-                inmates.add(new Inmates(name, id, "0", profession, celula));
+                inmates.add(new Inmates(name, id, sentence, profession, celula));
             }
             System.out.println("injuratura");
             return inmates;
