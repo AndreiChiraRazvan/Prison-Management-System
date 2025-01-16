@@ -117,9 +117,9 @@ public class WardenDashboard extends Application {
                 }
                 @Override
                 public ArrayList<Inmates> getInmateData(int idGardian, DatabaseConnector dbConnector){
-                    System.out.println(idGardian);
-                    System.out.println(databaseConnector.getAllInmates().size());
-                    return databaseConnector.getAllInmates();
+
+                    ArrayList <Inmates> newList = dbConnector.getAllInmates();
+                    return newList;
                 }
             };
 

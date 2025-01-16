@@ -367,6 +367,7 @@ public class DatabaseConnector {
                 String celula = rs.getString("celula");
                 inmates.add(new Inmates(name, id, sentenceRemained, profession, celula));
             }
+            System.out.println("injuratura");
             return inmates;
         } catch (Exception e) {
             throw new RuntimeException(e);
