@@ -33,7 +33,7 @@ public class PrisonerInterface extends Application {
 
     private int idUserDetinut;
     private String detinutName = "Ion Popescu"; // Exemplu nume
-    private String detinutUsername = "ionpopescu123"; // Exemplu username
+    private String detinutUsername = Session.getCurrentUsername(); // Exemplu username
 
     public PrisonerInterface() {
     }
