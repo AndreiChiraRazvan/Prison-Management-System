@@ -61,12 +61,12 @@ public class HelloController {
             }
             if (newUser.getAccessRights() == 1)
             {
-                GuardianInterface newInterfataGardian = new GuardianInterface(newUser.getId());
+                GuardianInterface newInterfataGardian = new GuardianInterface(newUser.getId(), username);
                 newInterfataGardian.start(newStage);
             }
             if (newUser.getAccessRights() == 2)
             {
-                PrisonerInterface newPrisonerInterface = new PrisonerInterface(newUser.getId());
+                PrisonerInterface newPrisonerInterface = new PrisonerInterface(newUser.getId(), username);
                 newPrisonerInterface.start(newStage);
             };
             if (newUser.getAccessRights() == 3){
