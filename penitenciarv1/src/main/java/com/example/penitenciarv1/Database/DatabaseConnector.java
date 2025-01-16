@@ -355,17 +355,17 @@ public class DatabaseConnector {
 
     public ArrayList<Inmates> getAllInmates(){
 
-        ArrayList<Inmates> inmates = new ArrayList<>();
+        ArrayList<Inmates> inmates = new ArrayList<Inmates>();
         try{
             CallableStatement cs = conn.prepareCall("call GetAllInmates()");
             ResultSet rs = cs.executeQuery();
             while (rs.next()) {
                 String name = rs.getString("nume");
                 String id =  rs.getString("id");
-                String sentenceRemained =  rs.getString("0");
+
                 String profession = rs.getString("profesie");
                 String celula = rs.getString("celula");
-                inmates.add(new Inmates(name, id, sentenceRemained, profession, celula));
+                inmates.add(new Inmates(name, id, "0", profession, celula));
             }
             System.out.println("injuratura");
             return inmates;
