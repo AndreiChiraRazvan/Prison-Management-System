@@ -20,6 +20,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -39,6 +40,11 @@ public class PrisonerInterface extends Application {
 
     public PrisonerInterface(int idDetinut) {
         this.idUserDetinut = idDetinut;
+    }
+
+    public PrisonerInterface(int idDetinut, String detinutUsername) {
+        this.idUserDetinut = idDetinut;
+        this.detinutName = detinutUsername;
     }
 
     @Override
@@ -129,8 +135,20 @@ public class PrisonerInterface extends Application {
             primaryStage.close();
         });
 
+        VBox helloScreen = new VBox();
+        helloScreen.setStyle("-fx-background-color: linear-gradient(to right, #71a2ff ,#070c3a);");
+        helloScreen.setAlignment(Pos.CENTER);
+        String text = "Hello " + detinutUsername + "!";
+        Label helloText = new Label(text);
+        helloText.setStyle("-fx-text-fill: white;");
+        helloText.setFont(Font.font("Arial", 35));
+        helloScreen.getChildren().add(helloText);
+
+        VBox.setVgrow(helloScreen, Priority.ALWAYS);
+
+
         // Add components to root
-        root.getChildren().addAll(anchorPaneVbox1, stackPane);
+        root.getChildren().addAll(anchorPaneVbox1, helloScreen);
 
         // Eveniment pentru profil
 

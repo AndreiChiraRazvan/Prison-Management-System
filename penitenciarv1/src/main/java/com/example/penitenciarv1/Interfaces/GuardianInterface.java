@@ -5,19 +5,20 @@ import com.example.penitenciarv1.Listeners.DynamicScalingAppIntGardianColegiPeni
 import com.example.penitenciarv1.Listeners.DynamicScalingAppIntGardianDetinut;
 import com.example.penitenciarv1.Listeners.DynamicScalingAppIntGardianColegiBloc;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class GuardianInterface extends Application {
 
     private int idUserGardian;
+    private String username;
     private VBox root;
     public GuardianInterface() {
 
@@ -35,15 +36,17 @@ public class GuardianInterface extends Application {
     public GuardianInterface(int idGardian) {
         this.idUserGardian = idGardian;
     }
+
+    public GuardianInterface(int idGardian, String username) {
+        this.idUserGardian = idGardian;
+        this.username = username;
+    }
     public void startTheEngine(Stage primaryStage) {
         root = new VBox();
 
         root.setPrefSize(600, 400);
         AnchorPane anchorPaneVbox1 = new AnchorPane();
 
-        // Pane for Switching
-        StackPane stackPane = new StackPane();
-        stackPane.setPrefSize(600, 400);
 
         // MenuBar
         MenuBar menuBar = new MenuBar();
@@ -101,7 +104,20 @@ public class GuardianInterface extends Application {
 
         });
 
-        root.getChildren().addAll(anchorPaneVbox1, stackPane);
+        VBox helloScreen = new VBox();
+        helloScreen.setAlignment(Pos.CENTER);
+        helloScreen.setStyle("-fx-background-color: linear-gradient(to right, #71a2ff ,#070c3a);");
+        String text = "Hello " + username + "!";
+        Label helloText = new Label(text);
+        helloText.setStyle("-fx-text-fill: white;");
+        helloText.setFont(Font.font("Arial", 35));
+        helloScreen.getChildren().add(helloText);
+
+
+
+        root.getChildren().addAll(anchorPaneVbox1, helloScreen);
+
+        VBox.setVgrow(helloScreen, Priority.ALWAYS);
 
     }
     @Override
@@ -120,17 +136,3 @@ public class GuardianInterface extends Application {
         launch(args);
     }
 }
-
-// ImageView for Background
-//        Image image = new Image(getClass().getResource("/com/example/penitenciarv1/images/cazulcorpA.png").toExternalForm());
-//        if (image.isError()) {
-//            System.out.println("Error loading image: " + image.getException());
-//        }
-//
-//        ImageView imageView = new ImageView(image);
-//        imageView.setPreserveRatio(true); // Maintain the aspect ratio
-//        imageView.setSmooth(true);
-//
-//        // Bind the imageView size to the root pane size
-//        imageView.fitWidthProperty().bind(stackPane.widthProperty()); // Bind to root pane's width
-//        imageView.fitHeightProperty().bind(stackPane.heightProperty());
