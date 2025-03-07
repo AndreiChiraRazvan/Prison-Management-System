@@ -1,28 +1,23 @@
-package com.example.penitenciarv1;
+package com.example.penitenciarv1.Interfaces;
 
+import com.example.penitenciarv1.Database.DatabaseConnector;
+import com.example.penitenciarv1.HelloApplication;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
+public class InterfataDetinut extends Application {
 
-public class Interfatadetinut extends Application {
-    @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage, DatabaseConnector databaseConnector) {
         try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("interfatadetinut.fxml"));
 
-
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("interfatadetinut.fxml"));
             Parent root = fxmlLoader.load();
 
-            primaryStage.setTitle("Detinut-Meniu");
+            primaryStage.setTitle("Detinut - Meniu principal");
 //            Scene scene = new Scene(root);
 //            primaryStage.setScene(scene);
 //            primaryStage.show();
@@ -31,9 +26,8 @@ public class Interfatadetinut extends Application {
             Scene scene2 = new Scene(root, 600, 450);
             scene2.getStylesheets().addAll(this.getClass().getResource("demo.css").toExternalForm());
 
-
+            /// /////////////aici se face un if sau case in functie de shift apelam pentru alta imagine
             changeBackground(scene2, "pozadetinut");
-
 
             primaryStage.setScene(scene2);
             //pentru setare minim si maxim
@@ -47,17 +41,25 @@ public class Interfatadetinut extends Application {
             System.err.println("Error loading FXML file. Ensure the file path is correct and the file exists.");
         }
     }
-    private void changeBackground(Scene scene, String imageName) {
+
+    static public void changeBackground(Scene scene, String imageName) {
         String imagePath = HelloApplication.class.getResource("images/" + imageName + ".png").toExternalForm();
         scene.getRoot().setStyle(String.format(
+
                 "-fx-background-image: url('%s'); " +
                         "-fx-background-position: center; " +
                         "-fx-background-repeat: no-repeat;",
                 imagePath
+
         ));
     }
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
     }
 }
